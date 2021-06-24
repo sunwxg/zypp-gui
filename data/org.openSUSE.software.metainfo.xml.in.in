@@ -1,37 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Xiaoguang Wang 2019 <xwang@suse.com> -->
+<!-- Xiaoguang Wang 2019 <sun.wxg@gmail.com> -->
 <component type="desktop-application">
   <id>@app-id@</id>
   <metadata_license>CC0</metadata_license>
   <!-- Insert your license of choice here -->
   <!-- <project_license>MIT</project_license> -->
   <name>openSUSE software</name>
-  <summary>Write a GTK + Rust application</summary>
+  <summary>Update, install and remove software on the computer</summary>
   <description>
-    <p>A boilerplate template for GTK + Rust. It uses Meson as a build system and has flatpak support by default.</p>
+    <p>Application runs as a deamon to monitor the system update. When there is new update, update the system. Application can search, install and remove the package, change the settings of repos.</p>
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>http://gitlab.suse.com/raw/master/data/resources/screenshots/screenshot1.png</image>
+      <image>/screenshots/screenshot1.png</image>
       <caption>Main window</caption>
     </screenshot>
   </screenshots>
-  <url type="homepage">http://gitlab.suse.com</url>
-  <url type="bugtracker">http://gitlab.suse.com/issues</url>
+	<url type="homepage">http://github.com/sunwxg/openSUSE-software</url>
+  <url type="bugtracker">http://github.com/sunwxg/openSUSE-software/issues</url>
   <content_rating type="oars-1.0" />
   <releases>
-    <release version="0.0.1" date="2019-07-11" />
+    <release version="0.0.1" date="2021-06-24" />
   </releases>
   <kudos>
-     <!--
-       GNOME Software kudos:
-       https://gitlab.gnome.org/GNOME/gnome-software/blob/master/doc/kudos.md
-     -->
      <kudo>ModernToolkit</kudo>
      <kudo>HiDpiIcon</kudo>
   </kudos>
   <developer_name>Xiaoguang Wang</developer_name>
-  <update_contact>xwang@suse.com</update_contact>
+  <update_contact>sun.wxg@gmail.com</update_contact>
   <translation type="gettext">@gettext-package@</translation>
   <launchable type="desktop-id">@app-id@.desktop</launchable>
 </component>
