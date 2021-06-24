@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/openSUSE/software/">
+    <file compressed="true" preprocess="xml-stripblanks">ui/window.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/list_row.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/repo_row.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/search_row.ui</file>
+
+    <file compressed="true">style.css</file>
+  </gresource>
+</gresources>

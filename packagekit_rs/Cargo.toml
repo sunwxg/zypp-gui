@@ -1,0 +1,14 @@
+[package]
+name = "packagekit_rs"
+version = "0.1.0"
+authors = ["Xiaoguang Wang <sun.wxg@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+package-kit-glib-sys = { path = "./packagekit-sys", features = ["v1_1_13"] }
+gio-sys = "0.10.1"
+libc = "0.2.97"
+glib = "0.10.3"
+glib-sys = "0.10.1"

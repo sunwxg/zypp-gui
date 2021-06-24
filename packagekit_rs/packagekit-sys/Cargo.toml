@@ -1,0 +1,170 @@
+[package]
+name = "package-kit-glib-sys"
+version = "0.1.0"
+links = "\"packagekit-glib2\""
+edition = "2018"
+build = "build.rs"
+[package.metadata.system-deps.packagekit_glib2]
+name = "packagekit-glib2"
+version = "0.0"
+
+[package.metadata.system-deps.packagekit_glib2.v0_5]
+version = "0.5"
+
+[package.metadata.system-deps.packagekit_glib2.v0_5_2]
+version = "0.5.2"
+
+[package.metadata.system-deps.packagekit_glib2.v0_5_3]
+version = "0.5.3"
+
+[package.metadata.system-deps.packagekit_glib2.v0_5_4]
+version = "0.5.4"
+
+[package.metadata.system-deps.packagekit_glib2.v0_5_5]
+version = "0.5.5"
+
+[package.metadata.system-deps.packagekit_glib2.v0_6]
+version = "0.6"
+
+[package.metadata.system-deps.packagekit_glib2.v0_6_1]
+version = "0.6.1"
+
+[package.metadata.system-deps.packagekit_glib2.v0_6_2]
+version = "0.6.2"
+
+[package.metadata.system-deps.packagekit_glib2.v0_6_3]
+version = "0.6.3"
+
+[package.metadata.system-deps.packagekit_glib2.v0_6_4]
+version = "0.6.4"
+
+[package.metadata.system-deps.packagekit_glib2.v0_6_5]
+version = "0.6.5"
+
+[package.metadata.system-deps.packagekit_glib2.v0_6_10]
+version = "0.6.10"
+
+[package.metadata.system-deps.packagekit_glib2.v0_6_11]
+version = "0.6.11"
+
+[package.metadata.system-deps.packagekit_glib2.v0_6_13]
+version = "0.6.13"
+
+[package.metadata.system-deps.packagekit_glib2.v0_7_2]
+version = "0.7.2"
+
+[package.metadata.system-deps.packagekit_glib2.v0_7_5]
+version = "0.7.5"
+
+[package.metadata.system-deps.packagekit_glib2.v0_8]
+version = "0.8"
+
+[package.metadata.system-deps.packagekit_glib2.v0_8_1]
+version = "0.8.1"
+
+[package.metadata.system-deps.packagekit_glib2.v0_8_2]
+version = "0.8.2"
+
+[package.metadata.system-deps.packagekit_glib2.v0_8_6]
+version = "0.8.6"
+
+[package.metadata.system-deps.packagekit_glib2.v0_8_8]
+version = "0.8.8"
+
+[package.metadata.system-deps.packagekit_glib2.v0_8_11]
+version = "0.8.11"
+
+[package.metadata.system-deps.packagekit_glib2.v0_8_12]
+version = "0.8.12"
+
+[package.metadata.system-deps.packagekit_glib2.v0_8_14]
+version = "0.8.14"
+
+[package.metadata.system-deps.packagekit_glib2.v0_8_16]
+version = "0.8.16"
+
+[package.metadata.system-deps.packagekit_glib2.v0_8_17]
+version = "0.8.17"
+
+[package.metadata.system-deps.packagekit_glib2.v0_9_1]
+version = "0.9.1"
+
+[package.metadata.system-deps.packagekit_glib2.v0_9_5]
+version = "0.9.5"
+
+[package.metadata.system-deps.packagekit_glib2.v0_9_6]
+version = "0.9.6"
+
+[package.metadata.system-deps.packagekit_glib2.v1_0_2]
+version = "1.0.2"
+
+[package.metadata.system-deps.packagekit_glib2.v1_0_10]
+version = "1.0.10"
+
+[package.metadata.system-deps.packagekit_glib2.v1_0_12]
+version = "1.0.12"
+
+[package.metadata.system-deps.packagekit_glib2.v1_1_2]
+version = "1.1.2"
+
+[package.metadata.system-deps.packagekit_glib2.v1_1_8]
+version = "1.1.8"
+
+[package.metadata.system-deps.packagekit_glib2.v1_1_13]
+version = "1.1.13"
+[package.metadata.docs.rs]
+features = ["dox"]
+
+[lib]
+name = "package_kit_glib_sys"
+
+[dependencies]
+libc = "0.2"
+gio-sys = "0.10.0"
+glib-sys = "0.10.0"
+gobject-sys = "0.10.0"
+
+[build-dependencies]
+system-deps = "3"
+
+[dev-dependencies]
+shell-words = "1.0.0"
+tempfile = "3"
+
+[features]
+v0_5 = []
+v0_5_2 = ["v0_5"]
+v0_5_3 = ["v0_5_2"]
+v0_5_4 = ["v0_5_3"]
+v0_5_5 = ["v0_5_4"]
+v0_6 = ["v0_5_5"]
+v0_6_1 = ["v0_6"]
+v0_6_2 = ["v0_6_1"]
+v0_6_3 = ["v0_6_2"]
+v0_6_4 = ["v0_6_3"]
+v0_6_5 = ["v0_6_4"]
+v0_6_10 = ["v0_6_5"]
+v0_6_11 = ["v0_6_10"]
+v0_6_13 = ["v0_6_11"]
+v0_7_2 = ["v0_6_13"]
+v0_7_5 = ["v0_7_2"]
+v0_8 = ["v0_7_5"]
+v0_8_1 = ["v0_8"]
+v0_8_2 = ["v0_8_1"]
+v0_8_6 = ["v0_8_2"]
+v0_8_8 = ["v0_8_6"]
+v0_8_11 = ["v0_8_8"]
+v0_8_12 = ["v0_8_11"]
+v0_8_14 = ["v0_8_12"]
+v0_8_16 = ["v0_8_14"]
+v0_8_17 = ["v0_8_16"]
+v0_9_1 = ["v0_8_17"]
+v0_9_5 = ["v0_9_1"]
+v0_9_6 = ["v0_9_5"]
+v1_0_2 = ["v0_9_6"]
+v1_0_10 = ["v1_0_2"]
+v1_0_12 = ["v1_0_10"]
+v1_1_2 = ["v1_0_12"]
+v1_1_8 = ["v1_1_2"]
+v1_1_13 = ["v1_1_8"]
+dox = []

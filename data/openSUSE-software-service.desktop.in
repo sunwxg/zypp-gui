@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=openSUSE Software
+Exec=@bindir@/openSUSE-software --gapplication-service
+OnlyShowIn=GNOME;Unity;
+NotShowIn=Budgie
+NoDisplay=true

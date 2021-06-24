@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=openSUSE software
+Comment=Update, install and remove software on the computer
+Type=Application
+Exec=openSUSE-software %U
+Terminal=false
+Categories=GNOME;GTK;
+Keywords=Gnome;GTK;
+# Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+Icon=@icon@
+StartupNotify=true
+DBusActivatable=true
