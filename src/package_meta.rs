@@ -73,8 +73,8 @@ impl PackageMeta {
         }
 
         for f in out.lines() {
-            let mut repo = String::new();
-            let mut enable = false;
+            let mut _repo = String::new();
+            let mut _enable = false;
             let mut priority = 99;
             if f.contains("primary") {
                 let v: Vec<&str> = f
@@ -83,19 +83,19 @@ impl PackageMeta {
                     .split(|c| c == '/')
                     .collect();
 
-                repo = v[0].to_string();
-                enable = if self.check_repo_state(repo.clone(), "enable".to_string()).contains("=1") { true } else { false };
-                let value = self.check_repo_state(repo.clone(), "priority".to_string());
+                _repo = v[0].to_string();
+                _enable = if self.check_repo_state(_repo.clone(), "enable".to_string()).contains("=1") { true } else { false };
+                let value = self.check_repo_state(_repo.clone(), "priority".to_string());
                 if value.len() > 0 && value.contains("priority=") {
                     let s = value.strip_suffix("\n").unwrap();
                     let v: Vec<&str> = s.split(|c| c == '=' ).collect();
-                    let priority = v[1].parse::<i32>().unwrap();
+                    priority = v[1].parse::<i32>().unwrap();
                 }
 
                 repo_package.push(RepoPackages {
-                    repo: repo,
+                    repo: _repo,
                     file: f.to_string(),
-                    enable: enable,
+                    enable: _enable,
                     priority: priority,
                     meta: None,
                 });
@@ -285,18 +285,23 @@ impl PackageMeta {
                             continue;
                         }
                         let d = meta.get(key).unwrap();
+                        let info = self.check_installed(d.name.clone());
+                        let mut _id = String::new();
+                        if info == "installed" {
+                            _id =  format!( "{};{}-{};{};{}", d.name.clone(), d.version, d.release, d.arch, "installed");
+                        } else {
+                            _id =  format!( "{};{}-{};{};{}", d.name.clone(), d.version, d.release, d.arch, repo.repo);
+                        }
                         result.push(
                             SearchInfo {
                             name: d.name.clone(),
-                            id: format!( "{};{};{};{};{}", d.name.clone(), d.version, d.release, d.arch, repo.repo),
+                            id: _id,
                             summary: d.summary.clone(),
-                            info: "installed".to_string(),
+                            info: info,
                             });
                     }
                     None => {}
-                }
-            }
-        }
+                }}}
         result
     }
 
@@ -319,8 +324,6 @@ impl PackageMeta {
         }
 
         out
-        //let result: Vec<&str> = out.split(|c| c == '=' ).collect();
-        //result[2].to_string()
     }
 
     fn get_sys_arch() -> String {
@@ -340,5 +343,19 @@ impl PackageMeta {
         }
 
         out.strip_suffix("\n").unwrap().to_string()
+    }
+
+    fn check_installed(&self, name: String) -> String {
+        let status = Command::new("rpm")
+            .arg("-qi")
+            .arg(name)
+            .status()
+            .expect("failed to execute rpm");
+
+        if status.success() {
+            "installed".to_string()
+        } else {
+            "".to_string()
+        }
     }
 }
