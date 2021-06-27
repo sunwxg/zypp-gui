@@ -1,7 +1,7 @@
 use gio::prelude::*;
 use glib::clone;
 use gtk::prelude::*;
-use log::info;
+use log::{debug, info};
 
 use crate::config;
 use crate::packagekit::PackagekitState;
@@ -43,6 +43,19 @@ impl Application {
                 info!("activate");
                 window.first_show();
                 window.window().show_all();
+            });
+        }
+        {
+            let window = self.window.window();
+            let flag = self.application.get_flags();
+            window.connect_delete_event(move |window, _| {
+                debug!("window delete event");
+                if flag == gio::ApplicationFlags::IS_SERVICE {
+                    window.hide();
+                    Inhibit(true)
+                } else {
+                    Inhibit(false)
+                }
             });
         }
     }

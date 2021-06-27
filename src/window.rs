@@ -141,14 +141,6 @@ impl Window {
     }
 
     fn button_connect(&self) {
-        {
-            self.window.connect_delete_event(move |window, _| {
-                debug!("window delete event");
-                window.hide();
-                Inhibit(true)
-            });
-        }
-
         let builder = self.builder.clone();
         {
             let button: gtk::Button = builder.get_object("button_settings").unwrap();

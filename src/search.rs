@@ -3,6 +3,7 @@ use log::debug;
 use std::thread;
 
 use crate::notification;
+use crate::package_meta::PackageMeta;
 use crate::packagekit;
 use crate::packagekit::PackagekitState;
 use crate::search_row::SearchRow;
@@ -20,6 +21,7 @@ pub struct SearchPackage {
     notification: notification::Notification,
     packagekit_state: PackagekitState,
     //search_list: RefCell<Box<Vec<SearchInfo>>>,
+    package_meta: PackageMeta,
 }
 
 impl SearchPackage {
@@ -36,6 +38,7 @@ impl SearchPackage {
         let stack_box: gtk::Stack = builder.get_object("stack_box").unwrap();
         let search_box: gtk::ScrolledWindow = builder.get_object("search_box").unwrap();
         //let search_list =  RefCell::new(Box::new(vec![]));
+        let package_meta = PackageMeta::new();
 
         let search = Self {
             search_entry,
@@ -48,6 +51,7 @@ impl SearchPackage {
             notification,
             packagekit_state,
             //search_list,
+            package_meta: package_meta,
         };
 
         search.connect_signal();
@@ -62,8 +66,9 @@ impl SearchPackage {
             if this.packagekit_state.busy() {
                 return;
             }
-            this.packagekit_state.set_state(true);
-            this.search_names(text);
+            //this.packagekit_state.set_state(true);
+            //this.search_names(text);
+            this.search_meta(text);
         });
     }
 
@@ -136,6 +141,7 @@ impl SearchPackage {
 
     fn show_notification(&self, text: String) {
         self.notification.set_label(text);
+        self.update_search_list(vec![]);
     }
 
     fn search_names(&self, text: glib::GString) {
@@ -164,6 +170,11 @@ impl SearchPackage {
             }
             glib::Continue(true)
         });
+    }
+
+    fn search_meta(&self, text: glib::GString) {
+        let list = self.package_meta.search(text.to_string());
+        println!("{:?}", list);
     }
 
     fn install_packages(&self, id: String) {

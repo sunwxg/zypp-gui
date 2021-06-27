@@ -91,6 +91,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Notification here.</property>
+                        <property name="wrap">True</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -537,6 +538,7 @@
                 </child>
                 <child>
                   <object class="GtkStack" id="setting_stack">
+                    <property name="width-request">200</property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="vhomogeneous">False</property>
