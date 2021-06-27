@@ -99,7 +99,7 @@ impl SearchPackage {
             self.row_connect_signal(row.button(), info.clone());
             row.set_title(info.name);
             let v: Vec<&str> = info.id.split(';').collect();
-            let subtitle = format!("{}  {}  {}\n{}", v[1], v[2], v[3], info.summary);
+            let subtitle = format!("{} - {}  {}  {}\n{}", v[1], v[2], v[3], v[4], info.summary);
             row.set_subtitle(subtitle);
             list_box.add(&row.row().to_owned());
         }
@@ -174,7 +174,9 @@ impl SearchPackage {
 
     fn search_meta(&self, text: glib::GString) {
         let list = self.package_meta.search(text.to_string());
-        println!("{:?}", list);
+        //println!("{:?}", list);
+        debug!("SearchFinish len={}", list.len());
+        self.update_search_list(list);
     }
 
     fn install_packages(&self, id: String) {

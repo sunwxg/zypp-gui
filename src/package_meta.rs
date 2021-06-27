@@ -5,6 +5,8 @@ use std::cell::{Ref, RefCell};
 use std::io::prelude::*;
 use std::rc::Rc;
 
+use crate::util::{SearchInfo};
+
 const HEAD: &'static str = "<package type=\"rpm\">";
 const END: &'static str = "</package>";
 
@@ -25,18 +27,22 @@ pub struct Meta {
 pub struct RepoPackages {
     repo: String,
     file: String,
+    enable: bool,
+    priority: i32,
     meta: Option<HashMap<String, Meta>>,
 }
 
 #[derive(Clone, Debug)]
 pub struct PackageMeta {
     data: Rc<RefCell<Vec<RepoPackages>>>,
+    sys_arch: String,
 }
 
 impl PackageMeta {
     pub fn new() -> PackageMeta {
         let this = Self {
             data: Rc::new(RefCell::new(vec![])),
+            sys_arch: PackageMeta::get_sys_arch(),
         };
 
         this.build_data();
@@ -67,15 +73,30 @@ impl PackageMeta {
         }
 
         for f in out.lines() {
+            let mut repo = String::new();
+            let mut enable = false;
+            let mut priority = 99;
             if f.contains("primary") {
                 let v: Vec<&str> = f
                     .strip_prefix("/var/cache/zypp/raw/")
                     .unwrap()
                     .split(|c| c == '/')
                     .collect();
+
+                repo = v[0].to_string();
+                enable = if self.check_repo_state(repo.clone(), "enable".to_string()).contains("=1") { true } else { false };
+                let value = self.check_repo_state(repo.clone(), "priority".to_string());
+                if value.len() > 0 && value.contains("priority=") {
+                    let s = value.strip_suffix("\n").unwrap();
+                    let v: Vec<&str> = s.split(|c| c == '=' ).collect();
+                    let priority = v[1].parse::<i32>().unwrap();
+                }
+
                 repo_package.push(RepoPackages {
-                    repo: v[0].to_string(),
+                    repo: repo,
                     file: f.to_string(),
+                    enable: enable,
+                    priority: priority,
                     meta: None,
                 });
             }
@@ -151,9 +172,6 @@ impl PackageMeta {
 
             if line.starts_with(END) {
                 //data.raw.push_str(line);
-                if meta_hash.contains_key(&data.location) {
-                    println!("{}", data.location.clone());
-                }
                 meta_hash.insert(data.location.clone(), data.clone());
                 head = true;
                 continue;
@@ -214,10 +232,6 @@ impl PackageMeta {
             //data.raw.push_str(line);
             //data.raw.push_str("\n");
         }
-        //for p in meta_hash.values() {
-        //println!("{}", p.name.clone());
-        //}
-        //println!("{}", meta_vec[1].raw);
         println!("len={}", meta_hash.len());
         meta_hash
     }
@@ -255,24 +269,76 @@ impl PackageMeta {
         Some(v[1].to_string())
     }
 
-    pub fn search(&self, text: String) -> Vec<String> {
-        let mut result: Vec<String> = vec![];
+    pub fn search(&self, text: String) -> Vec<SearchInfo> {
+        let mut result: Vec<SearchInfo> = vec![];
         let meta: Ref<Vec<RepoPackages>> = self.data.borrow();
         for repo in meta.clone().into_iter() {
+            if !repo.enable {
+                continue;
+            }
             let meta = repo.meta.unwrap();
             for key in meta.keys() {
                 match key.rfind(&text) {
                     Some(_) => {
+                        let arch: Vec<&str> = key.split(|c| c == '/' ).collect();
+                        if arch[0] != self.sys_arch && arch[0] != "noarch" {
+                            continue;
+                        }
                         let d = meta.get(key).unwrap();
-                        result.push(format!(
-                            "{};{};{}-{};{}",
-                            repo.repo, d.name, d.version, d.release, d.summary
-                        ));
+                        result.push(
+                            SearchInfo {
+                            name: d.name.clone(),
+                            id: format!( "{};{};{};{};{}", d.name.clone(), d.version, d.release, d.arch, repo.repo),
+                            summary: d.summary.clone(),
+                            info: "installed".to_string(),
+                            });
                     }
                     None => {}
                 }
             }
         }
         result
+    }
+
+    fn check_repo_state(&self, repo: String, fileld: String) -> String {
+        let file = format!("/etc/zypp/repos.d/{}.repo", repo);
+        let process = match Command::new("grep")
+            .arg(fileld)
+            .arg(file)
+            .stdout(Stdio::piped())
+            .spawn()
+            {
+                Err(e) => panic!("failed spawn: {}", e),
+                Ok(process) => process,
+            };
+
+        let mut out = String::new();
+        match process.stdout.unwrap().read_to_string(&mut out) {
+            Err(e) => panic!("couldn't read stdout: {}", e),
+            Ok(_) => {},
+        }
+
+        out
+        //let result: Vec<&str> = out.split(|c| c == '=' ).collect();
+        //result[2].to_string()
+    }
+
+    fn get_sys_arch() -> String {
+        let process = match Command::new("uname")
+            .arg("-m")
+            .stdout(Stdio::piped())
+            .spawn()
+        {
+            Err(e) => panic!("failed spawn: {}", e),
+            Ok(process) => process,
+        };
+
+        let mut out = String::new();
+        match process.stdout.unwrap().read_to_string(&mut out) {
+            Err(e) => panic!("couldn't read stdout: {}", e),
+            Ok(_) => {}
+        }
+
+        out.strip_suffix("\n").unwrap().to_string()
     }
 }
