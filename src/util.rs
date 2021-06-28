@@ -4,7 +4,7 @@ pub enum PKmessage {
     PackageListNew(Vec<PackageInfo>),
     PackageListInstalled(Vec<PackageInfo>),
     Progress((i32, Option<String>)),
-    SearchListNew(Vec<SearchInfo>),
+    //SearchListNew(Vec<SearchInfo>),
     DownloadFinish,
     UpdateFinish,
     InstallFinish,

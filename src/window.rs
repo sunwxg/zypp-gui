@@ -220,6 +220,7 @@ impl Window {
             ButtonState::Download => {
                 self.download_button.set_sensitive(true);
                 self.show_package_list();
+                self.search.update_package_meta();
             }
             ButtonState::Update => {
                 self.download_button.set_sensitive(true);

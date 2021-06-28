@@ -1,3 +1,4 @@
+use glib;
 use gtk::prelude::*;
 use log::debug;
 use std::thread;
@@ -20,7 +21,6 @@ pub struct SearchPackage {
     progress_label: gtk::Label,
     notification: notification::Notification,
     packagekit_state: PackagekitState,
-    //search_list: RefCell<Box<Vec<SearchInfo>>>,
     package_meta: PackageMeta,
 }
 
@@ -37,8 +37,8 @@ impl SearchPackage {
         let list_box: gtk::ListBox = builder.get_object("search_list_box").unwrap();
         let stack_box: gtk::Stack = builder.get_object("stack_box").unwrap();
         let search_box: gtk::ScrolledWindow = builder.get_object("search_box").unwrap();
-        //let search_list =  RefCell::new(Box::new(vec![]));
-        let package_meta = PackageMeta::new();
+
+        let package_meta = PackageMeta::new(search_entry.clone());
 
         let search = Self {
             search_entry,
@@ -50,7 +50,6 @@ impl SearchPackage {
             progress_label,
             notification,
             packagekit_state,
-            //search_list,
             package_meta: package_meta,
         };
 
@@ -89,9 +88,11 @@ impl SearchPackage {
         });
     }
 
-    fn update_list(&self, list: Vec<SearchInfo>) {
-        //self.search_list.replace(Box::new(list.clone()));
+    pub fn update_package_meta(&self) {
+        self.package_meta.update_data();
+    }
 
+    fn update_list(&self, list: Vec<SearchInfo>) {
         self.clear_list();
         let list_box = &self.list_box;
         for info in list {
@@ -144,6 +145,7 @@ impl SearchPackage {
         self.update_search_list(vec![]);
     }
 
+    /*
     fn search_names(&self, text: glib::GString) {
         let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
 
@@ -171,6 +173,7 @@ impl SearchPackage {
             glib::Continue(true)
         });
     }
+    */
 
     fn search_meta(&self, text: glib::GString) {
         let list = self.package_meta.search(text.to_string());
