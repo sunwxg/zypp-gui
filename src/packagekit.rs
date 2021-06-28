@@ -6,7 +6,7 @@ use std::ptr;
 use std::rc::Rc;
 use zbus::{Connection, Message};
 
-use crate::util::{PKmessage, PackageInfo, SearchInfo};
+use crate::util::{PKmessage, PackageInfo};
 use packagekit_rs::prelude::*;
 use packagekit_rs::{
     pk_offline_get_prepared_ids, pk_offline_trigger, ClientPk, ProgressPk, ResultsPk,
@@ -238,6 +238,7 @@ pub fn updates(sender: glib::Sender<PKmessage>) {
     }
 }
 
+/*
 pub fn search_names(sender: glib::Sender<PKmessage>, text: glib::GString) {
     debug!("search start");
     let client = ClientPk::new();
@@ -287,6 +288,7 @@ pub fn search_names(sender: glib::Sender<PKmessage>, text: glib::GString) {
             .expect("Couldn't send data to channel");
     }
 }
+*/
 
 pub fn install_packages(sender: glib::Sender<PKmessage>, id: String) {
     debug!("install start");

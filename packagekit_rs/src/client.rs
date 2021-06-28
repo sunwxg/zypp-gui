@@ -267,7 +267,6 @@ impl<O: IsA<ClientPk>> ClientPkExt for O {
         }
         let callback_ready = get_updates_async_trampoline::<Q>;
 
-        println!("here 1");
         unsafe {
             let filters = pk_bitfield_from_enums(PK_TRANSACTION_FLAG_ENUM_NONE, -1);
             pk_client_get_updates_async(

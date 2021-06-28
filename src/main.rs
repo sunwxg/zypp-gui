@@ -2,6 +2,7 @@ mod application;
 mod config;
 mod list_row;
 mod notification;
+mod package_meta;
 mod packagekit;
 mod page_settings;
 mod repo_row;
