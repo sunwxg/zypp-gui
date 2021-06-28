@@ -2,8 +2,9 @@ use std::collections::HashMap;
 use std::process::{Command, Stdio};
 //use std::fs::File;
 use std::cell::{Ref, RefCell};
-use std::io::prelude::*;
 use std::rc::Rc;
+use std::io::prelude::*;
+use std::thread;
 
 use crate::util::{SearchInfo};
 
@@ -29,7 +30,7 @@ pub struct RepoPackages {
     file: String,
     enable: bool,
     priority: i32,
-    meta: Option<HashMap<String, Meta>>,
+    meta: Rc<Option<HashMap<String, Meta>>>,
 }
 
 #[derive(Clone, Debug)]
@@ -97,17 +98,32 @@ impl PackageMeta {
                     file: f.to_string(),
                     enable: _enable,
                     priority: priority,
-                    meta: None,
+                    meta: Rc::new(None),
                 });
             }
         }
 
         for mut r in repo_package {
-            r.meta = Some(self.read_file(r.file.clone()));
+            //r.meta = Some(PackageMeta::read_file(r.file.clone()));
+
+            let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+
+            let file = r.file.clone();
+            thread::spawn(move || {
+              PackageMeta::read_file(file, tx);
+            });
+
+            let mut meta_hash: HashMap<String, Meta> = HashMap::new();
+            r.meta = Rc::new(Some(meta_hash.clone()));
+            rx.attach(None, move |data| {
+                println!("{:?}", data.location.clone());
+                meta_hash.insert(data.location.clone(), data.clone());
+                glib::Continue(true)
+            });
         }
     }
 
-    fn read_file(&self, file: String) -> HashMap<String, Meta> {
+    fn read_file(file: String, sender: glib::Sender<Meta>) -> HashMap<String, Meta> {
         let process = match Command::new("gzip")
             .arg("-dc")
             .arg(file)
@@ -124,10 +140,10 @@ impl PackageMeta {
             Ok(_) => {}
         }
 
-        self.parse_line_by_line(buffer)
+        PackageMeta::parse_line_by_line(buffer, sender)
     }
 
-    fn new_data(&self) -> Meta {
+    fn new_data() -> Meta {
         Meta {
             name: String::new(),
             arch: String::new(),
@@ -140,10 +156,10 @@ impl PackageMeta {
         }
     }
 
-    fn parse_line_by_line(&self, buffer: String) -> HashMap<String, Meta> {
+    fn parse_line_by_line(buffer: String, sender: glib::Sender<Meta>) -> HashMap<String, Meta> {
         let mut meta_hash: HashMap<String, Meta> = HashMap::new();
 
-        let mut data = self.new_data();
+        let mut data = PackageMeta::new_data();
         let mut in_description = false;
         let mut head = true;
         let mut name = true;
@@ -157,7 +173,7 @@ impl PackageMeta {
             let line = line.trim_start();
 
             if head && line.starts_with(HEAD) {
-                data = self.new_data();
+                data = PackageMeta::new_data();
                 //data.raw.push_str(line);
                 //data.raw.push_str("\n");
                 head = false;
@@ -172,23 +188,26 @@ impl PackageMeta {
 
             if line.starts_with(END) {
                 //data.raw.push_str(line);
-                meta_hash.insert(data.location.clone(), data.clone());
+                //meta_hash.insert(data.location.clone(), data.clone());
+                sender.send(data.clone())
+                      .expect("Couldn't send data to channel");
+
                 head = true;
                 continue;
             }
 
             if name && line.starts_with("<name>") {
-                data.name = self.get_tag(line, "<name>", "</name>");
+                data.name = PackageMeta::get_tag(line, "<name>", "</name>");
                 name = false;
                 continue;
             }
             if arch && line.starts_with("<arch>") {
-                data.arch = self.get_tag(line, "<arch>", "</arch>");
+                data.arch = PackageMeta::get_tag(line, "<arch>", "</arch>");
                 arch = false;
                 continue;
             }
             if summary && line.starts_with("<summary>") {
-                data.summary = self.get_tag(line, "<summary>", "</summary>");
+                data.summary = PackageMeta::get_tag(line, "<summary>", "</summary>");
                 summary = false;
                 continue;
             }
@@ -206,7 +225,7 @@ impl PackageMeta {
                 continue;
             }
             if version && line.starts_with("<version") {
-                match self.get_ver_rel(line) {
+                match PackageMeta::get_ver_rel(line) {
                     Some((v, r)) => {
                         data.version = v;
                         data.release = r;
@@ -217,7 +236,7 @@ impl PackageMeta {
                 continue;
             }
             if location && line.starts_with("<location") {
-                match self.get_location(line) {
+                match PackageMeta::get_location(line) {
                     Some(v) => data.location = v,
                     None => {}
                 }
@@ -232,16 +251,16 @@ impl PackageMeta {
             //data.raw.push_str(line);
             //data.raw.push_str("\n");
         }
-        println!("len={}", meta_hash.len());
+        //println!("len={}", meta_hash.len());
         meta_hash
     }
 
-    fn get_tag(&self, line: &str, tag: &str, end: &str) -> String {
+    fn get_tag(line: &str, tag: &str, end: &str) -> String {
         let s = line.strip_prefix(tag).unwrap();
         s.strip_suffix(end).unwrap().to_string()
     }
 
-    fn get_ver_rel(&self, line: &str) -> Option<(String, String)> {
+    fn get_ver_rel(line: &str) -> Option<(String, String)> {
         let s: Vec<&str> = line.rsplit(|c| c == ' ').collect();
         let ver: Vec<&str> = s
             .iter()
@@ -258,7 +277,7 @@ impl PackageMeta {
         Some((ver[1].to_string(), rel[1].to_string()))
     }
 
-    fn get_location(&self, line: &str) -> Option<String> {
+    fn get_location(line: &str) -> Option<String> {
         let s: Vec<&str> = line.rsplit(|c| c == ' ').collect();
         let v: Vec<&str> = s
             .iter()
@@ -276,7 +295,8 @@ impl PackageMeta {
             if !repo.enable {
                 continue;
             }
-            let meta = repo.meta.unwrap();
+            let meta = repo.meta.as_ref().as_ref().unwrap();
+            println!("meta len={}", meta.len());
             for key in meta.keys() {
                 match key.rfind(&text) {
                     Some(_) => {
