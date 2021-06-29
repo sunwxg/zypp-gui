@@ -2,6 +2,12 @@
 
 It's a GUI applicaion working on openSUSE distro. Application runs as a deamon to monitor the system update. When there is new update, application can update the system. Application can search, install and remove the package, change the settings of repos. It achieves some functions of command `zypper`.
 
+openSUSE software differs from GNOME software to:
+- support general openSUSE desktop environments instead of GNOME only
+
+openSUSE software differs from YaST software management to:
+- support desktop integration (eg. update detection and notification)
+
 ## Targets:
 - [x] Refresh the repos, download the packages, install the update.
 - [x] Search, install and remove the package.
