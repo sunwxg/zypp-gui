@@ -22,17 +22,9 @@ pub struct RepoInfo {
     pub url: String,
 }
 
-pub struct Zypper {
-    //list: Vec<RepoInfo>,
-}
+pub struct Zypper {}
 
 impl Zypper {
-    //pub fn new() -> Self {
-    //Self {
-    //list: vec![],
-    //}
-    //}
-
     fn to_repoinfo(line: &str) -> RepoInfo {
         let r: Vec<&str> = line.split("|").collect();
         let id = r[0].trim().to_string();
@@ -111,6 +103,44 @@ impl Zypper {
         let child = Command::new("pkexec")
             .arg("mod-repo")
             .args(args)
+            .arg(id)
+            .spawn()
+            .expect("failed to run pkexec");
+
+        let output = child.wait_with_output().expect("fail to wait pkexec");
+        if !output.status.success() {
+            debug!("pkexec fail");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    pub fn add_repo(name: String, url: String) -> bool {
+        let child = Command::new("pkexec")
+            .arg("mod-repo")
+            .arg("add")
+            .arg("--name")
+            .arg(name)
+            .arg("--url")
+            .arg(url)
+            .spawn()
+            .expect("failed to run pkexec");
+
+        let output = child.wait_with_output().expect("fail to wait pkexec");
+        if !output.status.success() {
+            debug!("pkexec fail");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    pub fn delete_repo(id: String) -> bool {
+        let child = Command::new("pkexec")
+            .arg("mod-repo")
+            .arg("delete")
+            .arg("--id")
             .arg(id)
             .spawn()
             .expect("failed to run pkexec");

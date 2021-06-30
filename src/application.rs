@@ -47,9 +47,10 @@ impl Application {
         }
         {
             let window = self.window.window();
-            let flag = self.application.get_flags();
+            let application = self.application.clone();
             window.connect_delete_event(move |window, _| {
                 debug!("window delete event");
+                let flag = application.get_flags();
                 if flag == gio::ApplicationFlags::IS_SERVICE {
                     window.hide();
                     Inhibit(true)

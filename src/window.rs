@@ -52,10 +52,6 @@ impl Window {
         stack_box.set_visible_child(&stack_label);
         let state = Rc::new(RefCell::new(ButtonState::Refresh));
 
-        let header_bar_stack: gtk::Stack = builder.get_object("header_bar_stack").unwrap();
-        let header_bar: libhandy::HeaderBar = builder.get_object("empty_header_bar").unwrap();
-        header_bar_stack.set_visible_child(&header_bar);
-
         let notification = notification::Notification::new(&builder);
         let search = search::SearchPackage::new(
             &builder,

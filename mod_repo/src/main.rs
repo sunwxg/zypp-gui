@@ -1,5 +1,5 @@
 extern crate clap;
-use clap::{App, Arg};
+use clap::{App, Arg, ArgMatches, SubCommand};
 use std::process::{exit, Command, Stdio};
 
 fn main() {
@@ -51,11 +51,51 @@ fn main() {
         .arg(
             Arg::with_name("repo")
                 .help("repo id")
-                .required(true)
+                //.required(true)
                 .index(1),
+        )
+        .subcommand(
+            SubCommand::with_name("add")
+                .about("Add repo")
+                .arg(
+                    Arg::with_name("name")
+                        .short("n")
+                        .long("name")
+                        .help("repo name")
+                        .required(true)
+                        .takes_value(true),
+                )
+                .arg(
+                    Arg::with_name("url")
+                        .short("u")
+                        .long("url")
+                        .help("repo url")
+                        .required(true)
+                        .takes_value(true),
+                ),
+        )
+        .subcommand(
+            SubCommand::with_name("delete").about("Delete repo").arg(
+                Arg::with_name("id")
+                    .short("i")
+                    .long("id")
+                    .help("repo id")
+                    .required(true)
+                    .takes_value(true),
+            ),
         )
         .get_matches();
 
+    if matches.is_present("add") {
+        add_repo(matches);
+    } else if matches.is_present("delete") {
+        delete_repo(matches);
+    } else {
+        modify_repo(matches);
+    }
+}
+
+fn modify_repo(matches: ArgMatches) {
     let mut args: Vec<&str> = vec![];
     if matches.is_present("enable") {
         args.push("-e");
@@ -78,20 +118,67 @@ fn main() {
     let id = matches.value_of("repo").unwrap();
     args.push(id);
 
-    let process = match Command::new("zypper")
+    let status = Command::new("zypper")
         .arg("mr")
         .args(args)
         .stdout(Stdio::piped())
-        .spawn()
-    {
-        Err(e) => panic!("failed spawn zypper: {}", e),
-        Ok(process) => process,
-    };
+        .status()
+        .expect("failed to execute zypper");
 
-    match process.stderr {
-        Some(_) => {
-            exit(1);
-        }
-        None => {}
+    if status.success() {
+        exit(0);
+    } else {
+        exit(1);
+    }
+}
+
+fn add_repo(matches: ArgMatches) {
+    let mut args: Vec<&str> = vec![];
+    let add_matches = matches.subcommand_matches("add").unwrap();
+
+    if add_matches.is_present("url") {
+        let value = add_matches.value_of("url").unwrap();
+        args.push(value);
+    }
+    if add_matches.is_present("name") {
+        let value = add_matches.value_of("name").unwrap();
+        args.push(value);
+    }
+
+    let status = Command::new("zypper")
+        .arg("ar")
+        .arg("-d")
+        .args(args)
+        .stdout(Stdio::piped())
+        .status()
+        .expect("failed to execute zypper");
+
+    if status.success() {
+        exit(0);
+    } else {
+        exit(1);
+    }
+}
+
+fn delete_repo(matches: ArgMatches) {
+    let mut args: Vec<&str> = vec![];
+    let delete_matches = matches.subcommand_matches("delete").unwrap();
+
+    if delete_matches.is_present("id") {
+        let value = delete_matches.value_of("id").unwrap();
+        args.push(value);
+    }
+
+    let status = Command::new("zypper")
+        .arg("rr")
+        .args(args)
+        .stdout(Stdio::piped())
+        .status()
+        .expect("failed to execute zypper");
+
+    if status.success() {
+        exit(0);
+    } else {
+        exit(1);
     }
 }

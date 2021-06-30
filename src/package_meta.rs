@@ -386,6 +386,7 @@ impl PackageMeta {
                 }
             }
         }
+        result.sort_by(|a, b| a.name.cmp(&b.name));
         result
     }
 

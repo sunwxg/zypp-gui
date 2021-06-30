@@ -7,6 +7,7 @@ pub struct RepoRow {
     cpg: gtk::CheckButton,
     refresh: gtk::CheckButton,
     priority: gtk::SpinButton,
+    delete: gtk::Button,
 }
 
 impl RepoRow {
@@ -19,6 +20,7 @@ impl RepoRow {
         let refresh: gtk::CheckButton = builder.get_object("refresh_button").unwrap();
         let priority: gtk::SpinButton = builder.get_object("priority_button").unwrap();
         let url: gtk::Label = builder.get_object("url").unwrap();
+        let delete: gtk::Button = builder.get_object("delete_button").unwrap();
 
         name.set_text(info.name.as_str());
         enable.set_state(info.enable);
@@ -33,6 +35,7 @@ impl RepoRow {
             cpg: cpg,
             refresh: refresh,
             priority: priority,
+            delete: delete,
         }
     }
 
@@ -54,5 +57,9 @@ impl RepoRow {
 
     pub fn priority(&self) -> &gtk::SpinButton {
         &self.priority
+    }
+
+    pub fn delete(&self) -> &gtk::Button {
+        &self.delete
     }
 }
