@@ -6,6 +6,8 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/repo_row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/search_row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/repo_add.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/mirror_row.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/mirror_window.ui</file>
 
     <file compressed="true">style.css</file>
   </gresource>

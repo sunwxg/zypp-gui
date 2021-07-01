@@ -1,7 +1,12 @@
+use gio::prelude::*;
+use gio::File;
 use gtk::prelude::*;
 use libhandy::prelude::*;
 use libhandy::NavigationDirection;
+use log::debug;
+use std::thread;
 
+use crate::mirror::MirrorSettings;
 use crate::repo_row::RepoRow;
 use crate::zypper::{RepoInfo, Settings, Zypper};
 
@@ -18,6 +23,7 @@ impl PageSettings {
         let top_right_box: gtk::Box = builder.get_object("top_right_box").unwrap();
         top_right_box.add(&repo_add_button);
         let main_window: libhandy::ApplicationWindow = builder.get_object("window").unwrap();
+        MirrorSettings::new(builder);
 
         let page_settings = Self {
             list_box,
@@ -25,6 +31,7 @@ impl PageSettings {
         };
         page_settings.button_connect(&builder);
         page_settings.build_repo_list();
+        page_settings.monitor_repo_dir();
 
         page_settings
     }
@@ -52,49 +59,33 @@ impl PageSettings {
     fn row_button_connect(&self, row: &RepoRow, info: RepoInfo) {
         {
             let id = String::from(info.id.clone());
-            let this = self.clone();
             row.enable().connect_changed_active(move |switch| {
-                if !Zypper::change_repo(id.clone(), Settings::Enable(switch.get_active())) {
-                    this.clear_repo_list();
-                    this.build_repo_list();
-                }
+                Zypper::change_repo(id.clone(), Settings::Enable(switch.get_active()));
             });
         }
         {
             let id = String::from(info.id.clone());
-            let this = self.clone();
             row.cpg().connect_toggled(move |b| {
-                if !Zypper::change_repo(id.clone(), Settings::Cpg(b.get_active())) {
-                    this.clear_repo_list();
-                    this.build_repo_list();
-                }
+                Zypper::change_repo(id.clone(), Settings::Cpg(b.get_active()));
             });
         }
         {
             let id = String::from(info.id.clone());
-            let this = self.clone();
             row.refresh().connect_toggled(move |b| {
-                if !Zypper::change_repo(id.clone(), Settings::Refresh(b.get_active())) {
-                    this.clear_repo_list();
-                    this.build_repo_list();
-                }
+                Zypper::change_repo(id.clone(), Settings::Refresh(b.get_active()));
             });
         }
         {
             let id = String::from(info.id.clone());
-            let this = self.clone();
             row.priority().connect_value_changed(move |b| {
-                if !Zypper::change_repo(id.clone(), Settings::Priority(b.get_value() as i32)) {
-                    this.clear_repo_list();
-                    this.build_repo_list();
-                }
+                Zypper::change_repo(id.clone(), Settings::Priority(b.get_value() as i32));
             });
         }
         {
             let this = self.clone();
             let id = String::from(info.id.clone());
             row.delete().connect_clicked(move |_| {
-                this.creat_dialog(id.clone());
+                this.create_dialog(id.clone());
             });
         }
     }
@@ -133,12 +124,12 @@ impl PageSettings {
             let button: gtk::Button = builder.get_object("repo_add").unwrap();
             let this = self.clone();
             button.connect_clicked(move |_| {
-                this.creat_add_repo_window();
+                this.create_add_repo_window();
             });
         }
     }
 
-    fn creat_add_repo_window(&self) {
+    fn create_add_repo_window(&self) {
         let builder = gtk::Builder::from_resource("/org/openSUSE/software/ui/repo_add.ui");
         let window: gtk::Window = builder.get_object("repo_add_window").unwrap();
         window.set_modal(true);
@@ -153,26 +144,21 @@ impl PageSettings {
         let name: gtk::Entry = builder.get_object("repo_name").unwrap();
         let url: gtk::Entry = builder.get_object("repo_url").unwrap();
         let ok: gtk::Button = builder.get_object("add_ok").unwrap();
-        let this = self.clone();
         let w = window.clone();
         ok.connect_clicked(move |_| {
             let name = name.get_text();
             let url = url.get_text();
-            println!("name={} url={}", name, url);
             if name.len() == 0 || url.len() == 0 {
                 return;
             }
-            if Zypper::add_repo(name.to_string(), url.to_string()) {
-                this.clear_repo_list();
-                this.build_repo_list();
-            }
+            Zypper::add_repo(name.to_string(), url.to_string());
             w.close();
         });
 
         window.show();
     }
 
-    fn creat_dialog(&self, id: String) {
+    fn create_dialog(&self, id: String) {
         let dialog = gtk::MessageDialogBuilder::new()
             .transient_for(&self.main_window)
             .modal(true)
@@ -180,18 +166,46 @@ impl PageSettings {
             .text("Do you want to delete this repo?")
             .build();
 
-        let this = self.clone();
         dialog.connect_response(move |dialog, event| {
             if event == gtk::ResponseType::Ok {
-                if Zypper::delete_repo(id.to_string()) {
-                    this.clear_repo_list();
-                    this.build_repo_list();
-                }
+                Zypper::delete_repo(id.to_string());
                 dialog.close()
             } else if event == gtk::ResponseType::Cancel {
                 dialog.close()
             }
         });
         dialog.show_all();
+    }
+
+    fn monitor_repo_dir(&self) {
+        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        thread::spawn(move || {
+            let mainloop = glib::MainLoop::new(None, true);
+            let path = std::path::Path::new("/etc/zypp/repos.d");
+            let file = File::new_for_path(path);
+            let monitor = file
+                .monitor(
+                    gio::FileMonitorFlags::SEND_MOVED,
+                    Some(&gio::Cancellable::new()),
+                )
+                .unwrap();
+            monitor.connect_changed(move |_, _, _, event| {
+                debug!("/etc/zypp/repos.d folder is changed: {:?}", event);
+                if event == gio::FileMonitorEvent::Created
+                    || event == gio::FileMonitorEvent::Deleted
+                    || event == gio::FileMonitorEvent::ChangesDoneHint
+                {
+                    tx.send("repo changed")
+                        .expect("Couldn't send data to channel");
+                }
+            });
+            mainloop.run();
+        });
+        let this = self.clone();
+        rx.attach(None, move |_| {
+            this.clear_repo_list();
+            this.build_repo_list();
+            glib::Continue(true)
+        });
     }
 }

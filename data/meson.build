@@ -113,3 +113,14 @@ configure_file(
   install: true,
   install_dir: join_paths(get_option('sysconfdir'), 'xdg/autostart'),
 )
+
+# Mirror sites data file
+mirror_conf = configuration_data()
+mirror_conf.set('bindir', bindir)
+configure_file(
+  input : 'mirror.json.in',
+  output : 'mirror.json',
+  configuration: mirror_conf,
+  install: true,
+  install_dir: pkgdatadir,
+)

@@ -1,6 +1,9 @@
 mod application;
 mod config;
 mod list_row;
+mod mirror;
+mod mirror_row;
+mod mirror_window;
 mod notification;
 mod package_meta;
 mod packagekit;

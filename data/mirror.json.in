@@ -1,0 +1,86 @@
+{
+	"asia": [
+		{
+			"country": "China",
+			"name": "NetEase",
+			"http": "http://mirrors.163.com/openSUSE",
+			"rsync": "rsync://rsync.mirrors.163.com/openSUSE",
+			"repo": [
+				"tw",
+				"leap.15.1",
+				"leap.15.2",
+				"leap.15.3"
+			]
+		},
+		{
+			"country": "China",
+			"name": "Shanghai.Jiaotong.University",
+			"http": "http://mirror.sjtu.edu.cn/opensuse",
+			"rsync": "",
+			"repo": [
+				"tw",
+				"leap.15.1",
+				"leap.15.2",
+				"leap.15.3"
+			]
+		}
+	],
+	"africa": [
+		{
+			"country": "China",
+			"name": "NetEase",
+			"http": "http://mirrors.163.com/openSUSE",
+			"rsync": "rsync://rsync.mirrors.163.com/openSUSE",
+			"repo": [
+				"tw",
+				"leap.15.1",
+				"leap.15.2",
+				"leap.15.3"
+			]
+		},
+		{
+			"country": "China",
+			"name": "Shanghai.Jiaotong.University",
+			"http": "http://mirror.sjtu.edu.cn/opensuse",
+			"rsync": "",
+			"repo": [
+				"tw",
+				"leap.15.1",
+				"leap.15.2",
+				"leap.15.3"
+			]
+		}
+	],
+	"europe": [
+		{
+			"country": "China",
+			"name": "NetEase",
+			"http": "http://mirrors.163.com/openSUSE",
+			"rsync": "rsync://rsync.mirrors.163.com/openSUSE",
+			"repo": [
+				"tw",
+				"leap.15.1",
+				"leap.15.2",
+				"leap.15.3"
+			]
+		},
+		{
+			"country": "China",
+			"name": "Shanghai.Jiaotong.University",
+			"http": "http://mirror.sjtu.edu.cn/opensuse",
+			"rsync": "",
+			"repo": [
+				"tw",
+				"leap.15.1",
+				"leap.15.2",
+				"leap.15.3"
+			]
+		}
+	],
+	"north_america": [
+	],
+	"oceania": [
+	],
+	"south_america": [
+	]
+}
