@@ -13,14 +13,14 @@ pub struct RepoRow {
 impl RepoRow {
     pub fn new(info: RepoInfo) -> Self {
         let builder = gtk::Builder::from_resource("/org/openSUSE/software/ui/repo_row.ui");
-        let row: gtk::Box = builder.get_object("repo_row").unwrap();
-        let name: gtk::Label = builder.get_object("name").unwrap();
-        let enable: gtk::Switch = builder.get_object("enable_switch").unwrap();
-        let cpg: gtk::CheckButton = builder.get_object("cpg_button").unwrap();
-        let refresh: gtk::CheckButton = builder.get_object("refresh_button").unwrap();
-        let priority: gtk::SpinButton = builder.get_object("priority_button").unwrap();
-        let url: gtk::Label = builder.get_object("url").unwrap();
-        let delete: gtk::Button = builder.get_object("delete_button").unwrap();
+        let row: gtk::Box = builder.object("repo_row").unwrap();
+        let name: gtk::Label = builder.object("name").unwrap();
+        let enable: gtk::Switch = builder.object("enable_switch").unwrap();
+        let cpg: gtk::CheckButton = builder.object("cpg_button").unwrap();
+        let refresh: gtk::CheckButton = builder.object("refresh_button").unwrap();
+        let priority: gtk::SpinButton = builder.object("priority_button").unwrap();
+        let url: gtk::Label = builder.object("url").unwrap();
+        let delete: gtk::Button = builder.object("delete_button").unwrap();
 
         name.set_text(info.name.as_str());
         enable.set_state(info.enable);

@@ -10,8 +10,8 @@ pub struct SearchRow {
 impl SearchRow {
     pub fn new(info: SearchInfo) -> Self {
         let builder = gtk::Builder::from_resource("/org/openSUSE/software/ui/search_row.ui");
-        let row: libhandy::ActionRow = builder.get_object("row").unwrap();
-        let button: gtk::Button = builder.get_object("operation_button").unwrap();
+        let row: libhandy::ActionRow = builder.object("row").unwrap();
+        let button: gtk::Button = builder.object("operation_button").unwrap();
         if info.info == "installed" {
             button.set_label("Remove");
         } else {

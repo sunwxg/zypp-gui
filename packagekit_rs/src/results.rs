@@ -2,19 +2,17 @@ use glib;
 use glib::object::IsA;
 use glib::translate::*;
 use libc::c_char;
-//use std::{ffi::CString};
-//use std::{ptr};
 
-use crate::DetailsPk;
-use crate::PackagePk;
-use crate::UpdateDetailPk;
+use crate::details::DetailsPk;
+use crate::package::PackagePk;
+use crate::update_detail::UpdateDetailPk;
 use package_kit_glib_sys::*;
 
-glib::glib_wrapper! {
-    pub struct ResultsPk(Object<PkResults, PkResultsClass, ResultsClass>);
+glib::wrapper! {
+    pub struct ResultsPk(Interface<PkResults>);
 
     match fn {
-        get_type => || pk_results_get_type(),
+        type_ => || pk_results_get_type(),
     }
 }
 
@@ -75,7 +73,6 @@ impl<O: IsA<ResultsPk>> ResultsPkExt for O {
         unsafe {
             {
                 let array = pk_results_get_update_detail_array(self.as_ref().to_glib_none().0);
-                //Vec::from_raw_parts((*array).pdata as *mut DetailsPk, (*array).len as usize, (*array).len as usize)
                 Vec::from_raw_parts(
                     (*array).pdata as *mut UpdateDetailPk,
                     (*array).len as usize,

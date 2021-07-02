@@ -1,4 +1,3 @@
-mod application;
 mod config;
 mod list_row;
 mod mirror;
@@ -15,11 +14,16 @@ mod util;
 mod window;
 mod zypper;
 
-extern crate glib;
 extern crate gtk;
-use application::Application;
 use config::{GETTEXT_PACKAGE, LOCALEDIR, RESOURCES_FILE};
 use gettextrs::*;
+use gtk::gio;
+use gtk::glib;
+use gtk::prelude::*;
+use log::info;
+
+use crate::packagekit::PackagekitState;
+use crate::window::Window;
 
 fn main() {
     env_logger::init();
@@ -38,6 +42,22 @@ fn main() {
     let res = gio::Resource::load(RESOURCES_FILE).expect("Could not load gresource file");
     gio::resources_register(&res);
 
-    let app = Application::new();
-    app.run();
+    let application = gtk::Application::new(Some(config::APP_ID), Default::default());
+    application.connect_startup(build_ui);
+
+    info!("openSUSE Software ({})", config::APP_ID);
+    info!("Version: {} ({})", config::VERSION, config::PROFILE);
+    application.run();
+}
+
+fn build_ui(application: &gtk::Application) {
+    info!("startup");
+    let packagekit_state = PackagekitState::new();
+    let window = Window::new(packagekit_state, application.clone());
+
+    application.connect_activate(move |_| {
+        info!("activate");
+        window.first_show();
+        window.window().show_all();
+    });
 }

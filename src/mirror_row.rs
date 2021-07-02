@@ -14,7 +14,7 @@ pub struct MirrorRow {
 impl MirrorRow {
     pub fn new(site: Site, main_window: libhandy::ApplicationWindow) -> Self {
         let builder = gtk::Builder::from_resource("/org/openSUSE/software/ui/mirror_row.ui");
-        let row: libhandy::ActionRow = builder.get_object("mirror_row").unwrap();
+        let row: libhandy::ActionRow = builder.object("mirror_row").unwrap();
         let title = format!("{}  {}", site.country.clone(), site.name.clone());
         row.set_title(Some(title.as_str()));
 

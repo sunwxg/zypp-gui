@@ -5,15 +5,15 @@ use libc::c_char;
 use std::boxed::Box as Box_;
 use std::ptr;
 
-use crate::ProgressPk;
-use crate::ResultsPk;
+use crate::progress::ProgressPk;
+use crate::results::ResultsPk;
 use package_kit_glib_sys::*;
 
-glib::glib_wrapper! {
-    pub struct ClientPk(Object<PkClient, PkClientClass, ClientClass>);
+glib::wrapper! {
+    pub struct ClientPk(Interface<PkClient>);
 
     match fn {
-        get_type => || pk_client_get_type(),
+        type_ => || pk_client_get_type(),
     }
 }
 
@@ -103,7 +103,7 @@ pub trait ClientPkExt: 'static {
 impl<O: IsA<ClientPk>> ClientPkExt for O {
     fn set_background(&self, background: bool) {
         unsafe {
-            pk_client_set_background(self.as_ref().to_glib_none().0, background.to_glib());
+            pk_client_set_background(self.as_ref().to_glib_none().0, background as i32);
         }
     }
 
@@ -115,7 +115,7 @@ impl<O: IsA<ClientPk>> ClientPkExt for O {
 
     fn set_interactive(&self, interactive: bool) {
         unsafe {
-            pk_client_set_interactive(self.as_ref().to_glib_none().0, interactive.to_glib());
+            pk_client_set_interactive(self.as_ref().to_glib_none().0, interactive as i32);
         }
     }
 
@@ -124,7 +124,7 @@ impl<O: IsA<ClientPk>> ClientPkExt for O {
             let mut error = ptr::null_mut();
             let ret = pk_client_refresh_cache(
                 self.as_ref().to_glib_none().0,
-                force.to_glib(),
+                force as i32,
                 ptr::null_mut(),
                 None,
                 ptr::null_mut(),
@@ -138,27 +138,6 @@ impl<O: IsA<ClientPk>> ClientPkExt for O {
             }
         }
     }
-
-    //fn updates(&self) -> Result<ResultsPk, glib::Error> {
-    //unsafe {
-    //let flag = pk_transaction_flag_enum_to_string(0);
-    //let filters = pk_transaction_flag_bitfield_from_string(flag);
-    //let mut error = ptr::null_mut();
-    //let ret = pk_client_get_updates(
-    //self.as_ref().to_glib_none().0,
-    //filters,
-    //ptr::null_mut(),
-    //None,
-    //ptr::null_mut(),
-    //&mut error);
-
-    //if error.is_null() {
-    //Ok(from_glib_full(ret))
-    //} else {
-    //Err(from_glib_full(error))
-    //}
-    //}
-    //}
 
     fn get_updates(
         &self,

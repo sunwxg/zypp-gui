@@ -148,6 +148,7 @@ fn add_repo(matches: ArgMatches) {
     let status = Command::new("zypper")
         .arg("ar")
         .arg("-d")
+        .arg("-f")
         .args(args)
         .stdout(Stdio::piped())
         .status()

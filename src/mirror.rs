@@ -38,8 +38,8 @@ pub struct MirrorSettings {
 impl MirrorSettings {
     pub fn new(builder: &gtk::Builder) -> Self {
         let data = MirrorSettings::read_data();
-        let mirror_page: gtk::Box = builder.get_object("mirror_page").unwrap();
-        let main_window: libhandy::ApplicationWindow = builder.get_object("window").unwrap();
+        let mirror_page: gtk::Box = builder.object("mirror_page").unwrap();
+        let main_window: libhandy::ApplicationWindow = builder.object("window").unwrap();
 
         let mirror = Self {
             data,
@@ -75,42 +75,42 @@ impl MirrorSettings {
 
     fn creat_row(&self, builder: &gtk::Builder) {
         {
-            let list_box: gtk::ListBox = builder.get_object("asia").unwrap();
+            let list_box: gtk::ListBox = builder.object("asia").unwrap();
             for site in self.data.asia.clone() {
                 let row = MirrorRow::new(site, self.main_window.clone());
                 list_box.add(&row.row().to_owned());
             }
         }
         {
-            let list_box: gtk::ListBox = builder.get_object("africa").unwrap();
+            let list_box: gtk::ListBox = builder.object("africa").unwrap();
             for site in self.data.africa.clone() {
                 let row = MirrorRow::new(site, self.main_window.clone());
                 list_box.add(&row.row().to_owned());
             }
         }
         {
-            let list_box: gtk::ListBox = builder.get_object("europe").unwrap();
+            let list_box: gtk::ListBox = builder.object("europe").unwrap();
             for site in self.data.europe.clone() {
                 let row = MirrorRow::new(site, self.main_window.clone());
                 list_box.add(&row.row().to_owned());
             }
         }
         {
-            let list_box: gtk::ListBox = builder.get_object("north_america").unwrap();
+            let list_box: gtk::ListBox = builder.object("north_america").unwrap();
             for site in self.data.north_america.clone() {
                 let row = MirrorRow::new(site, self.main_window.clone());
                 list_box.add(&row.row().to_owned());
             }
         }
         {
-            let list_box: gtk::ListBox = builder.get_object("oceania").unwrap();
+            let list_box: gtk::ListBox = builder.object("oceania").unwrap();
             for site in self.data.oceania.clone() {
                 let row = MirrorRow::new(site, self.main_window.clone());
                 list_box.add(&row.row().to_owned());
             }
         }
         {
-            let list_box: gtk::ListBox = builder.get_object("south_america").unwrap();
+            let list_box: gtk::ListBox = builder.object("south_america").unwrap();
             for site in self.data.south_america.clone() {
                 let row = MirrorRow::new(site, self.main_window.clone());
                 list_box.add(&row.row().to_owned());

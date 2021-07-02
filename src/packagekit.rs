@@ -1,4 +1,5 @@
-use glib::translate::*;
+use gtk::glib;
+use gtk::glib::translate::*;
 use libc::{c_char, c_int};
 use log::debug;
 use std::cell::RefCell;
@@ -350,14 +351,14 @@ pub fn remove_packages(sender: glib::Sender<PKmessage>, id: String) {
     }
 }
 
-pub fn offline_update_trigger() -> Result<bool, glib::Error> {
+pub fn offline_update_trigger() -> Result<bool, String> {
     unsafe {
         let mut error = ptr::null_mut();
         let ret = pk_offline_trigger(PK_OFFLINE_ACTION_REBOOT, ptr::null_mut(), &mut error);
         if error.is_null() {
             Ok(from_glib(ret))
         } else {
-            Err(from_glib_full(error))
+            Err("Offline update trigger failed".to_string())
         }
     }
 }

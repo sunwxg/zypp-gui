@@ -1,3 +1,4 @@
+use gtk::glib;
 use gtk::prelude::*;
 use log::debug;
 use std::cell::{Ref, RefCell};
@@ -462,7 +463,7 @@ impl PackageMeta {
             }
         }
 
-        let col_types: [glib::Type; 1] = [glib::Type::String];
+        let col_types: [glib::Type; 1] = [glib::Type::STRING];
         let store = gtk::ListStore::new(&col_types);
         for i in hashset.drain() {
             store.set_value(&store.append(), 0 as u32, &i.to_value());

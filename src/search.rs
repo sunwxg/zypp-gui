@@ -1,4 +1,4 @@
-use glib;
+use gtk::glib;
 use gtk::prelude::*;
 use log::debug;
 use std::thread;
@@ -33,10 +33,10 @@ impl SearchPackage {
         notification: notification::Notification,
         packagekit_state: PackagekitState,
     ) -> Self {
-        let search_entry: gtk::SearchEntry = builder.get_object("search_entry").unwrap();
-        let list_box: gtk::ListBox = builder.get_object("search_list_box").unwrap();
-        let stack_box: gtk::Stack = builder.get_object("stack_box").unwrap();
-        let search_box: gtk::ScrolledWindow = builder.get_object("search_box").unwrap();
+        let search_entry: gtk::SearchEntry = builder.object("search_entry").unwrap();
+        let list_box: gtk::ListBox = builder.object("search_list_box").unwrap();
+        let stack_box: gtk::Stack = builder.object("stack_box").unwrap();
+        let search_box: gtk::ScrolledWindow = builder.object("search_box").unwrap();
 
         let package_meta = PackageMeta::new(search_entry.clone());
 
@@ -61,7 +61,7 @@ impl SearchPackage {
         let entry: gtk::SearchEntry = self.search_entry.clone();
         let this = self.clone();
         entry.connect_activate(move |entry| {
-            let text = entry.get_text();
+            let text = entry.text();
             if this.packagekit_state.busy() {
                 return;
             }
@@ -108,7 +108,7 @@ impl SearchPackage {
 
     fn clear_list(&self) {
         let list_box = &self.list_box;
-        let children = list_box.get_children();
+        let children = list_box.children();
         for child in children {
             list_box.remove(&child);
         }

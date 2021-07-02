@@ -1,5 +1,7 @@
-use gio::prelude::*;
-use gio::File;
+use gtk::gio;
+use gtk::gio::prelude::*;
+use gtk::gio::File;
+use gtk::glib;
 use gtk::prelude::*;
 use libhandy::prelude::*;
 use libhandy::NavigationDirection;
@@ -18,11 +20,11 @@ pub struct PageSettings {
 
 impl PageSettings {
     pub fn new(builder: &gtk::Builder) -> Self {
-        let list_box: gtk::Box = builder.get_object("repo_box").unwrap();
-        let repo_add_button: gtk::Button = builder.get_object("repo_add").unwrap();
-        let top_right_box: gtk::Box = builder.get_object("top_right_box").unwrap();
+        let list_box: gtk::Box = builder.object("repo_box").unwrap();
+        let repo_add_button: gtk::Button = builder.object("repo_add").unwrap();
+        let top_right_box: gtk::Box = builder.object("top_right_box").unwrap();
         top_right_box.add(&repo_add_button);
-        let main_window: libhandy::ApplicationWindow = builder.get_object("window").unwrap();
+        let main_window: libhandy::ApplicationWindow = builder.object("window").unwrap();
         MirrorSettings::new(builder);
 
         let page_settings = Self {
@@ -50,7 +52,7 @@ impl PageSettings {
     }
 
     fn clear_repo_list(&self) {
-        let children = self.list_box.get_children();
+        let children = self.list_box.children();
         for child in children {
             self.list_box.remove(&child);
         }
@@ -60,25 +62,25 @@ impl PageSettings {
         {
             let id = String::from(info.id.clone());
             row.enable().connect_changed_active(move |switch| {
-                Zypper::change_repo(id.clone(), Settings::Enable(switch.get_active()));
+                Zypper::change_repo(id.clone(), Settings::Enable(switch.is_active()));
             });
         }
         {
             let id = String::from(info.id.clone());
             row.cpg().connect_toggled(move |b| {
-                Zypper::change_repo(id.clone(), Settings::Cpg(b.get_active()));
+                Zypper::change_repo(id.clone(), Settings::Cpg(b.is_active()));
             });
         }
         {
             let id = String::from(info.id.clone());
             row.refresh().connect_toggled(move |b| {
-                Zypper::change_repo(id.clone(), Settings::Refresh(b.get_active()));
+                Zypper::change_repo(id.clone(), Settings::Refresh(b.is_active()));
             });
         }
         {
             let id = String::from(info.id.clone());
             row.priority().connect_value_changed(move |b| {
-                Zypper::change_repo(id.clone(), Settings::Priority(b.get_value() as i32));
+                Zypper::change_repo(id.clone(), Settings::Priority(b.value() as i32));
             });
         }
         {
@@ -92,26 +94,26 @@ impl PageSettings {
 
     fn button_connect(&self, builder: &gtk::Builder) {
         {
-            let button: gtk::Button = builder.get_object("button_leaflet_back").unwrap();
-            let page_settings: libhandy::Leaflet = builder.get_object("page_settings").unwrap();
+            let button: gtk::Button = builder.object("button_leaflet_back").unwrap();
+            let page_settings: libhandy::Leaflet = builder.object("page_settings").unwrap();
             button.connect_clicked(move |_| {
                 page_settings.navigate(NavigationDirection::Back);
             });
         }
 
         {
-            let stack: gtk::Stack = builder.get_object("setting_stack").unwrap();
-            let this: gtk::Stack = builder.get_object("setting_stack").unwrap();
-            let repo_add_button: gtk::Button = builder.get_object("repo_add").unwrap();
-            let top_right_box: gtk::Box = builder.get_object("top_right_box").unwrap();
-            let page_settings: libhandy::Leaflet = builder.get_object("page_settings").unwrap();
+            let stack: gtk::Stack = builder.object("setting_stack").unwrap();
+            let this: gtk::Stack = builder.object("setting_stack").unwrap();
+            let repo_add_button: gtk::Button = builder.object("repo_add").unwrap();
+            let top_right_box: gtk::Box = builder.object("top_right_box").unwrap();
+            let page_settings: libhandy::Leaflet = builder.object("page_settings").unwrap();
             stack
                 .connect_local("notify::visible-child", true, move |_| {
                     page_settings.navigate(NavigationDirection::Forward);
-                    if this.get_visible_child_name().unwrap() == "Repo List" {
+                    if this.visible_child_name().unwrap() == "Repo List" {
                         top_right_box.add(&repo_add_button);
                     } else {
-                        for w in top_right_box.get_children() {
+                        for w in top_right_box.children() {
                             top_right_box.remove(&w);
                         }
                     }
@@ -121,7 +123,7 @@ impl PageSettings {
         }
 
         {
-            let button: gtk::Button = builder.get_object("repo_add").unwrap();
+            let button: gtk::Button = builder.object("repo_add").unwrap();
             let this = self.clone();
             button.connect_clicked(move |_| {
                 this.create_add_repo_window();
@@ -131,23 +133,23 @@ impl PageSettings {
 
     fn create_add_repo_window(&self) {
         let builder = gtk::Builder::from_resource("/org/openSUSE/software/ui/repo_add.ui");
-        let window: gtk::Window = builder.get_object("repo_add_window").unwrap();
+        let window: gtk::Window = builder.object("repo_add_window").unwrap();
         window.set_modal(true);
         window.set_transient_for(Some(&self.main_window));
 
-        let cancel: gtk::Button = builder.get_object("add_cancel").unwrap();
+        let cancel: gtk::Button = builder.object("add_cancel").unwrap();
         let w = window.clone();
         cancel.connect_clicked(move |_| {
             w.close();
         });
 
-        let name: gtk::Entry = builder.get_object("repo_name").unwrap();
-        let url: gtk::Entry = builder.get_object("repo_url").unwrap();
-        let ok: gtk::Button = builder.get_object("add_ok").unwrap();
+        let name: gtk::Entry = builder.object("repo_name").unwrap();
+        let url: gtk::Entry = builder.object("repo_url").unwrap();
+        let ok: gtk::Button = builder.object("add_ok").unwrap();
         let w = window.clone();
         ok.connect_clicked(move |_| {
-            let name = name.get_text();
-            let url = url.get_text();
+            let name = name.text();
+            let url = url.text();
             if name.len() == 0 || url.len() == 0 {
                 return;
             }
@@ -182,7 +184,7 @@ impl PageSettings {
         thread::spawn(move || {
             let mainloop = glib::MainLoop::new(None, true);
             let path = std::path::Path::new("/etc/zypp/repos.d");
-            let file = File::new_for_path(path);
+            let file = File::for_path(path);
             let monitor = file
                 .monitor(
                     gio::FileMonitorFlags::SEND_MOVED,

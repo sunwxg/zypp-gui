@@ -5,11 +5,11 @@ use glib::translate::*;
 use crate::package::PackagePk;
 use package_kit_glib_sys::*;
 
-glib::glib_wrapper! {
-    pub struct ProgressPk(Object<PkProgress, PkProgressClass, ProgressClass>);
+glib::wrapper! {
+    pub struct ProgressPk(Interface<PkProgress>);
 
     match fn {
-        get_type => || pk_progress_get_type(),
+        type_ => || pk_progress_get_type(),
     }
 }
 
@@ -77,7 +77,6 @@ impl<O: IsA<ProgressPk>> ProgressPkExt for O {
     }
 
     fn get_item_package(&self) -> String {
-        //pk_progress_get_item_progress
         unsafe {
             let item_progress = pk_progress_get_item_progress(self.as_ref().to_glib_none().0);
             let id = pk_item_progress_get_package_id(item_progress);

@@ -4,11 +4,11 @@ use glib::translate::*;
 
 use package_kit_glib_sys::*;
 
-glib::glib_wrapper! {
-    pub struct DetailsPk(Object<PkDetails, PkDetailsClass, DetailsClass>);
+glib::wrapper! {
+    pub struct DetailsPk(Interface<PkDetails>);
 
     match fn {
-        get_type => || pk_details_get_type(),
+        type_ => || pk_details_get_type(),
     }
 }
 

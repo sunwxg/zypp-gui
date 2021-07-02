@@ -441,7 +441,6 @@
                 </child>
                 <child>
                   <object class="GtkStackSidebar">
-                    <property name="width-request">270</property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="vexpand">True</property>

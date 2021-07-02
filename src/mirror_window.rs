@@ -17,11 +17,11 @@ pub struct MirrorWindow {
 impl MirrorWindow {
     pub fn new(site: Site) -> Self {
         let builder = gtk::Builder::from_resource("/org/openSUSE/software/ui/mirror_window.ui");
-        let window: gtk::Window = builder.get_object("mirror_window").unwrap();
+        let window: gtk::Window = builder.object("mirror_window").unwrap();
         window.set_modal(true);
 
-        let country: gtk::Label = builder.get_object("country").unwrap();
-        let site_label: gtk::Label = builder.get_object("site").unwrap();
+        let country: gtk::Label = builder.object("country").unwrap();
+        let site_label: gtk::Label = builder.object("site").unwrap();
         country.set_text(&site.country);
         site_label.set_text(&site.name);
 
@@ -33,7 +33,7 @@ impl MirrorWindow {
         };
 
         {
-            let connect_box: gtk::Box = builder.get_object("connect_box").unwrap();
+            let connect_box: gtk::Box = builder.object("connect_box").unwrap();
             let mut list: Vec<String> = vec![];
             if site.http.len() != 0 {
                 list.push("http".to_string());
@@ -47,7 +47,7 @@ impl MirrorWindow {
         }
 
         {
-            let distro_box: gtk::Box = builder.get_object("distro_box").unwrap();
+            let distro_box: gtk::Box = builder.object("distro_box").unwrap();
             let mut list: Vec<String> = vec![];
             for i in site.repo.clone() {
                 list.push(i.clone());
@@ -85,20 +85,19 @@ impl MirrorWindow {
     }
 
     fn connect_signal(&self, builder: &gtk::Builder) {
-        let add_button: gtk::Button = builder.get_object("add").unwrap();
+        let add_button: gtk::Button = builder.object("add").unwrap();
         let this = self.clone();
         let radio_buttons = self.radio_buttons.clone();
         add_button.connect_clicked(move |_| {
             let mut _url = "".to_string();
             let mut _distro = "".to_string();
             for b in radio_buttons.clone() {
-                if b.get_active() {
-                    if b.get_widget_name().contains("http") || b.get_widget_name().contains("rsync")
-                    {
-                        let name: String = b.get_widget_name().to_string();
+                if b.is_active() {
+                    if b.widget_name().contains("http") || b.widget_name().contains("rsync") {
+                        let name: String = b.widget_name().to_string();
                         _url = this.map.get(&name).unwrap().to_string();
                     } else {
-                        let name: String = b.get_widget_name().to_string();
+                        let name: String = b.widget_name().to_string();
                         _distro = this.map.get(&name).unwrap().to_string();
                     }
                 }

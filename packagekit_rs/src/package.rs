@@ -6,11 +6,11 @@ use std::fmt;
 
 use package_kit_glib_sys::*;
 
-glib::glib_wrapper! {
-    pub struct PackagePk(Object<PkPackage, PkPackageClass, PackageClass>);
+glib::wrapper! {
+    pub struct PackagePk(Interface<PkPackage>);
 
     match fn {
-        get_type => || pk_package_get_type(),
+        type_ => || pk_package_get_type(),
     }
 }
 

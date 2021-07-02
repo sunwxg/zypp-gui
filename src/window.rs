@@ -1,6 +1,8 @@
+use gtk::gio;
+use gtk::glib;
 use gtk::prelude::*;
 use libhandy::prelude::*;
-use log::debug;
+use log::{debug, info};
 use std::cell::{Ref, RefCell};
 use std::rc::Rc;
 use std::thread;
@@ -33,22 +35,25 @@ pub struct Window {
     search: search::SearchPackage,
     notification: notification::Notification,
     packagekit_state: PackagekitState,
+    application: gtk::Application,
 }
 
 impl Window {
-    pub fn new(packagekit_state: PackagekitState) -> Self {
+    pub fn new(packagekit_state: PackagekitState, application: gtk::Application) -> Self {
         let builder = gtk::Builder::from_resource("/org/openSUSE/software/ui/window.ui");
-        let win: libhandy::ApplicationWindow = builder.get_object("window").unwrap();
-        let button: gtk::Button = builder.get_object("download_button").unwrap();
-        button.set_label("Refresh");
-        let trigger_button: gtk::Button = builder.get_object("offline_update_button").unwrap();
+        let win: libhandy::ApplicationWindow = builder.object("window").unwrap();
+        win.set_application(Some(&application));
 
-        let stack_box: gtk::Stack = builder.get_object("stack_box").unwrap();
-        let stack_list = builder.get_object("stack_list").unwrap();
-        let progress_bar: gtk::ProgressBar = builder.get_object("progress_bar").unwrap();
-        let stack_label: libhandy::Clamp = builder.get_object("stack_label").unwrap();
-        let progress: gtk::Box = builder.get_object("progress").unwrap();
-        let progress_label: gtk::Label = builder.get_object("progress_label").unwrap();
+        let button: gtk::Button = builder.object("download_button").unwrap();
+        button.set_label("Refresh");
+        let trigger_button: gtk::Button = builder.object("offline_update_button").unwrap();
+
+        let stack_box: gtk::Stack = builder.object("stack_box").unwrap();
+        let stack_list = builder.object("stack_list").unwrap();
+        let progress_bar: gtk::ProgressBar = builder.object("progress_bar").unwrap();
+        let stack_label: libhandy::Clamp = builder.object("stack_label").unwrap();
+        let progress: gtk::Box = builder.object("progress").unwrap();
+        let progress_label: gtk::Label = builder.object("progress_label").unwrap();
         stack_box.set_visible_child(&stack_label);
         let state = Rc::new(RefCell::new(ButtonState::Refresh));
 
@@ -69,7 +74,7 @@ impl Window {
             stack_list: stack_list,
             progress_bar: progress_bar,
             stack_label: stack_label,
-            list_box: builder.get_object("list_box").unwrap(),
+            list_box: builder.object("list_box").unwrap(),
             progress: progress,
             progress_label: progress_label,
             download_button: button,
@@ -80,8 +85,10 @@ impl Window {
             search: search,
             notification: notification,
             packagekit_state: packagekit_state,
+            application,
         };
 
+        window.add_actions();
         window.download_button_connect();
         window.button_connect();
 
@@ -92,10 +99,27 @@ impl Window {
         &self.window
     }
 
+    fn add_actions(&self) {
+        let quit = gio::SimpleAction::new("quit", None);
+        let application = self.application.clone();
+        let window = self.window.clone();
+        quit.connect_activate(move |_, _| {
+            info!("Actin quit");
+            let flag = application.flags();
+            if flag == gio::ApplicationFlags::IS_SERVICE {
+                window.hide();
+            } else {
+                window.close();
+            }
+        });
+
+        self.application.add_action(&quit);
+    }
+
     fn download_button_connect(&self) {
         let builder = self.builder.clone();
-        let button: gtk::Button = builder.get_object("download_button").unwrap();
-        let trigger_button: gtk::Button = builder.get_object("offline_update_button").unwrap();
+        let button: gtk::Button = builder.object("download_button").unwrap();
+        let trigger_button: gtk::Button = builder.object("offline_update_button").unwrap();
         let state = self.state.clone();
         let this = self.clone();
         button.connect_clicked(move |button| {
@@ -137,36 +161,49 @@ impl Window {
     }
 
     fn button_connect(&self) {
+        {
+            let application = self.application.clone();
+            self.window.connect_delete_event(move |window, _| {
+                debug!("window delete event");
+                let flag = application.flags();
+                if flag == gio::ApplicationFlags::IS_SERVICE {
+                    window.hide();
+                    Inhibit(true)
+                } else {
+                    Inhibit(false)
+                }
+            });
+        }
         let builder = self.builder.clone();
         {
-            let button: gtk::Button = builder.get_object("button_settings").unwrap();
-            let deck: libhandy::Deck = builder.get_object("deck").unwrap();
-            let page_settings: libhandy::Leaflet = builder.get_object("page_settings").unwrap();
+            let button: gtk::Button = builder.object("button_settings").unwrap();
+            let deck: libhandy::Deck = builder.object("deck").unwrap();
+            let page_settings: libhandy::Leaflet = builder.object("page_settings").unwrap();
             button.connect_clicked(move |_| {
                 deck.set_visible_child(&page_settings);
             });
         }
 
         {
-            let button: gtk::Button = builder.get_object("button_deck_back").unwrap();
-            let deck: libhandy::Deck = builder.get_object("deck").unwrap();
-            let page_update: gtk::Box = builder.get_object("page_update").unwrap();
+            let button: gtk::Button = builder.object("button_deck_back").unwrap();
+            let deck: libhandy::Deck = builder.object("deck").unwrap();
+            let page_update: gtk::Box = builder.object("page_update").unwrap();
             button.connect_clicked(move |_| {
                 deck.set_visible_child(&page_update);
             });
         }
 
         {
-            let button: gtk::ToggleButton = builder.get_object("search_button").unwrap();
-            let button_stack: gtk::Stack = builder.get_object("button_stack").unwrap();
-            let search_bar: libhandy::Clamp = builder.get_object("search_bar").unwrap();
-            let update_button: gtk::Box = builder.get_object("update_button").unwrap();
-            let stack_box: gtk::Stack = builder.get_object("stack_box").unwrap();
-            let stack_list: gtk::ScrolledWindow = builder.get_object("stack_list").unwrap();
-            let search_box: gtk::ScrolledWindow = builder.get_object("search_box").unwrap();
-            let search_entry: gtk::SearchEntry = builder.get_object("search_entry").unwrap();
+            let button: gtk::ToggleButton = builder.object("search_button").unwrap();
+            let button_stack: gtk::Stack = builder.object("button_stack").unwrap();
+            let search_bar: libhandy::Clamp = builder.object("search_bar").unwrap();
+            let update_button: gtk::Box = builder.object("update_button").unwrap();
+            let stack_box: gtk::Stack = builder.object("stack_box").unwrap();
+            let stack_list: gtk::ScrolledWindow = builder.object("stack_list").unwrap();
+            let search_box: gtk::ScrolledWindow = builder.object("search_box").unwrap();
+            let search_entry: gtk::SearchEntry = builder.object("search_entry").unwrap();
             button.connect_toggled(move |b| {
-                if b.get_active() {
+                if b.is_active() {
                     button_stack.set_visible_child(&search_bar);
                     stack_box.set_visible_child(&search_box);
                     search_entry.grab_focus_without_selecting();
@@ -178,7 +215,7 @@ impl Window {
         }
 
         {
-            let button: gtk::Button = self.builder.get_object("offline_update_button").unwrap();
+            let button: gtk::Button = self.builder.object("offline_update_button").unwrap();
             //let this = self.clone();
             button.connect_clicked(move |b| {
                 //b.set_visible(false);
@@ -238,10 +275,10 @@ impl Window {
     }
 
     pub fn first_show(&self) {
-        let deck: libhandy::Deck = self.builder.get_object("deck").unwrap();
-        let page_update: gtk::Box = self.builder.get_object("page_update").unwrap();
+        let deck: libhandy::Deck = self.builder.object("deck").unwrap();
+        let page_update: gtk::Box = self.builder.object("page_update").unwrap();
         deck.set_visible_child(&page_update);
-        let search_button: gtk::ToggleButton = self.builder.get_object("search_button").unwrap();
+        let search_button: gtk::ToggleButton = self.builder.object("search_button").unwrap();
         search_button.set_active(false);
         self.set_state(ButtonState::Refresh);
     }
@@ -257,6 +294,7 @@ impl Window {
     fn update_progress(&self, percentage: i32) {
         self.stack_box.set_visible_child(&self.progress);
         self.progress_bar.set_fraction(percentage as f64 / 100.0);
+        self.progress_bar.show_all();
     }
 
     fn update_progress_text(&self, text: Option<String>) {
@@ -272,6 +310,7 @@ impl Window {
         }
         let fmt = format!("<b>{}</b>  {}", v[0], v[1]);
         self.progress_label.set_markup(fmt.as_str());
+        self.progress_label.show_all();
     }
 
     fn update_list(&self, package_list: Vec<PackageInfo>) {
@@ -295,7 +334,7 @@ impl Window {
 
     fn clear_list(&self) {
         let list_box = &self.list_box;
-        let children = list_box.get_children();
+        let children = list_box.children();
         for child in children {
             list_box.remove(&child);
         }
