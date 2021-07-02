@@ -117,9 +117,8 @@ impl Window {
     }
 
     fn download_button_connect(&self) {
-        let builder = self.builder.clone();
-        let button: gtk::Button = builder.object("download_button").unwrap();
-        let trigger_button: gtk::Button = builder.object("offline_update_button").unwrap();
+        let button = self.download_button.clone();
+        let trigger_button = self.trigger_button.clone();
         let state = self.state.clone();
         let this = self.clone();
         button.connect_clicked(move |button| {
@@ -198,47 +197,46 @@ impl Window {
             let button_stack: gtk::Stack = builder.object("button_stack").unwrap();
             let search_bar: libhandy::Clamp = builder.object("search_bar").unwrap();
             let update_button: gtk::Box = builder.object("update_button").unwrap();
-            let stack_box: gtk::Stack = builder.object("stack_box").unwrap();
-            let stack_list: gtk::ScrolledWindow = builder.object("stack_list").unwrap();
             let search_box: gtk::ScrolledWindow = builder.object("search_box").unwrap();
             let search_entry: gtk::SearchEntry = builder.object("search_entry").unwrap();
+            let this = self.clone();
             button.connect_toggled(move |b| {
                 if b.is_active() {
                     button_stack.set_visible_child(&search_bar);
-                    stack_box.set_visible_child(&search_box);
+                    this.stack_box.set_visible_child(&search_box);
                     search_entry.grab_focus_without_selecting();
                 } else {
                     button_stack.set_visible_child(&update_button);
-                    stack_box.set_visible_child(&stack_list);
+                    let s: Ref<ButtonState> = this.state.borrow();
+                    match *s {
+                        ButtonState::Refresh => {
+                            this.show_label();
+                        }
+                        ButtonState::Refreshing
+                        | ButtonState::Downloading
+                        | ButtonState::Updating => {
+                            this.show_progress();
+                        }
+                        _ => {
+                            this.show_package_list();
+                        }
+                    }
                 }
             });
         }
 
         {
-            let button: gtk::Button = self.builder.object("offline_update_button").unwrap();
-            //let this = self.clone();
-            button.connect_clicked(move |b| {
-                //b.set_visible(false);
-                //this.set_state(ButtonState::RestartUpdate);
-                match offline_update_trigger() {
-                    //Ok(_) => this.set_state(ButtonState::RestartUpdate),
-                    //Err(_) => this.set_state(ButtonState::Update),
+            self.trigger_button
+                .connect_clicked(move |b| match offline_update_trigger() {
                     Ok(_) => do_reboot(),
                     Err(_) => b.set_visible(false),
-                }
-            });
+                });
         }
     }
 
     fn check_offline_state(&self) {
         if offline_update_prepared() {
             self.trigger_button.set_visible(true);
-            //match offline_update_trigger() {
-            //Ok(ok) => self.set_state(ButtonState::RestartUpdate),
-            //Err(error) => self.set_state(ButtonState::Update),
-            //}
-            //} else {
-            //self.set_state(ButtonState::Update);
         }
     }
 
@@ -246,6 +244,7 @@ impl Window {
         match state.clone() {
             ButtonState::Refresh => {
                 self.download_button.set_sensitive(true);
+                self.trigger_button.set_visible(false);
                 self.clear_list();
                 self.show_label();
                 self.update_progress_text(None);
@@ -278,8 +277,10 @@ impl Window {
         let deck: libhandy::Deck = self.builder.object("deck").unwrap();
         let page_update: gtk::Box = self.builder.object("page_update").unwrap();
         deck.set_visible_child(&page_update);
+
         let search_button: gtk::ToggleButton = self.builder.object("search_button").unwrap();
         search_button.set_active(false);
+
         self.set_state(ButtonState::Refresh);
     }
 
@@ -291,8 +292,12 @@ impl Window {
         self.stack_box.set_visible_child(&self.stack_label);
     }
 
-    fn update_progress(&self, percentage: i32) {
+    fn show_progress(&self) {
         self.stack_box.set_visible_child(&self.progress);
+    }
+
+    fn update_progress(&self, percentage: i32) {
+        self.show_progress();
         self.progress_bar.set_fraction(percentage as f64 / 100.0);
         self.progress_bar.show_all();
     }

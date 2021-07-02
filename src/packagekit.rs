@@ -376,7 +376,6 @@ pub fn offline_update_prepared() -> bool {
             }
             return false;
         } else {
-            //Err(from_glib_full(error))
             return false;
         }
     }
@@ -392,7 +391,10 @@ pub fn do_reboot() {
     //&(),
     //);
 
-    let conn = Connection::new_session().unwrap();
+    let conn = match Connection::new_session() {
+        Ok(conn) => conn,
+        Err(_) => return,
+    };
     let msg = Message::method(
         None,
         Some("org.gnome.SessionManager"),
@@ -402,5 +404,8 @@ pub fn do_reboot() {
         &(),
     )
     .unwrap();
-    let _ret = conn.send_message(msg).unwrap();
+    let _ret = match conn.send_message(msg) {
+        Ok(ret) => ret,
+        Err(_) => return,
+    };
 }
