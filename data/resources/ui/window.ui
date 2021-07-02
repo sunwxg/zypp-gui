@@ -441,6 +441,7 @@
                 </child>
                 <child>
                   <object class="GtkStackSidebar">
+                    <property name="width-request">100</property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="vexpand">True</property>
@@ -586,12 +587,6 @@
                                         <property name="position">0</property>
                                       </packing>
                                     </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -602,31 +597,6 @@
                       <packing>
                         <property name="name">Repo List</property>
                         <property name="title" translatable="yes">Repo List</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkScrolledWindow">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="shadow-type">in</property>
-                        <child>
-                          <object class="GtkViewport">
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <child>
-                              <object class="GtkListBox" id="Repo_suggest">
-                                <property name="visible">True</property>
-                                <property name="can-focus">False</property>
-                                <property name="selection-mode">none</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="name">Repo Suggest</property>
-                        <property name="title" translatable="yes">Repo Suggest</property>
-                        <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
@@ -957,12 +927,6 @@
                                         <property name="position">0</property>
                                       </packing>
                                     </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -973,6 +937,67 @@
                       <packing>
                         <property name="name">Mirror</property>
                         <property name="title" translatable="yes">Mirror</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow" id="suggestion_repo">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="shadow-type">in</property>
+                        <child>
+                          <object class="GtkViewport">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <child>
+                              <object class="HdyClamp">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <property name="margin-start">20</property>
+                                        <property name="margin-end">20</property>
+                                        <property name="margin-top">20</property>
+                                        <property name="margin-bottom">20</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="GtkListBox" id="suggestion_page">
+                                            <property name="visible">True</property>
+                                            <property name="can-focus">False</property>
+                                            <style>
+                                              <class name="content"/>
+                                            </style>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="name">Suggestion Repo</property>
+                        <property name="title" translatable="yes">Suggestion Repo</property>
                         <property name="position">2</property>
                       </packing>
                     </child>

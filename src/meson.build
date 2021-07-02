@@ -19,19 +19,22 @@ run_command(
 )
 
 sources = files(
-  'application.rs',
   'config.rs',
   'config.rs.in',
   'connect_packagekit.rs',
   'list_row.rs',
   'main.rs',
-  'meson.build',
+  'mirror.rs',
+  'mirror_row.rs',
+  'mirror_window.rs',
   'notification.rs',
+  'package_meta.rs',
   'packagekit.rs',
   'page_settings.rs',
   'repo_row.rs',
   'search.rs',
   'search_row.rs',
+  'suggestion.rs',
   'util.rs',
   'window.rs',
   'zypper.rs',
@@ -53,6 +56,5 @@ custom_target(
     '@OUTPUT@',
     profile,
 	'opensuse_software',
-    #meson.project_name(),
   ]
 )

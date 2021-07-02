@@ -10,6 +10,7 @@ mod page_settings;
 mod repo_row;
 mod search;
 mod search_row;
+mod suggestion;
 mod util;
 mod window;
 mod zypper;

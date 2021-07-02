@@ -10,6 +10,7 @@ use std::thread;
 
 use crate::mirror::MirrorSettings;
 use crate::repo_row::RepoRow;
+use crate::suggestion::SuggestionRepo;
 use crate::zypper::{RepoInfo, Settings, Zypper};
 
 #[derive(Clone)]
@@ -26,6 +27,7 @@ impl PageSettings {
         top_right_box.add(&repo_add_button);
         let main_window: libhandy::ApplicationWindow = builder.object("window").unwrap();
         MirrorSettings::new(builder);
+        SuggestionRepo::new(builder);
 
         let page_settings = Self {
             list_box,
