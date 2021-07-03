@@ -27,22 +27,21 @@
 	],
 	"africa": [
 		{
-			"country": "China",
-			"name": "NetEase",
-			"http": "http://mirrors.163.com/openSUSE",
-			"rsync": "rsync://rsync.mirrors.163.com/openSUSE",
+			"country": "Kenya",
+			"name": "Liquid.Telecom",
+			"http": "http://opensuse.mirror.liquidtelecom.com",
+			"rsync": "rsync://opensuse.mirror.liquidtelecom.com/opensuse-full",
 			"repo": [
 				"tw",
 				"leap.15.1",
-				"leap.15.2",
-				"leap.15.3"
+				"leap.15.2"
 			]
 		},
 		{
-			"country": "China",
-			"name": "Shanghai.Jiaotong.University",
-			"http": "http://mirror.sjtu.edu.cn/opensuse",
-			"rsync": "",
+			"country": "South Africa",
+			"name": "TENET",
+			"http": "http://opensuse.mirror.ac.za",
+			"rsync": "rsync://opensuse.mirror.ac.za/opensuse",
 			"repo": [
 				"tw",
 				"leap.15.1",
