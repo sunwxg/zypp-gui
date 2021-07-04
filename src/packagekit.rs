@@ -52,8 +52,7 @@ pub fn get_updates(sender: glib::Sender<PKmessage>) {
         let closure = move |progress: &ProgressPk, progress_type: c_int| {
             if progress_type == PK_PROGRESS_TYPE_PERCENTAGE {
                 match sender1.send(PKmessage::Progress((progress.percentage(), None))) {
-                    Ok(_) => {}
-                    Err(_) => return,
+                    _ => return,
                 }
             }
         };
@@ -83,8 +82,8 @@ pub fn get_updates(sender: glib::Sender<PKmessage>) {
         }
         debug!("get updates success");
         match sender.send(PKmessage::PackageListNew(name_vec)) {
-            Ok(_) => {}
-            Err(_) => return,
+            Ok(_) => {},
+            _ => return,
         }
     }
 
@@ -93,8 +92,7 @@ pub fn get_updates(sender: glib::Sender<PKmessage>) {
         let closure = move |progress: &ProgressPk, progress_type: c_int| {
             if progress_type == PK_PROGRESS_TYPE_PERCENTAGE {
                 match sender2.send(PKmessage::Progress((progress.percentage(), None))) {
-                    Ok(_) => {}
-                    Err(_) => return,
+                    _ => return,
                 }
             }
         };
@@ -138,8 +136,7 @@ pub fn download_updates(sender: glib::Sender<PKmessage>) {
                 progress.percentage(),
                 Some(progress.get_item_package()),
             ))) {
-                Ok(_) => {}
-                Err(_) => return,
+                _ => return,
             }
         }
     };
@@ -186,8 +183,7 @@ pub fn updates(sender: glib::Sender<PKmessage>) {
                 progress.percentage(),
                 Some(progress.get_item_package()),
             ))) {
-                Ok(_) => {}
-                Err(_) => return,
+                _ => return,
             }
         }
     };
@@ -284,8 +280,7 @@ pub fn install_packages(sender: glib::Sender<PKmessage>, id: String) {
                 || progress.status() == PK_STATUS_ENUM_REFRESH_CACHE)
         {
             match sender1.send(PKmessage::Progress((progress.percentage(), None))) {
-                Ok(_) => {}
-                Err(_) => return,
+                _ => return,
             }
         }
     };
@@ -312,8 +307,7 @@ pub fn remove_packages(sender: glib::Sender<PKmessage>, id: String) {
             && progress.status() == PK_STATUS_ENUM_REMOVE
         {
             match sender1.send(PKmessage::Progress((progress.percentage(), None))) {
-                Ok(_) => {}
-                Err(_) => return,
+                _ => return,
             }
         }
     };
