@@ -142,6 +142,7 @@ impl Window {
                     state.replace(ButtonState::Refreshing);
                     button.set_label("Refreshing");
                     button.set_sensitive(false);
+                    this.set_search_button_sensitive(false);
                     this.get_updates();
                 }
                 ButtonState::Download => {
@@ -149,6 +150,7 @@ impl Window {
                     state.replace(ButtonState::Downloading);
                     button.set_label("Downloading");
                     button.set_sensitive(false);
+                    this.set_search_button_sensitive(false);
                     this.download_updates();
                 }
                 ButtonState::Update => {
@@ -156,6 +158,7 @@ impl Window {
                     state.replace(ButtonState::Updating);
                     button.set_label("Updating");
                     button.set_sensitive(false);
+                    this.set_search_button_sensitive(false);
                     trigger_button.set_visible(false);
                     this.updates();
                 }
@@ -284,18 +287,21 @@ impl Window {
                 self.download_button.set_sensitive(true);
                 self.trigger_button.set_visible(false);
                 self.cancel_button.set_visible(false);
+                self.set_search_button_sensitive(true);
                 self.clear_list();
                 self.show_label();
                 self.update_progress_text(None);
             }
             ButtonState::Download => {
                 self.download_button.set_sensitive(true);
+                self.set_search_button_sensitive(true);
                 self.show_package_list();
                 self.cancel_to_refresh();
                 self.search.update_package_meta();
             }
             ButtonState::Update => {
                 self.download_button.set_sensitive(true);
+                self.set_search_button_sensitive(true);
                 self.show_package_list();
                 self.cancel_to_refresh();
                 self.check_offline_state();
@@ -324,6 +330,11 @@ impl Window {
         search_button.set_active(false);
 
         self.set_state(ButtonState::Refresh);
+    }
+
+    fn set_search_button_sensitive(&self, state: bool) {
+        let button: gtk::ToggleButton = self.builder.object("search_button").unwrap();
+        button.set_sensitive(state);
     }
 
     fn show_package_list(&self) {
