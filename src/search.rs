@@ -65,7 +65,7 @@ impl SearchPackage {
             if this.packagekit_state.busy() {
                 return;
             }
-            //this.packagekit_state.set_state(true);
+            //this.packagekit_state.set_busy(true);
             //this.search_names(text);
             this.search_meta(text);
         });
@@ -79,7 +79,7 @@ impl SearchPackage {
             if this.packagekit_state.busy() {
                 return;
             }
-            this.packagekit_state.set_state(true);
+            this.packagekit_state.set_busy(true);
             if installed {
                 this.remove_packages(id.clone());
             } else {
@@ -115,7 +115,7 @@ impl SearchPackage {
     }
 
     fn update_search_list(&self, list: Vec<SearchInfo>) {
-        self.packagekit_state.set_state(false);
+        self.packagekit_state.set_busy(false);
         self.update_list(list);
         self.stack_box.set_visible_child(&self.search_box);
     }

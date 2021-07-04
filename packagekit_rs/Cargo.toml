@@ -8,6 +8,7 @@ edition = "2018"
 
 [dependencies]
 package-kit-glib-sys = { path = "./packagekit-sys", features = ["v1_1_13"] }
+gio = "0.14.0"
 gio-sys = "0.14.0"
 libc = "0.2.97"
 glib = "0.14.0"

@@ -27,7 +27,7 @@ impl PackagekitState {
         }
     }
 
-    pub fn set_state(&self, s: bool) {
+    pub fn set_busy(&self, s: bool) {
         *self.state.borrow_mut() = s;
     }
 
@@ -51,30 +51,27 @@ pub fn get_updates(sender: glib::Sender<PKmessage>) {
     {
         let closure = move |progress: &ProgressPk, progress_type: c_int| {
             if progress_type == PK_PROGRESS_TYPE_PERCENTAGE {
-                sender1
-                    .send(PKmessage::Progress((progress.percentage(), None)))
-                    .expect("Couldn't send data to channel");
+                match sender1.send(PKmessage::Progress((progress.percentage(), None))) {
+                    Ok(_) => {}
+                    Err(_) => return,
+                }
             }
         };
 
         let result: ResultsPk;
-        match client.get_updates(Some(Box::new(closure))) {
+        match client.get_updates(Some(Box::new(closure)), None) {
             Ok(ret) => result = ret,
-            Err(e) => {
-                sender
-                    .send(PKmessage::Error(e.to_string()))
-                    .expect("Couldn't send data to channel");
-                return;
-            }
+            Err(e) => match sender.send(PKmessage::Error(e.to_string())) {
+                _ => return,
+            },
         }
 
         let vecc = result.package_array();
         if vecc.len() == 0 {
             debug!("get updates success: 0 packages");
-            sender
-                .send(PKmessage::PackageListNew(vec![]))
-                .expect("Couldn't send data to channel");
-            return;
+            match sender.send(PKmessage::PackageListNew(vec![])) {
+                _ => return,
+            }
         }
         let mut name_vec: Vec<PackageInfo> = vec![];
         for pkg in vecc {
@@ -85,30 +82,29 @@ pub fn get_updates(sender: glib::Sender<PKmessage>) {
             });
         }
         debug!("get updates success");
-        sender
-            .send(PKmessage::PackageListNew(name_vec))
-            .expect("Couldn't send data to channel");
+        match sender.send(PKmessage::PackageListNew(name_vec)) {
+            Ok(_) => {}
+            Err(_) => return,
+        }
     }
 
     // Send installed packages list
     {
         let closure = move |progress: &ProgressPk, progress_type: c_int| {
             if progress_type == PK_PROGRESS_TYPE_PERCENTAGE {
-                sender2
-                    .send(PKmessage::Progress((progress.percentage(), None)))
-                    .expect("Couldn't send data to channel");
+                match sender2.send(PKmessage::Progress((progress.percentage(), None))) {
+                    Ok(_) => {}
+                    Err(_) => return,
+                }
             }
         };
 
         let result: ResultsPk;
-        match client.get_packages(Some(Box::new(closure))) {
+        match client.get_packages(Some(Box::new(closure)), None) {
             Ok(ret) => result = ret,
-            Err(e) => {
-                sender
-                    .send(PKmessage::Error(e.to_string()))
-                    .expect("Couldn't send data to channel");
-                return;
-            }
+            Err(e) => match sender.send(PKmessage::Error(e.to_string())) {
+                _ => return,
+            },
         }
 
         let vecc = result.package_array();
@@ -124,9 +120,9 @@ pub fn get_updates(sender: glib::Sender<PKmessage>) {
             });
         }
         debug!("get installed success");
-        sender
-            .send(PKmessage::PackageListInstalled(name_vec))
-            .expect("Couldn't send data to channel");
+        match sender.send(PKmessage::PackageListInstalled(name_vec)) {
+            _ => return,
+        }
     }
 }
 
@@ -134,54 +130,47 @@ pub fn download_updates(sender: glib::Sender<PKmessage>) {
     debug!("download updates start");
     let client = ClientPk::new();
     let sender1 = sender.clone();
-    {
-        let closure = move |progress: &ProgressPk, progress_type: c_int| {
-            if progress_type == PK_PROGRESS_TYPE_PERCENTAGE
-                && progress.status() == PK_STATUS_ENUM_DOWNLOAD
-            {
-                sender1
-                    .send(PKmessage::Progress((
-                        progress.percentage(),
-                        Some(progress.get_item_package()),
-                    )))
-                    .expect("Couldn't send data to channel");
-            }
-        };
-
-        let result: ResultsPk;
-        match client.get_updates(None) {
-            Ok(ret) => result = ret,
-            Err(e) => {
-                sender
-                    .send(PKmessage::Error(e.to_string()))
-                    .expect("Couldn't send data to channel");
-                return;
+    let closure = move |progress: &ProgressPk, progress_type: c_int| {
+        if progress_type == PK_PROGRESS_TYPE_PERCENTAGE
+            && progress.status() == PK_STATUS_ENUM_DOWNLOAD
+        {
+            match sender1.send(PKmessage::Progress((
+                progress.percentage(),
+                Some(progress.get_item_package()),
+            ))) {
+                Ok(_) => {}
+                Err(_) => return,
             }
         }
+    };
 
-        let ids: *mut *mut c_char;
-        match result.package_ids() {
-            Some(ret) => ids = ret,
-            None => {
-                sender
-                    .send(PKmessage::Error("Update fail".to_string()))
-                    .expect("Couldn't send data to channel");
-                return;
+    let result: ResultsPk;
+    match client.get_updates(None, None) {
+        Ok(ret) => result = ret,
+        Err(e) => match sender.send(PKmessage::Error(e.to_string())) {
+            _ => return,
+        },
+    }
+
+    let ids: *mut *mut c_char;
+    match result.package_ids() {
+        Some(ret) => ids = ret,
+        None => match sender.send(PKmessage::Error("Update fail".to_string())) {
+            _ => return,
+        },
+    }
+
+    client.set_cache_age(60 * 60 * 24);
+    match client.update_packages(ids, Some(Box::new(closure)), true) {
+        Ok(_) => {
+            debug!("download success");
+            match sender.send(PKmessage::DownloadFinish) {
+                _ => return,
             }
         }
-
-        client.set_cache_age(60 * 60 * 24);
-        match client.update_packages(ids, Some(Box::new(closure)), true) {
-            Ok(_) => {
-                debug!("download success");
-                sender
-                    .send(PKmessage::DownloadFinish)
-                    .expect("Couldn't send data to channel");
-            }
-            Err(e) => sender
-                .send(PKmessage::Error(e.to_string()))
-                .expect("Couldn't send data to channel"),
-        }
+        Err(e) => match sender.send(PKmessage::Error(e.to_string())) {
+            _ => return,
+        },
     }
 }
 
@@ -189,53 +178,46 @@ pub fn updates(sender: glib::Sender<PKmessage>) {
     debug!("updates start");
     let client = ClientPk::new();
     let sender1 = sender.clone();
-    {
-        let closure = move |progress: &ProgressPk, progress_type: c_int| {
-            if progress_type == PK_PROGRESS_TYPE_PERCENTAGE
-                && progress.status() == PK_STATUS_ENUM_INSTALL
-            {
-                sender1
-                    .send(PKmessage::Progress((
-                        progress.percentage(),
-                        Some(progress.get_item_package()),
-                    )))
-                    .expect("Couldn't send data to channel");
-            }
-        };
-
-        let result: ResultsPk;
-        match client.get_updates(None) {
-            Ok(ret) => result = ret,
-            Err(e) => {
-                sender
-                    .send(PKmessage::Error(e.to_string()))
-                    .expect("Couldn't send data to channel");
-                return;
+    let closure = move |progress: &ProgressPk, progress_type: c_int| {
+        if progress_type == PK_PROGRESS_TYPE_PERCENTAGE
+            && progress.status() == PK_STATUS_ENUM_INSTALL
+        {
+            match sender1.send(PKmessage::Progress((
+                progress.percentage(),
+                Some(progress.get_item_package()),
+            ))) {
+                Ok(_) => {}
+                Err(_) => return,
             }
         }
+    };
 
-        let ids: *mut *mut c_char;
-        match result.package_ids() {
-            Some(ret) => ids = ret,
-            None => {
-                sender
-                    .send(PKmessage::Error("Update fail".to_string()))
-                    .expect("Couldn't send data to channel");
-                return;
+    let result: ResultsPk;
+    match client.get_updates(None, None) {
+        Ok(ret) => result = ret,
+        Err(e) => match sender.send(PKmessage::Error(e.to_string())) {
+            _ => return,
+        },
+    }
+
+    let ids: *mut *mut c_char;
+    match result.package_ids() {
+        Some(ret) => ids = ret,
+        None => match sender.send(PKmessage::Error("Update fail".to_string())) {
+            _ => return,
+        },
+    }
+
+    match client.update_packages(ids, Some(Box::new(closure)), false) {
+        Ok(_) => {
+            debug!("update success");
+            match sender.send(PKmessage::UpdateFinish) {
+                _ => return,
             }
         }
-
-        match client.update_packages(ids, Some(Box::new(closure)), false) {
-            Ok(_) => {
-                debug!("update success");
-                sender
-                    .send(PKmessage::UpdateFinish)
-                    .expect("Couldn't send data to channel");
-            }
-            Err(e) => sender
-                .send(PKmessage::Error(e.to_string()))
-                .expect("Couldn't send data to channel"),
-        }
+        Err(e) => match sender.send(PKmessage::Error(e.to_string())) {
+            _ => return,
+        },
     }
 }
 
@@ -295,30 +277,29 @@ pub fn install_packages(sender: glib::Sender<PKmessage>, id: String) {
     debug!("install start");
     let client = ClientPk::new();
     let sender1 = sender.clone();
-    {
-        let closure = move |progress: &ProgressPk, progress_type: c_int| {
-            if progress_type == PK_PROGRESS_TYPE_PERCENTAGE
-                && (progress.status() == PK_STATUS_ENUM_INSTALL
-                    || progress.status() == PK_STATUS_ENUM_DOWNLOAD
-                    || progress.status() == PK_STATUS_ENUM_REFRESH_CACHE)
-            {
-                sender1
-                    .send(PKmessage::Progress((progress.percentage(), None)))
-                    .expect("Couldn't send data to channel");
+    let closure = move |progress: &ProgressPk, progress_type: c_int| {
+        if progress_type == PK_PROGRESS_TYPE_PERCENTAGE
+            && (progress.status() == PK_STATUS_ENUM_INSTALL
+                || progress.status() == PK_STATUS_ENUM_DOWNLOAD
+                || progress.status() == PK_STATUS_ENUM_REFRESH_CACHE)
+        {
+            match sender1.send(PKmessage::Progress((progress.percentage(), None))) {
+                Ok(_) => {}
+                Err(_) => return,
             }
-        };
-
-        match client.install_packages(&[id.as_str()], Some(Box::new(closure))) {
-            Ok(_) => {
-                debug!("install success");
-                sender
-                    .send(PKmessage::InstallFinish)
-                    .expect("Couldn't send data to channel");
-            }
-            Err(e) => sender
-                .send(PKmessage::Error(e.to_string()))
-                .expect("Couldn't send data to channel"),
         }
+    };
+
+    match client.install_packages(&[id.as_str()], Some(Box::new(closure))) {
+        Ok(_) => {
+            debug!("install success");
+            match sender.send(PKmessage::InstallFinish) {
+                _ => return,
+            }
+        }
+        Err(e) => match sender.send(PKmessage::Error(e.to_string())) {
+            _ => return,
+        },
     }
 }
 
@@ -326,28 +307,27 @@ pub fn remove_packages(sender: glib::Sender<PKmessage>, id: String) {
     debug!("remove start");
     let client = ClientPk::new();
     let sender1 = sender.clone();
-    {
-        let closure = move |progress: &ProgressPk, progress_type: c_int| {
-            if progress_type == PK_PROGRESS_TYPE_PERCENTAGE
-                && progress.status() == PK_STATUS_ENUM_REMOVE
-            {
-                sender1
-                    .send(PKmessage::Progress((progress.percentage(), None)))
-                    .expect("Couldn't send data to channel");
+    let closure = move |progress: &ProgressPk, progress_type: c_int| {
+        if progress_type == PK_PROGRESS_TYPE_PERCENTAGE
+            && progress.status() == PK_STATUS_ENUM_REMOVE
+        {
+            match sender1.send(PKmessage::Progress((progress.percentage(), None))) {
+                Ok(_) => {}
+                Err(_) => return,
             }
-        };
-
-        match client.remove_packages(&[id.as_str()], Some(Box::new(closure))) {
-            Ok(_) => {
-                debug!("remove success");
-                sender
-                    .send(PKmessage::RemoveFinish)
-                    .expect("Couldn't send data to channel");
-            }
-            Err(e) => sender
-                .send(PKmessage::Error(e.to_string()))
-                .expect("Couldn't send data to channel"),
         }
+    };
+
+    match client.remove_packages(&[id.as_str()], Some(Box::new(closure))) {
+        Ok(_) => {
+            debug!("remove success");
+            match sender.send(PKmessage::RemoveFinish) {
+                _ => return,
+            }
+        }
+        Err(e) => match sender.send(PKmessage::Error(e.to_string())) {
+            _ => return,
+        },
     }
 }
 

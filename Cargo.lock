@@ -837,6 +837,7 @@ dependencies = [
 name = "packagekit_rs"
 version = "0.1.0"
 dependencies = [
+ "gio",
  "gio-sys 0.14.0",
  "glib",
  "glib-sys 0.14.0",

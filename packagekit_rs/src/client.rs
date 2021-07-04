@@ -1,3 +1,4 @@
+use gio;
 use glib;
 use glib::object::IsA;
 use glib::translate::*;
@@ -47,8 +48,10 @@ pub trait ClientPkExt: 'static {
 
     #[doc(alias = "pk_client_get_updates")]
     fn get_updates(
+        //fn get_updates<P: IsA<gio::Cancellable>>(
         &self,
         progress_callback: Option<Box_<dyn (Fn(&ProgressPk, PkProgressType)) + 'static>>,
+        cancellable: Option<&gio::Cancellable>,
     ) -> Result<ResultsPk, glib::Error>;
 
     fn get_updates_async<Q: FnOnce(Result<ResultsPk, glib::Error>) + Send + 'static>(
@@ -61,6 +64,7 @@ pub trait ClientPkExt: 'static {
     fn get_packages(
         &self,
         progress_callback: Option<Box_<dyn (Fn(&ProgressPk, PkProgressType)) + 'static>>,
+        cancellable: Option<&gio::Cancellable>,
     ) -> Result<ResultsPk, glib::Error>;
 
     #[doc(alias = "pk_client_update_packages")]
@@ -140,12 +144,15 @@ impl<O: IsA<ClientPk>> ClientPkExt for O {
     }
 
     fn get_updates(
+        //fn get_updates<P: IsA<gio::Cancellable>>(
         &self,
         progress_callback: Option<Box_<dyn (Fn(&ProgressPk, PkProgressType)) + 'static>>,
+        cancellable: Option<&gio::Cancellable>,
     ) -> Result<ResultsPk, glib::Error> {
         let progress_callback_data: Box_<
             Option<Box_<dyn Fn(&ProgressPk, PkProgressType) + 'static>>,
         > = Box_::new(progress_callback);
+
         unsafe extern "C" fn progress_callback_func(
             progress: *mut PkProgress,
             type_: PkProgressType,
@@ -177,7 +184,12 @@ impl<O: IsA<ClientPk>> ClientPkExt for O {
             let ret = pk_client_get_updates(
                 self.as_ref().to_glib_none().0,
                 filters,
-                ptr::null_mut(),
+                //ptr::null_mut(),
+                cancellable
+                    .map(|p| <gio::Cancellable as AsRef<gio::Cancellable>>::as_ref(p))
+                    .as_ref()
+                    .to_glib_none()
+                    .0,
                 progress_callback,
                 Box_::into_raw(super_callback0) as *mut _,
                 &mut error,
@@ -263,6 +275,7 @@ impl<O: IsA<ClientPk>> ClientPkExt for O {
     fn get_packages(
         &self,
         progress_callback: Option<Box_<dyn (Fn(&ProgressPk, PkProgressType)) + 'static>>,
+        cancellable: Option<&gio::Cancellable>,
     ) -> Result<ResultsPk, glib::Error> {
         let progress_callback_data: Box_<
             Option<Box_<dyn Fn(&ProgressPk, PkProgressType) + 'static>>,
@@ -299,7 +312,12 @@ impl<O: IsA<ClientPk>> ClientPkExt for O {
             let ret = pk_client_get_packages(
                 self.as_ref().to_glib_none().0,
                 filters,
-                ptr::null_mut(),
+                //ptr::null_mut(),
+                cancellable
+                    .map(|p| <gio::Cancellable as AsRef<gio::Cancellable>>::as_ref(p))
+                    .as_ref()
+                    .to_glib_none()
+                    .0,
                 progress_callback,
                 Box_::into_raw(super_callback0) as *mut _,
                 &mut error,
