@@ -1,3 +1,4 @@
+use gtk::gio::prelude::*;
 use gtk::glib;
 use gtk::prelude::*;
 use log::debug;
@@ -27,7 +28,6 @@ pub struct Meta {
     summary: String,
     description: String,
     location: String,
-    //requires: Vec<String>,
     raw: String,
 }
 
@@ -71,7 +71,6 @@ impl PackageMeta {
             search_entry: search_entry,
         };
 
-        this.update_data();
         this
     }
 
@@ -79,7 +78,6 @@ impl PackageMeta {
         let mut repo_package: Vec<RepoPackages> = vec![];
         self.read_dir(&mut repo_package);
         self.update_meta(&repo_package);
-
         self.data.replace(repo_package);
     }
 
@@ -140,6 +138,9 @@ impl PackageMeta {
 
     fn update_meta(&self, repo_package: &Vec<RepoPackages>) {
         for r in repo_package {
+            if !r.enable {
+                continue;
+            }
             let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
 
             r.set_busy(true);

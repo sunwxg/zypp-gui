@@ -29,6 +29,7 @@ pub struct Window {
     list_box: gtk::ListBox,
     download_button: gtk::Button,
     trigger_button: gtk::Button,
+    cancel_button: gtk::Button,
     package_list: RefCell<Box<Vec<PackageInfo>>>,
     state: Rc<RefCell<ButtonState>>,
     builder: gtk::Builder,
@@ -36,6 +37,7 @@ pub struct Window {
     notification: notification::Notification,
     packagekit_state: PackagekitState,
     application: gtk::Application,
+    sender_connect_id: Rc<RefCell<Option<glib::SignalHandlerId>>>,
 }
 
 impl Window {
@@ -47,6 +49,7 @@ impl Window {
         let button: gtk::Button = builder.object("download_button").unwrap();
         button.set_label("Refresh");
         let trigger_button: gtk::Button = builder.object("offline_update_button").unwrap();
+        let cancel_button: gtk::Button = builder.object("cancel_button").unwrap();
 
         let stack_box: gtk::Stack = builder.object("stack_box").unwrap();
         let stack_list = builder.object("stack_list").unwrap();
@@ -56,6 +59,9 @@ impl Window {
         let progress_label: gtk::Label = builder.object("progress_label").unwrap();
         stack_box.set_visible_child(&stack_label);
         let state = Rc::new(RefCell::new(ButtonState::Refresh));
+        let sender_connect_id = Rc::new(RefCell::new(Some(
+            cancel_button.connect_clicked(|_button| {}),
+        )));
 
         let notification = notification::Notification::new(&builder);
         let search = search::SearchPackage::new(
@@ -79,6 +85,7 @@ impl Window {
             progress_label: progress_label,
             download_button: button,
             trigger_button: trigger_button,
+            cancel_button: cancel_button,
             package_list: RefCell::new(Box::new(vec![])),
             state: state,
             builder: builder,
@@ -86,6 +93,7 @@ impl Window {
             notification: notification,
             packagekit_state: packagekit_state,
             application,
+            sender_connect_id,
         };
 
         window.add_actions();
@@ -117,16 +125,15 @@ impl Window {
     }
 
     fn download_button_connect(&self) {
-        let builder = self.builder.clone();
-        let button: gtk::Button = builder.object("download_button").unwrap();
-        let trigger_button: gtk::Button = builder.object("offline_update_button").unwrap();
+        let button = self.download_button.clone();
+        let trigger_button = self.trigger_button.clone();
         let state = self.state.clone();
         let this = self.clone();
         button.connect_clicked(move |button| {
             if this.packagekit_state.busy() {
                 return;
             }
-            this.packagekit_state.set_state(true);
+            this.packagekit_state.set_busy(true);
             debug!("get_updates");
             let s: Ref<ButtonState> = state.borrow();
             match *s {
@@ -198,47 +205,76 @@ impl Window {
             let button_stack: gtk::Stack = builder.object("button_stack").unwrap();
             let search_bar: libhandy::Clamp = builder.object("search_bar").unwrap();
             let update_button: gtk::Box = builder.object("update_button").unwrap();
-            let stack_box: gtk::Stack = builder.object("stack_box").unwrap();
-            let stack_list: gtk::ScrolledWindow = builder.object("stack_list").unwrap();
             let search_box: gtk::ScrolledWindow = builder.object("search_box").unwrap();
             let search_entry: gtk::SearchEntry = builder.object("search_entry").unwrap();
+            let this = self.clone();
             button.connect_toggled(move |b| {
                 if b.is_active() {
                     button_stack.set_visible_child(&search_bar);
-                    stack_box.set_visible_child(&search_box);
+                    this.stack_box.set_visible_child(&search_box);
                     search_entry.grab_focus_without_selecting();
                 } else {
                     button_stack.set_visible_child(&update_button);
-                    stack_box.set_visible_child(&stack_list);
+                    let s: Ref<ButtonState> = this.state.borrow();
+                    match *s {
+                        ButtonState::Refresh => {
+                            this.show_label();
+                        }
+                        ButtonState::Refreshing
+                        | ButtonState::Downloading
+                        | ButtonState::Updating => {
+                            this.show_progress();
+                        }
+                        _ => {
+                            this.show_package_list();
+                        }
+                    }
                 }
             });
         }
-
         {
-            let button: gtk::Button = self.builder.object("offline_update_button").unwrap();
-            //let this = self.clone();
-            button.connect_clicked(move |b| {
-                //b.set_visible(false);
-                //this.set_state(ButtonState::RestartUpdate);
-                match offline_update_trigger() {
-                    //Ok(_) => this.set_state(ButtonState::RestartUpdate),
-                    //Err(_) => this.set_state(ButtonState::Update),
+            self.trigger_button
+                .connect_clicked(move |b| match offline_update_trigger() {
                     Ok(_) => do_reboot(),
                     Err(_) => b.set_visible(false),
-                }
-            });
+                });
         }
+    }
+
+    fn disconnect_cancel_button(&self) {
+        if let Some(id) = self.sender_connect_id.borrow_mut().take() {
+            self.cancel_button.disconnect(id)
+        }
+    }
+
+    fn cancel_button_connect(&self, sender: glib::Sender<PKmessage>) {
+        self.disconnect_cancel_button();
+        self.cancel_button.set_visible(true);
+        let this = self.clone();
+        let id = self.cancel_button.connect_clicked(move |_| {
+            match sender.send(PKmessage::Error("The job was canceled".to_string())) {
+                Err(_) => debug!("cancel button sender sending fail"),
+                _ => {}
+            }
+            this.disconnect_cancel_button();
+        });
+        self.sender_connect_id.replace(Some(id));
+    }
+
+    fn cancel_to_refresh(&self) {
+        self.disconnect_cancel_button();
+        self.cancel_button.set_visible(true);
+        let this = self.clone();
+        let id = self.cancel_button.connect_clicked(move |_| {
+            this.set_state(ButtonState::Refresh);
+            this.disconnect_cancel_button();
+        });
+        self.sender_connect_id.replace(Some(id));
     }
 
     fn check_offline_state(&self) {
         if offline_update_prepared() {
             self.trigger_button.set_visible(true);
-            //match offline_update_trigger() {
-            //Ok(ok) => self.set_state(ButtonState::RestartUpdate),
-            //Err(error) => self.set_state(ButtonState::Update),
-            //}
-            //} else {
-            //self.set_state(ButtonState::Update);
         }
     }
 
@@ -246,6 +282,8 @@ impl Window {
         match state.clone() {
             ButtonState::Refresh => {
                 self.download_button.set_sensitive(true);
+                self.trigger_button.set_visible(false);
+                self.cancel_button.set_visible(false);
                 self.clear_list();
                 self.show_label();
                 self.update_progress_text(None);
@@ -253,11 +291,13 @@ impl Window {
             ButtonState::Download => {
                 self.download_button.set_sensitive(true);
                 self.show_package_list();
+                self.cancel_to_refresh();
                 self.search.update_package_meta();
             }
             ButtonState::Update => {
                 self.download_button.set_sensitive(true);
                 self.show_package_list();
+                self.cancel_to_refresh();
                 self.check_offline_state();
                 self.update_progress_text(None);
             }
@@ -271,15 +311,18 @@ impl Window {
             .set_label(&(format!("{}", state.clone())).to_string());
         self.state.replace(state);
 
-        self.packagekit_state.set_state(false);
+        self.packagekit_state.set_busy(false);
     }
 
     pub fn first_show(&self) {
         let deck: libhandy::Deck = self.builder.object("deck").unwrap();
         let page_update: gtk::Box = self.builder.object("page_update").unwrap();
         deck.set_visible_child(&page_update);
+
+        self.search.update_package_meta();
         let search_button: gtk::ToggleButton = self.builder.object("search_button").unwrap();
         search_button.set_active(false);
+
         self.set_state(ButtonState::Refresh);
     }
 
@@ -291,8 +334,12 @@ impl Window {
         self.stack_box.set_visible_child(&self.stack_label);
     }
 
-    fn update_progress(&self, percentage: i32) {
+    fn show_progress(&self) {
         self.stack_box.set_visible_child(&self.progress);
+    }
+
+    fn update_progress(&self, percentage: i32) {
+        self.show_progress();
         self.progress_bar.set_fraction(percentage as f64 / 100.0);
         self.progress_bar.show_all();
     }
@@ -314,7 +361,7 @@ impl Window {
     }
 
     fn update_list(&self, package_list: Vec<PackageInfo>) {
-        self.packagekit_state.set_state(false);
+        self.packagekit_state.set_busy(false);
 
         self.download_button.set_sensitive(true);
         self.package_list.replace(Box::new(package_list.clone()));
@@ -346,6 +393,7 @@ impl Window {
 
     fn get_updates(&self) {
         let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        self.cancel_button_connect(tx.clone());
 
         thread::spawn(move || {
             packagekit::get_updates(tx);
@@ -355,6 +403,7 @@ impl Window {
         self.update_progress(0);
         let mut package_list: Box<Vec<PackageInfo>> = Box::new(vec![]);
         rx.attach(None, move |message| {
+            let mut is_continue = true;
             match message {
                 PKmessage::PackageListNew(list) => {
                     if list.len() == 0 {
@@ -382,15 +431,17 @@ impl Window {
                 PKmessage::Error(text) => {
                     this.show_notification(text);
                     this.set_state(ButtonState::Refresh);
+                    is_continue = false;
                 }
                 _ => {}
             }
-            glib::Continue(true)
+            glib::Continue(is_continue)
         });
     }
 
     fn download_updates(&self) {
         let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        self.cancel_button_connect(tx.clone());
 
         thread::spawn(move || {
             packagekit::download_updates(tx);
@@ -399,6 +450,7 @@ impl Window {
         let this = self.clone();
         this.update_progress(0);
         rx.attach(None, move |message| {
+            let mut is_continue = true;
             match message {
                 PKmessage::DownloadFinish => {
                     debug!("DownloadFinish");
@@ -411,15 +463,17 @@ impl Window {
                 PKmessage::Error(text) => {
                     this.show_notification(text);
                     this.set_state(ButtonState::Refresh);
+                    is_continue = false;
                 }
                 _ => {}
             }
-            glib::Continue(true)
+            glib::Continue(is_continue)
         });
     }
 
     pub fn updates(&self) {
         let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        self.cancel_button_connect(tx.clone());
 
         thread::spawn(move || {
             packagekit::updates(tx);
@@ -428,6 +482,7 @@ impl Window {
         let this = self.clone();
         self.update_progress(0);
         rx.attach(None, move |message| {
+            let mut is_continue = true;
             match message {
                 PKmessage::UpdateFinish => {
                     debug!("UpdateFinish");
@@ -440,10 +495,11 @@ impl Window {
                 PKmessage::Error(text) => {
                     this.show_notification(text);
                     this.set_state(ButtonState::Refresh);
+                    is_continue = false;
                 }
                 _ => {}
             }
-            glib::Continue(true)
+            glib::Continue(is_continue)
         });
     }
 }

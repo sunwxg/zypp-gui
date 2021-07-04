@@ -53,7 +53,10 @@ impl SuggestionRepo {
         };
         let mut buffer = String::new();
         file.read_to_string(&mut buffer).expect("read file fail");
-        let data: Data = serde_json::from_str(&buffer).unwrap();
+        let data: Data = match serde_json::from_str(&buffer) {
+            Ok(data) => data,
+            Err(_) => return Data { list: vec![] },
+        };
 
         data
     }
