@@ -34,7 +34,7 @@ sources = files(
   'repo_row.rs',
   'search.rs',
   'search_row.rs',
-  'suggestion.rs',
+  'additional.rs',
   'util.rs',
   'window.rs',
   'zypper.rs',

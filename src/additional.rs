@@ -23,21 +23,21 @@ struct Repo {
 }
 
 #[derive(Clone)]
-pub struct SuggestionRepo {
+pub struct AdditionalRepo {
     data: Data,
-    suggestion_page: gtk::ListBox,
+    additional_page: gtk::ListBox,
     main_window: libhandy::ApplicationWindow,
 }
 
-impl SuggestionRepo {
+impl AdditionalRepo {
     pub fn new(builder: &gtk::Builder) -> Self {
-        let data = SuggestionRepo::read_data();
-        let suggestion_page: gtk::ListBox = builder.object("suggestion_page").unwrap();
+        let data = AdditionalRepo::read_data();
+        let additional_page: gtk::ListBox = builder.object("additional_page").unwrap();
         let main_window: libhandy::ApplicationWindow = builder.object("window").unwrap();
 
         let this = Self {
             data,
-            suggestion_page,
+            additional_page,
             main_window,
         };
 
@@ -46,7 +46,7 @@ impl SuggestionRepo {
     }
 
     fn read_data() -> Data {
-        let path = format!("{}/{}", config::PKGDATADIR, "suggestion.json");
+        let path = format!("{}/{}", config::PKGDATADIR, "additional.json");
         let mut file = match File::open(path) {
             Ok(file) => file,
             Err(_) => return Data { list: vec![] },
@@ -64,23 +64,23 @@ impl SuggestionRepo {
     fn creat_row(&self) {
         for data in self.data.list.clone() {
             let builder =
-                gtk::Builder::from_resource("/org/openSUSE/software/ui/suggestion_row.ui");
-            let row: libhandy::ExpanderRow = builder.object("suggestion_row").unwrap();
-            let sub_row: libhandy::ActionRow = builder.object("repo_info").unwrap();
+                gtk::Builder::from_resource("/org/openSUSE/software/ui/additional_row.ui");
+            let row: libhandy::ExpanderRow = builder.object("additional_row").unwrap();
+            let sub_row: gtk::Label = builder.object("repo_info").unwrap();
             let button: gtk::Button = builder.object("button_add").unwrap();
             row.set_title(Some(&data.name));
-            sub_row.set_title(Some(&data.info));
+            sub_row.set_text(&data.info);
 
             let this = self.clone();
             button.connect_clicked(move |_| {
                 if this.check_url(data.url.clone()) {
-                    this.create_dialog("The repo has been installed".to_string());
+                    this.create_dialog("The repo has been added".to_string());
                 } else {
                     Zypper::add_repo(data.name.clone(), data.url.clone());
                 }
             });
 
-            self.suggestion_page.add(&row.to_owned());
+            self.additional_page.add(&row.to_owned());
         }
     }
 

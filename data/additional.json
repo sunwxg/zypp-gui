@@ -1,0 +1,9 @@
+{
+  "list": [
+    {
+      "name": "packman",
+      "url": "http://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/",
+      "info": "Offers various additional packages for openSUSE, especially but not limited to multimedia related applications and libraries that are on the openSUSE Build Service application blacklist. It's the largest external repository of openSUSE packages. Packman is comprised of the following four repositories:\n* Essentials: provides codecs and audio and video player applications, to fulfill the most essential needs\n* Multimedia: contains many more multimedia related applications\n* Extra: additional non multimedia related applications, mostly network related\n* Games: obviously, games"
+    }
+  ]
+}
