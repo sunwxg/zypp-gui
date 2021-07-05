@@ -1,6 +1,7 @@
 use gtk::gio;
 use gtk::gio::prelude::*;
 use gtk::gio::File;
+use gtk::gdk;
 use gtk::glib;
 use gtk::prelude::*;
 use libhandy::prelude::*;
@@ -137,6 +138,7 @@ impl PageSettings {
         let builder = gtk::Builder::from_resource("/org/openSUSE/software/ui/repo_add.ui");
         let window: gtk::Window = builder.object("repo_add_window").unwrap();
         window.set_modal(true);
+        window.set_type_hint(gdk::WindowTypeHint::Dialog);
         window.set_transient_for(Some(&self.main_window));
 
         let cancel: gtk::Button = builder.object("add_cancel").unwrap();

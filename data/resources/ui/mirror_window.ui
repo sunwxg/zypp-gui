@@ -6,6 +6,7 @@
     <property name="width-request">500</property>
     <property name="can-focus">False</property>
     <property name="title" translatable="yes">Mirror Site</property>
+    <property name="type-hint">dialog</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
