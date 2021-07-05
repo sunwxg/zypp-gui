@@ -1,3 +1,4 @@
+mod additional;
 mod config;
 mod list_row;
 mod mirror;
@@ -10,7 +11,6 @@ mod page_settings;
 mod repo_row;
 mod search;
 mod search_row;
-mod additional;
 mod util;
 mod window;
 mod zypper;

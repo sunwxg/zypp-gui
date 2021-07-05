@@ -1,7 +1,7 @@
+use gtk::gdk;
 use gtk::gio;
 use gtk::gio::prelude::*;
 use gtk::gio::File;
-use gtk::gdk;
 use gtk::glib;
 use gtk::prelude::*;
 use libhandy::prelude::*;
@@ -9,9 +9,9 @@ use libhandy::NavigationDirection;
 use log::debug;
 use std::thread;
 
+use crate::additional::AdditionalRepo;
 use crate::mirror::MirrorSettings;
 use crate::repo_row::RepoRow;
-use crate::additional::AdditionalRepo;
 use crate::zypper::{RepoInfo, Settings, Zypper};
 
 #[derive(Clone)]

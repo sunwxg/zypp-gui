@@ -21,7 +21,6 @@ run_command(
 sources = files(
   'config.rs',
   'config.rs.in',
-  'connect_packagekit.rs',
   'list_row.rs',
   'main.rs',
   'mirror.rs',

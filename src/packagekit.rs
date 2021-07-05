@@ -82,7 +82,7 @@ pub fn get_updates(sender: glib::Sender<PKmessage>) {
         }
         debug!("get updates success");
         match sender.send(PKmessage::PackageListNew(name_vec)) {
-            Ok(_) => {},
+            Ok(_) => {}
             _ => return,
         }
     }
