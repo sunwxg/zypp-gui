@@ -25,6 +25,8 @@ openSUSE software differs from YaST software management to:
 ![](./data/resources/screenshots/screenshot4.png)
 ![](./data/resources/screenshots/screenshot5.png)
 ![](./data/resources/screenshots/screenshot6.png)
+![](./data/resources/screenshots/screenshot7.png)
+![](./data/resources/screenshots/screenshot8.png)
 
 ## How to build:
 
