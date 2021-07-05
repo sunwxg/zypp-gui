@@ -12,9 +12,9 @@ openSUSE software differs from YaST software management to:
 - [x] Refresh the repos, download the packages, install the update.
 - [x] Search, install and remove the package.
 - [x] Offline update.
-- [ ] Add and remove repos.
+- [x] Add and remove repos.
 - [x] Modify the repos.
-- [ ] Add mirror repos.
+- [x] Add mirror repos.
 - [ ] Monitor the new release and update to the new release.
 
 ## Screenshot
