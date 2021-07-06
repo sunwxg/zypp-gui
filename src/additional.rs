@@ -69,7 +69,7 @@ impl AdditionalRepo {
             let sub_row: gtk::Label = builder.object("repo_info").unwrap();
             let button: gtk::Button = builder.object("button_add").unwrap();
             row.set_title(Some(&data.name));
-            sub_row.set_text(&data.info);
+            sub_row.set_markup(&data.info);
 
             let this = self.clone();
             button.connect_clicked(move |_| {
