@@ -11,6 +11,11 @@ use std::process::{Command, Stdio};
 use crate::config;
 use crate::zypper::Zypper;
 
+enum SYSTEM {
+    TW,
+    LEAP,
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 struct Data {
     list: Vec<Repo>,
@@ -73,10 +78,20 @@ impl AdditionalRepo {
 
             let this = self.clone();
             button.connect_clicked(move |_| {
-                if this.check_url(data.url.clone()) {
+                let url = match this.check_system() {
+                    SYSTEM::TW => {
+                        let url = format!("{}openSUSE_Tumbleweed/", data.url.clone());
+                        url
+                    }
+                    SYSTEM::LEAP => {
+                        let url = format!("{}openSUSE_Leap_$releasever/", data.url.clone());
+                        url
+                    }
+                };
+                if this.check_url(url.clone()) {
                     this.create_dialog("The repo has been added".to_string());
                 } else {
-                    Zypper::add_repo(data.name.clone(), data.url.clone());
+                    Zypper::add_repo(data.name.clone(), url);
                 }
             });
 
@@ -114,5 +129,20 @@ impl AdditionalRepo {
             }
         });
         dialog.show_all();
+    }
+
+    fn check_system(&self) -> SYSTEM {
+        let status = Command::new("grep")
+            .arg("Tumbleweed")
+            .arg("/etc/os-release")
+            .stdout(Stdio::piped())
+            .status()
+            .expect("failed to execute rpm");
+
+        if status.success() {
+            SYSTEM::TW
+        } else {
+            SYSTEM::LEAP
+        }
     }
 }

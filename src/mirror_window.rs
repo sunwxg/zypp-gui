@@ -43,15 +43,19 @@ impl MirrorWindow {
                 list.push("rsync".to_string());
                 this.map.insert("rsync".to_string(), site.rsync);
             };
+            if site.ftp.len() != 0 {
+                list.push("ftp".to_string());
+                this.map.insert("ftp".to_string(), site.ftp);
+            };
             this.add_radiobutton(connect_box, list.clone());
         }
 
         {
             let distro_box: gtk::Box = builder.object("distro_box").unwrap();
             let mut list: Vec<String> = vec![];
-            for i in site.repo.clone() {
-                list.push(i.clone());
-                this.map.insert(i.clone(), i);
+            for i in ["tw", "leap"] {
+                list.push(i.to_string());
+                this.map.insert(i.to_string(), i.to_string());
             }
             this.add_radiobutton(distro_box, list.clone());
         }
@@ -93,7 +97,10 @@ impl MirrorWindow {
             let mut _distro = "".to_string();
             for b in radio_buttons.clone() {
                 if b.is_active() {
-                    if b.widget_name().contains("http") || b.widget_name().contains("rsync") {
+                    if b.widget_name().contains("http")
+                        || b.widget_name().contains("ftp")
+                        || b.widget_name().contains("rsync")
+                    {
                         let name: String = b.widget_name().to_string();
                         _url = this.map.get(&name).unwrap().to_string();
                     } else {
@@ -111,9 +118,13 @@ impl MirrorWindow {
     fn get_repo_address_list(
         &self,
         name: String,
-        url: String,
+        url_in: String,
         distro: String,
     ) -> Vec<(String, String)> {
+        let url = match url_in.strip_suffix("/") {
+            Some(url) => url,
+            _ => url_in.as_str(),
+        };
         let mut list = vec![];
         if distro == "tw" {
             //repo-debug.repo:baseurl=http://download.opensuse.org/debug/tumbleweed/repo/oss/
@@ -160,38 +171,22 @@ impl MirrorWindow {
 
             {
                 let name = format!("{}-non-oss", name);
-                let link = format!(
-                    "{}/distribution/leap/{}/repo/non-oss/",
-                    url,
-                    distro.strip_prefix("leap.").unwrap()
-                );
+                let link = format!("{}/distribution/leap/$releasever/repo/non-oss/", url);
                 list.push((link, name));
             }
             {
                 let name = format!("{}-oss", name);
-                let link = format!(
-                    "{}/distribution/leap/{}/repo/oss/",
-                    url,
-                    distro.strip_prefix("leap.").unwrap()
-                );
+                let link = format!("{}/distribution/leap/$releasever/repo/oss/", url);
                 list.push((link, name));
             }
             {
                 let name = format!("{}-update-non-oss", name);
-                let link = format!(
-                    "{}/update/leap/{}/non-oss/",
-                    url,
-                    distro.strip_prefix("leap.").unwrap()
-                );
+                let link = format!("{}/update/leap/$releasever/non-oss/", url);
                 list.push((link, name));
             }
             {
                 let name = format!("{}-update-oss", name);
-                let link = format!(
-                    "{}/update/leap/{}/oss/",
-                    url,
-                    distro.strip_prefix("leap.").unwrap()
-                );
+                let link = format!("{}/update/leap/$releasever/oss/", url);
                 list.push((link, name));
             }
         }
@@ -200,7 +195,7 @@ impl MirrorWindow {
     }
 
     fn create_dialog(&self, list: Vec<(String, String)>) {
-        let mut text = format!("These repos will be added:\n");
+        let mut text = format!("These repos will be added:\n\n");
         for i in list.clone() {
             text = format!("{}{}, {}\n", text, i.1, i.0);
         }

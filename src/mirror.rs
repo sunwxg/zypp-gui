@@ -25,7 +25,7 @@ pub struct Site {
     pub name: String,
     pub http: String,
     pub rsync: String,
-    pub repo: Vec<String>,
+    pub ftp: String,
 }
 
 #[derive(Clone)]
