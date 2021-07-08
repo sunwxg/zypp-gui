@@ -1,10 +1,10 @@
+use gettextrs::*;
 use std::fmt;
 
 pub enum PKmessage {
     PackageListNew(Vec<PackageInfo>),
     PackageListInstalled(Vec<PackageInfo>),
     Progress((i32, Option<String>)),
-    //SearchListNew(Vec<SearchInfo>),
     DownloadFinish,
     UpdateFinish,
     InstallFinish,
@@ -42,13 +42,13 @@ pub enum ButtonState {
 impl fmt::Display for ButtonState {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Self::Refresh => write!(f, "{}", "Refresh"),
-            Self::Refreshing => write!(f, "{}", "Refreshing"),
-            Self::Download => write!(f, "{}", "Download"),
-            Self::Downloading => write!(f, "{}", "Downloading"),
-            Self::Update => write!(f, "{}", "Update"),
-            Self::Updating => write!(f, "{}", "Updating"),
-            Self::RestartUpdate => write!(f, "{}", "Restart&Update"),
+            Self::Refresh => write!(f, "{}", &gettext("Refresh")),
+            Self::Refreshing => write!(f, "{}", &gettext("Refreshing")),
+            Self::Download => write!(f, "{}", &gettext("Download")),
+            Self::Downloading => write!(f, "{}", &gettext("Downloading")),
+            Self::Update => write!(f, "{}", &gettext("Update")),
+            Self::Updating => write!(f, "{}", &gettext("Updating")),
+            Self::RestartUpdate => write!(f, "{}", &gettext("Restart&Update")),
         }
     }
 }

@@ -1,3 +1,4 @@
+use gettextrs::*;
 use gtk::gio;
 use gtk::glib;
 use gtk::prelude::*;
@@ -47,7 +48,7 @@ impl Window {
         win.set_application(Some(&application));
 
         let button: gtk::Button = builder.object("download_button").unwrap();
-        button.set_label("Refresh");
+        button.set_label(&gettext("Refresh"));
         let trigger_button: gtk::Button = builder.object("offline_update_button").unwrap();
         let cancel_button: gtk::Button = builder.object("cancel_button").unwrap();
 
@@ -140,7 +141,7 @@ impl Window {
                 ButtonState::Refresh => {
                     drop(s);
                     state.replace(ButtonState::Refreshing);
-                    button.set_label("Refreshing");
+                    button.set_label(&gettext("Refreshing"));
                     button.set_sensitive(false);
                     this.set_search_button_sensitive(false);
                     this.get_updates();
@@ -148,7 +149,7 @@ impl Window {
                 ButtonState::Download => {
                     drop(s);
                     state.replace(ButtonState::Downloading);
-                    button.set_label("Downloading");
+                    button.set_label(&gettext("Downloading"));
                     button.set_sensitive(false);
                     this.set_search_button_sensitive(false);
                     this.download_updates();
@@ -156,7 +157,7 @@ impl Window {
                 ButtonState::Update => {
                     drop(s);
                     state.replace(ButtonState::Updating);
-                    button.set_label("Updating");
+                    button.set_label(&gettext("Updating"));
                     button.set_sensitive(false);
                     this.set_search_button_sensitive(false);
                     trigger_button.set_visible(false);

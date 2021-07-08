@@ -1,4 +1,5 @@
 use crate::util::SearchInfo;
+use gettextrs::*;
 use gtk::prelude::*;
 use libhandy::prelude::*;
 
@@ -13,9 +14,9 @@ impl SearchRow {
         let row: libhandy::ActionRow = builder.object("row").unwrap();
         let button: gtk::Button = builder.object("operation_button").unwrap();
         if info.info == "installed" {
-            button.set_label("Remove");
+            button.set_label(&gettext("Remove"));
         } else {
-            button.set_label("Install");
+            button.set_label(&gettext("Install"));
         }
 
         Self {

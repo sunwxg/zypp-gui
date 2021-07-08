@@ -1,3 +1,4 @@
+use gettextrs::*;
 use gtk::prelude::*;
 
 #[derive(Clone)]
@@ -28,7 +29,7 @@ impl Notification {
     }
 
     pub fn set_label(&self, text: String) {
-        self.label.set_text(text.as_str());
+        self.label.set_text(&gettext(text.as_str()));
         self.notification_bar.set_reveal_child(true);
     }
 }
