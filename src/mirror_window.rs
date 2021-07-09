@@ -53,7 +53,7 @@ impl MirrorWindow {
         {
             let distro_box: gtk::Box = builder.object("distro_box").unwrap();
             let mut list: Vec<String> = vec![];
-            for i in ["tw", "leap"] {
+            for i in &["tw", "leap"] {
                 list.push(i.to_string());
                 this.map.insert(i.to_string(), i.to_string());
             }
