@@ -61,20 +61,14 @@ impl Zypper {
     }
 
     pub fn get_repos() -> Option<Vec<RepoInfo>> {
-        let process = match Command::new("zypper")
+        let process = Command::new("zypper")
             .arg("lr")
             .arg("-d")
             .stdout(Stdio::piped())
-            .spawn()
-        {
-            Err(e) => panic!("failed spawn: {}", e),
-            Ok(process) => process,
-        };
-        let mut s = String::new();
-        match process.stdout.unwrap().read_to_string(&mut s) {
-            Err(e) => panic!("couldn't read stdout: {}", e),
-            Ok(_) => {}
-        }
+            .output()
+            .expect("failed to execute rpm");
+
+        let s = String::from_utf8_lossy(&process.stdout).to_string();
         let v: Vec<&str> = s.split("\n").collect();
         if v.len() < 3 {
             return None;

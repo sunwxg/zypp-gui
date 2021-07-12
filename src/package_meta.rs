@@ -82,20 +82,13 @@ impl PackageMeta {
     }
 
     fn read_dir(&self, repo_package: &mut Vec<RepoPackages>) {
-        let process = match Command::new("find")
+        let process = Command::new("find")
             .arg("/var/cache/zypp/raw")
             .stdout(Stdio::piped())
-            .spawn()
-        {
-            Err(e) => panic!("failed spawn: {}", e),
-            Ok(process) => process,
-        };
+            .output()
+            .expect("failed to execute rpm");
 
-        let mut out = String::new();
-        match process.stdout.unwrap().read_to_string(&mut out) {
-            Err(e) => panic!("couldn't read stdout: {}", e),
-            Ok(_) => {}
-        }
+        let out = String::from_utf8_lossy(&process.stdout).to_string();
 
         for f in out.lines() {
             let mut _repo = String::new();
@@ -174,21 +167,14 @@ impl PackageMeta {
     }
 
     fn read_file(file: String, sender: glib::Sender<Message>) {
-        let process = match Command::new("gzip")
+        let process = Command::new("gzip")
             .arg("-dc")
             .arg(file)
             .stdout(Stdio::piped())
-            .spawn()
-        {
-            Err(e) => panic!("failed spawn: {}", e),
-            Ok(process) => process,
-        };
+            .output()
+            .expect("failed to execute rpm");
 
-        let mut buffer = String::new();
-        match process.stdout.unwrap().read_to_string(&mut buffer) {
-            Err(e) => panic!("couldn't read stdout: {}", e),
-            Ok(_) => {}
-        }
+        let buffer = String::from_utf8_lossy(&process.stdout).to_string();
 
         PackageMeta::parse_line_by_line(buffer, sender);
     }
@@ -396,41 +382,24 @@ impl PackageMeta {
 
     fn check_repo_state(&self, repo: String, fileld: String) -> String {
         let file = format!("/etc/zypp/repos.d/{}.repo", repo);
-        let process = match Command::new("grep")
+        let process = Command::new("grep")
             .arg(fileld)
             .arg(file)
             .stdout(Stdio::piped())
-            .spawn()
-        {
-            Err(e) => panic!("failed spawn: {}", e),
-            Ok(process) => process,
-        };
+            .output()
+            .expect("failed to execute rpm");
 
-        let mut out = String::new();
-        match process.stdout.unwrap().read_to_string(&mut out) {
-            Err(e) => panic!("couldn't read stdout: {}", e),
-            Ok(_) => {}
-        }
-
-        out
+        String::from_utf8_lossy(&process.stdout).to_string()
     }
 
     fn get_sys_arch() -> String {
-        let process = match Command::new("uname")
+        let process = Command::new("uname")
             .arg("-m")
             .stdout(Stdio::piped())
-            .spawn()
-        {
-            Err(e) => panic!("failed spawn: {}", e),
-            Ok(process) => process,
-        };
+            .output()
+            .expect("failed to execute rpm");
 
-        let mut out = String::new();
-        match process.stdout.unwrap().read_to_string(&mut out) {
-            Err(e) => panic!("couldn't read stdout: {}", e),
-            Ok(_) => {}
-        }
-
+        let out = String::from_utf8_lossy(&process.stdout).to_string();
         out.strip_suffix("\n").unwrap().to_string()
     }
 
