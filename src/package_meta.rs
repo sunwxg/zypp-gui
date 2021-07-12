@@ -347,9 +347,11 @@ impl PackageMeta {
             if !repo.enable {
                 continue;
             }
+            let text = text.to_lowercase();
             let meta = repo.meta.borrow();
             for key in meta.keys() {
-                match key.rfind(&text) {
+                let k = key.to_lowercase();
+                match k.rfind(&text) {
                     Some(_) => {
                         let arch: Vec<&str> = key.split(|c| c == '/').collect();
                         if arch[0] != self.sys_arch && arch[0] != "noarch" {
