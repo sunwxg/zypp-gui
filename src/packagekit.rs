@@ -3,6 +3,8 @@ use gtk::glib::translate::*;
 use libc::{c_char, c_int};
 use log::debug;
 use std::cell::RefCell;
+use std::env;
+use std::process::{Command, Stdio};
 use std::ptr;
 use std::rc::Rc;
 use zbus::{Connection, Message};
@@ -356,15 +358,20 @@ pub fn offline_update_prepared() -> bool {
 }
 
 pub fn do_reboot() {
-    //let connection = zbus::Connection::new_session().unwrap();
-    //let _ret = connection.call_method(
-    //Some("org.gnome.SessionManager"),
-    //"/org/gnome/SessionManager",
-    //Some("org.gnome.SessionManager"),
-    //"Reboot",
-    //&(),
-    //);
+    let desktop = match env::var("DESKTOP_SESSION") {
+        Ok(d) => d,
+        Err(_) => "none".to_string(),
+    };
+    if desktop.contains("gnome") {
+        do_reboot_gnome();
+    } else if desktop.contains("plasma") {
+        do_reboot_kde();
+    } else {
+        do_reboot_other();
+    }
+}
 
+fn do_reboot_gnome() {
     let conn = match Connection::new_session() {
         Ok(conn) => conn,
         Err(_) => return,
@@ -382,4 +389,38 @@ pub fn do_reboot() {
         Ok(ret) => ret,
         Err(_) => return,
     };
+}
+
+fn do_reboot_other() {
+    let conn = match Connection::new_system() {
+        Ok(conn) => conn,
+        Err(_) => return,
+    };
+    let msg = Message::method(
+        None,
+        Some("org.freedesktop.login1"),
+        "/org/freedesktop/login1",
+        Some("org.freedesktop.login1.Manager"),
+        "Reboot",
+        &true,
+    )
+    .unwrap();
+    let _ret = match conn.send_message(msg) {
+        Ok(ret) => ret,
+        Err(_) => return,
+    };
+}
+
+fn do_reboot_kde() {
+    //qdbus org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.logout -1 1 -1
+    let _status = Command::new("qdbus-qt5")
+        .arg("org.kde.ksmserver")
+        .arg("/KSMServer")
+        .arg("org.kde.KSMServerInterface.logout")
+        .arg("-1")
+        .arg("1")
+        .arg("-1")
+        .stdout(Stdio::piped())
+        .status()
+        .expect("failed to execute rpm");
 }
