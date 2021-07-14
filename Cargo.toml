@@ -1,6 +1,6 @@
 [package]
 name = "opensuse_software"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Xiaoguang Wang <sun.wxg@gmail.com>"]
 edition = "2018"
 
