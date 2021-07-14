@@ -135,7 +135,7 @@ impl PageSettings {
     }
 
     fn create_add_repo_window(&self) {
-        let builder = gtk::Builder::from_resource("/org/openSUSE/software/ui/repo_add.ui");
+        let builder = gtk::Builder::from_resource("/openSUSE/software/ui/repo_add.ui");
         let window: gtk::Window = builder.object("repo_add_window").unwrap();
         window.set_modal(true);
         window.set_type_hint(gdk::WindowTypeHint::Dialog);

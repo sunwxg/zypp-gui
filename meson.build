@@ -8,7 +8,7 @@ project(
 i18n = import('i18n')
 gnome = import('gnome')
 
-base_id = 'org.openSUSE.software'
+base_id = 'openSUSE.software'
 
 dependency('glib-2.0', version: '>= 2.56')
 dependency('gio-2.0', version: '>= 2.56')

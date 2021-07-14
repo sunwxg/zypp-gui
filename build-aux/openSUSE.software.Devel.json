@@ -1,5 +1,5 @@
 {
-    "app-id" : "org.openSUSE.software.Devel",
+    "app-id" : "openSUSE.software.Devel",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "40",
     "sdk" : "org.gnome.Sdk",

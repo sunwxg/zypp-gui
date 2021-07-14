@@ -8,7 +8,7 @@ pub struct ListRow {
 
 impl ListRow {
     pub fn new() -> Self {
-        let builder = gtk::Builder::from_resource("/org/openSUSE/software/ui/list_row.ui");
+        let builder = gtk::Builder::from_resource("/openSUSE/software/ui/list_row.ui");
         let row: gtk::Box = builder.object("row").unwrap();
         let name: gtk::Label = builder.object("name").unwrap();
         let version: gtk::Label = builder.object("version").unwrap();
