@@ -4,7 +4,6 @@ use gtk::prelude::*;
 use log::debug;
 use std::cell::{Ref, RefCell};
 use std::collections::{HashMap, HashSet};
-use std::io::prelude::*;
 use std::process::{Command, Stdio};
 use std::rc::Rc;
 use std::thread;
