@@ -1,4 +1,19 @@
-.title-header{
-  font-size: 36px;
-  font-weight: bold;
+.repo-box{
+	border-color: #bbbbbb;
+	border-radius: 8px;
+	border-width: 1px;
+	border-style: solid;
+}
+
+.mirror-box{
+	border-color: #bbbbbb;
+	border-radius: 8px;
+	border-width: 1px;
+	border-style: solid;
+}
+
+.additional-box{
+	border-color: #bbbbbb;
+	border-width: 1px;
+	border-style: solid;
 }

@@ -43,6 +43,7 @@ fn main() {
     let res = gio::Resource::load(RESOURCES_FILE).expect("Could not load gresource file");
     gio::resources_register(&res);
 
+    setup_css();
     let application = gtk::Application::new(Some(config::APP_ID), Default::default());
     application.connect_startup(build_ui);
 
@@ -61,4 +62,16 @@ fn build_ui(application: &gtk::Application) {
         window.first_show();
         window.window().show_all();
     });
+}
+
+fn setup_css() {
+    let provider = gtk::CssProvider::new();
+    provider.load_from_resource("/openSUSE/software/style.css");
+    if let Some(screen) = gdk::Screen::default() {
+        gtk::StyleContext::add_provider_for_screen(
+            &screen,
+            &provider,
+            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
+    }
 }
