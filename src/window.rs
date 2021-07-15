@@ -322,6 +322,13 @@ impl Window {
     }
 
     pub fn first_show(&self) {
+        let state = self.state.borrow();
+        match *state {
+            ButtonState::Refreshing | ButtonState::Downloading | ButtonState::Updating => return,
+            _ => {}
+        }
+        drop(state);
+
         let deck: libhandy::Deck = self.builder.object("deck").unwrap();
         let page_update: gtk::Box = self.builder.object("page_update").unwrap();
         deck.set_visible_child(&page_update);
