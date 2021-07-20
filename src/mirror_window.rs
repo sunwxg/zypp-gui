@@ -16,7 +16,7 @@ pub struct MirrorWindow {
 
 impl MirrorWindow {
     pub fn new(site: Site) -> Self {
-        let builder = gtk::Builder::from_resource("/openSUSE/software/ui/mirror_window.ui");
+        let builder = gtk::Builder::from_resource("/zypp/gui/ui/mirror_window.ui");
         let window: gtk::Window = builder.object("mirror_window").unwrap();
         window.set_modal(true);
 

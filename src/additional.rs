@@ -68,7 +68,7 @@ impl AdditionalRepo {
 
     fn creat_row(&self) {
         for data in self.data.list.clone() {
-            let builder = gtk::Builder::from_resource("/openSUSE/software/ui/additional_row.ui");
+            let builder = gtk::Builder::from_resource("/zypp/gui/ui/additional_row.ui");
             let row: libhandy::ExpanderRow = builder.object("additional_row").unwrap();
             let sub_row: gtk::Label = builder.object("repo_info").unwrap();
             let button: gtk::Button = builder.object("button_add").unwrap();

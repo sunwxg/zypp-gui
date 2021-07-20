@@ -3,11 +3,11 @@
 "http://www.freedesktop.org/software/polkit/policyconfig-1.dtd">
 <policyconfig>
 
-  <vendor>openSUSE software</vendor>
-  <vendor_url>https://github.com/sunwxg/openSUSE-software/</vendor_url>
+  <vendor>zypp gui</vendor>
+  <vendor_url>https://github.com/sunwxg/zypp-gui/</vendor_url>
   <icon_name>@icon@</icon_name>
 
-  <action id="opensuse.software.pkexec.run">
+  <action id="zypp.gui.pkexec.run">
 		<description>Get/Set repos settings</description>
     <message>Privileges are required to get/set repos settings</message>
     <defaults>

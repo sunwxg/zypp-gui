@@ -806,24 +806,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "692fcb63b64b1758029e0a96ee63e049ce8c5948587f2f7208df04625e5f6b56"
 
 [[package]]
-name = "opensuse_software"
-version = "0.1.1"
-dependencies = [
- "env_logger",
- "gdk",
- "gettext-rs",
- "gtk",
- "libc",
- "libhandy",
- "log",
- "packagekit_rs",
- "polkit-sys",
- "serde",
- "serde_json",
- "zbus",
-]
-
-[[package]]
 name = "package-kit-glib-sys"
 version = "0.1.0"
 dependencies = [
@@ -1492,4 +1474,22 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "zypp_gui"
+version = "0.1.1"
+dependencies = [
+ "env_logger",
+ "gdk",
+ "gettext-rs",
+ "gtk",
+ "libc",
+ "libhandy",
+ "log",
+ "packagekit_rs",
+ "polkit-sys",
+ "serde",
+ "serde_json",
+ "zbus",
 ]

@@ -1,5 +1,5 @@
 project(
-  'openSUSE-software',
+  'zypp-gui',
   'rust',
   version: '0.1.1',
   meson_version: '>= 0.50',
@@ -8,7 +8,7 @@ project(
 i18n = import('i18n')
 gnome = import('gnome')
 
-base_id = 'openSUSE.software'
+base_id = 'zypp.gui'
 
 dependency('glib-2.0', version: '>= 2.56')
 dependency('gio-2.0', version: '>= 2.56')

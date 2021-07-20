@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=@app_id@
-Exec=@bindir@/openSUSE-software --gapplication-service

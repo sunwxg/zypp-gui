@@ -107,8 +107,8 @@ configure_file(
 auto_conf = configuration_data()
 auto_conf.set('bindir', bindir)
 configure_file(
-  input : 'openSUSE-software-service.desktop.in',
-  output : 'openSUSE-software-service.desktop',
+  input : 'zypp-gui-service.desktop.in',
+  output : 'zypp-gui-service.desktop',
   configuration: auto_conf,
   install: true,
   install_dir: join_paths(get_option('sysconfdir'), 'xdg/autostart'),

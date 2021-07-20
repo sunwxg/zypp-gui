@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=zypp gui
+Exec=@bindir@/zypp-gui --gapplication-service
+NotShowIn=Budgie
+NoDisplay=true

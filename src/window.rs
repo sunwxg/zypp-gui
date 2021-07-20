@@ -43,7 +43,7 @@ pub struct Window {
 
 impl Window {
     pub fn new(packagekit_state: PackagekitState, application: gtk::Application) -> Self {
-        let builder = gtk::Builder::from_resource("/openSUSE/software/ui/window.ui");
+        let builder = gtk::Builder::from_resource("/zypp/gui/ui/window.ui");
         let win: libhandy::ApplicationWindow = builder.object("window").unwrap();
         win.set_application(Some(&application));
 

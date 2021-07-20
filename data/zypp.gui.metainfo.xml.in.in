@@ -5,10 +5,10 @@
   <metadata_license>CC0</metadata_license>
   <!-- Insert your license of choice here -->
   <!-- <project_license>MIT</project_license> -->
-  <name>openSUSE software</name>
+  <name>zypp gui</name>
   <summary>Update, install and remove software on the computer</summary>
   <description>
-    <p>Application runs as a deamon to monitor the system update. When there is new update, update the system. Application can search, install and remove the package, change the settings of repos.</p>
+    <p>Application runs as a deamon to monitor the system update. When there is new update, update the system. Application can search, install and remove the package, configure the repos.</p>
   </description>
   <screenshots>
     <screenshot type="default">
@@ -16,8 +16,8 @@
       <caption>Main window</caption>
     </screenshot>
   </screenshots>
-	<url type="homepage">http://github.com/sunwxg/openSUSE-software</url>
-  <url type="bugtracker">http://github.com/sunwxg/openSUSE-software/issues</url>
+	<url type="homepage">http://github.com/sunwxg/zypp-gui</url>
+  <url type="bugtracker">http://github.com/sunwxg/zypp-gui/issues</url>
   <content_rating type="oars-1.0" />
   <releases>
     <release version="0.0.1" date="2021-06-24" />

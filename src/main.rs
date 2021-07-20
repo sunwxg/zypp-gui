@@ -34,8 +34,8 @@ fn main() {
     bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR).expect("Unable to bind the text domain");
     textdomain(GETTEXT_PACKAGE).expect("Unable to switch to the text domain");
 
-    glib::set_application_name("openSUSE Software");
-    glib::set_prgname(Some("openSUSE-software"));
+    glib::set_application_name("zypp gui");
+    glib::set_prgname(Some("zypp-gui"));
 
     gtk::init().expect("Unable to start GTK3");
     libhandy::init();
@@ -47,7 +47,7 @@ fn main() {
     let application = gtk::Application::new(Some(config::APP_ID), Default::default());
     application.connect_startup(build_ui);
 
-    info!("openSUSE Software ({})", config::APP_ID);
+    info!("zypp gui ({})", config::APP_ID);
     info!("Version: {} ({})", config::VERSION, config::PROFILE);
     application.run();
 }
@@ -66,7 +66,7 @@ fn build_ui(application: &gtk::Application) {
 
 fn setup_css() {
     let provider = gtk::CssProvider::new();
-    provider.load_from_resource("/openSUSE/software/style.css");
+    provider.load_from_resource("/zypp/gui/style.css");
     if let Some(screen) = gdk::Screen::default() {
         gtk::StyleContext::add_provider_for_screen(
             &screen,

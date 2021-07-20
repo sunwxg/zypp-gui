@@ -54,6 +54,6 @@ custom_target(
     meson.source_root(),
     '@OUTPUT@',
     profile,
-	'opensuse_software',
+	'zypp_gui',
   ]
 )

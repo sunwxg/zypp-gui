@@ -10,7 +10,7 @@ pub struct SearchRow {
 
 impl SearchRow {
     pub fn new(info: SearchInfo) -> Self {
-        let builder = gtk::Builder::from_resource("/openSUSE/software/ui/search_row.ui");
+        let builder = gtk::Builder::from_resource("/zypp/gui/ui/search_row.ui");
         let row: libhandy::ActionRow = builder.object("row").unwrap();
         let button: gtk::Button = builder.object("operation_button").unwrap();
         if info.info == "installed" {

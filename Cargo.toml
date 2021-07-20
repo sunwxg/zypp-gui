@@ -1,5 +1,5 @@
 [package]
-name = "opensuse_software"
+name = "zypp_gui"
 version = "0.1.1"
 authors = ["Xiaoguang Wang <sun.wxg@gmail.com>"]
 edition = "2018"

@@ -6,5 +6,5 @@ option(
     'development'
   ],
   value: 'default',
-  description: 'The build profile for openSUSE Software. One of "default" or "development".'
+  description: 'The build profile for zypp gui. One of "default" or "development".'
 )

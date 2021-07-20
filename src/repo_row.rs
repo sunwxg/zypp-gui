@@ -11,7 +11,7 @@ pub struct RepoRow {
 
 impl RepoRow {
     pub fn new(info: RepoInfo) -> Self {
-        let builder = gtk::Builder::from_resource("/openSUSE/software/ui/repo_row.ui");
+        let builder = gtk::Builder::from_resource("/zypp/gui/ui/repo_row.ui");
         let row: gtk::Box = builder.object("repo_row").unwrap();
         let name: gtk::Label = builder.object("name").unwrap();
         let enable: gtk::Switch = builder.object("enable_switch").unwrap();

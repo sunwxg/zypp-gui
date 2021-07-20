@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=openSUSE software
-Comment=Update, install and remove software on the computer
+Name=zypp gui
+Comment=Update, install and remove software
 Type=Application
-Exec=openSUSE-software %U
+Exec=zypp-gui %U
 Terminal=false
 Categories=GTK;
 Keywords=GTK;

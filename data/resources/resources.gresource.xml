@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/openSUSE/software/">
+  <gresource prefix="/zypp/gui/">
     <file compressed="true" preprocess="xml-stripblanks">ui/window.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/list_row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/repo_row.ui</file>

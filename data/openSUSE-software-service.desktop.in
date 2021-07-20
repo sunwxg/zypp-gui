@@ -1,6 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=openSUSE Software
-Exec=@bindir@/openSUSE-software --gapplication-service
-NotShowIn=Budgie
-NoDisplay=true
