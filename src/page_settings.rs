@@ -70,12 +70,6 @@ impl PageSettings {
         }
         {
             let id = String::from(info.id.clone());
-            row.cpg().connect_toggled(move |b| {
-                Zypper::change_repo(id.clone(), Settings::Cpg(b.is_active()));
-            });
-        }
-        {
-            let id = String::from(info.id.clone());
             row.refresh().connect_toggled(move |b| {
                 Zypper::change_repo(id.clone(), Settings::Refresh(b.is_active()));
             });

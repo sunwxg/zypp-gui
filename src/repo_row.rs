@@ -4,7 +4,6 @@ use gtk::prelude::*;
 pub struct RepoRow {
     row: gtk::Box,
     enable: gtk::Switch,
-    cpg: gtk::CheckButton,
     refresh: gtk::CheckButton,
     priority: gtk::SpinButton,
     delete: gtk::Button,
@@ -16,7 +15,6 @@ impl RepoRow {
         let row: gtk::Box = builder.object("repo_row").unwrap();
         let name: gtk::Label = builder.object("name").unwrap();
         let enable: gtk::Switch = builder.object("enable_switch").unwrap();
-        let cpg: gtk::CheckButton = builder.object("cpg_button").unwrap();
         let refresh: gtk::CheckButton = builder.object("refresh_button").unwrap();
         let priority: gtk::SpinButton = builder.object("priority_button").unwrap();
         let url: gtk::Label = builder.object("url").unwrap();
@@ -24,7 +22,6 @@ impl RepoRow {
 
         name.set_text(info.name.as_str());
         enable.set_state(info.enable);
-        cpg.set_active(info.cpg);
         refresh.set_active(info.refresh);
         priority.set_value(info.priority as f64);
         url.set_text(info.url.as_str());
@@ -32,7 +29,6 @@ impl RepoRow {
         Self {
             row: row,
             enable: enable,
-            cpg: cpg,
             refresh: refresh,
             priority: priority,
             delete: delete,
@@ -45,10 +41,6 @@ impl RepoRow {
 
     pub fn enable(&self) -> &gtk::Switch {
         &self.enable
-    }
-
-    pub fn cpg(&self) -> &gtk::CheckButton {
-        &self.cpg
     }
 
     pub fn refresh(&self) -> &gtk::CheckButton {

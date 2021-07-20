@@ -4,7 +4,6 @@ use std::process::{Command, Stdio};
 #[derive(Clone)]
 pub enum Settings {
     Enable(bool),
-    Cpg(bool),
     Refresh(bool),
     Priority(i32),
 }
@@ -84,7 +83,6 @@ impl Zypper {
         let mut _value = String::new();
         match settings {
             Settings::Enable(s) => args.push(if s { "-e" } else { "-d" }),
-            Settings::Cpg(s) => args.push(if s { "-g" } else { "-G" }),
             Settings::Refresh(s) => args.push(if s { "-r" } else { "-n" }),
             Settings::Priority(s) => {
                 args.push("-p");
