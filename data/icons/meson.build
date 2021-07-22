@@ -8,3 +8,9 @@ install_data(
   install_dir: iconsdir / 'hicolor' / 'symbolic' / 'apps',
   rename: '@0@-symbolic.svg'.format(application_id)
 )
+
+install_subdir(
+  'country',
+  install_dir: iconsdir / 'hicolor' / '16x16' / 'places',
+  strip_directory : true
+)

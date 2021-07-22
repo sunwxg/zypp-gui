@@ -17,6 +17,7 @@ impl MirrorRow {
         let row: libhandy::ActionRow = builder.object("mirror_row").unwrap();
         let title = format!("{}  {}", site.country.clone(), site.name.clone());
         row.set_title(Some(title.as_str()));
+        row.set_icon_name(site.country.to_lowercase().as_str());
 
         let mirror_row = Self {
             row,
