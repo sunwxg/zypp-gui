@@ -1478,7 +1478,7 @@ dependencies = [
 
 [[package]]
 name = "zypp_gui"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "env_logger",
  "gdk",
