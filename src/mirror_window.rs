@@ -127,11 +127,11 @@ impl MirrorWindow {
         };
         let mut list = vec![];
         if distro == "tw" {
-            //repo-debug.repo:baseurl=http://download.opensuse.org/debug/tumbleweed/repo/oss/
-            //repo-source.repo:baseurl=http://download.opensuse.org/source/tumbleweed/repo/oss/
-            //repo-update.repo:baseurl=http://download.opensuse.org/update/tumbleweed/
-            //repo-non-oss.repo:baseurl=http://download.opensuse.org/tumbleweed/repo/non-oss/
-            //repo-oss.repo:baseurl=http://download.opensuse.org/tumbleweed/repo/oss/
+            //repo-debug.repo:      baseurl=http://download.opensuse.org/tumbleweed/repo/debug/
+            //repo-src-oss.repo:    baseurl=http://download.opensuse.org/tumbleweed/repo/src-oss
+            //repo-src-non-oss.repo:baseurl=http://download.opensuse.org/tumbleweed/repo/src-non-oss
+            //repo-non-oss.repo:    baseurl=http://download.opensuse.org/tumbleweed/repo/non-oss/
+            //repo-oss.repo:        baseurl=http://download.opensuse.org/tumbleweed/repo/oss/
             {
                 let name = format!("{}-non-oss", name);
                 let link = format!("{}/tumbleweed/repo/non-oss/", url);
@@ -144,17 +144,17 @@ impl MirrorWindow {
             }
             {
                 let name = format!("{}-debug", name);
-                let link = format!("{}/debug/tumbleweed/repo/oss/", url);
+                let link = format!("{}/tumbleweed/repo/debug/", url);
                 list.push((link, name));
             }
             {
-                let name = format!("{}-source", name);
-                let link = format!("{}/source/tumbleweed/repo/oss/", url);
+                let name = format!("{}-src-oss", name);
+                let link = format!("{}/tumbleweed/repo/src-oss/", url);
                 list.push((link, name));
             }
             {
-                let name = format!("{}-update", name);
-                let link = format!("{}/update/tumbleweed/", url);
+                let name = format!("{}-src-non-oss", name);
+                let link = format!("{}/tumbleweed/repo/src-non-oss/", url);
                 list.push((link, name));
             }
         } else if distro.contains("leap") {
