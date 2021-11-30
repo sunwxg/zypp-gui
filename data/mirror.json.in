@@ -71,7 +71,7 @@
       "ftp": ""
     },
     {
-      "country": "Hong Kong",
+      "country": "Hong.Kong",
       "name": "Rackspace.Hosting.Inc.",
       "http": "http://mirror.rackspace.hk/openSUSE/",
       "rsync": "",
@@ -127,7 +127,14 @@
       "ftp": ""
     },
     {
-      "country": "Iran, Islamic Republic of",
+      "country": "Iran,Islamic.Republic.of",
+      "name": "Bardia Moshiri",
+      "http": "http://mirror.bardia.tech/repo/opensuse",
+      "rsync": "",
+      "ftp": ""
+    },
+    {
+      "country": "Iran,Islamic.Republic.of",
       "name": "ITCenter.of.Isfahan.University",
       "http": "http://repo.iut.ac.ir/repo/opensuse",
       "rsync": "rsync://repo.iut.ac.ir/opensuse/",
@@ -162,7 +169,7 @@
       "ftp": "ftp://ftp.riken.jp/Linux/opensuse/"
     },
     {
-      "country": "Korea, Republic of",
+      "country": "Korea,Republic.of",
       "name": "KAIST",
       "http": "http://ftp.kaist.ac.kr/pub/opensuse/",
       "rsync": "rsync://ftp.kaist.ac.kr/opensuse/",
@@ -173,13 +180,6 @@
       "name": "IP.Serverone.Solutions.Sdn.Bhd",
       "http": "http://opensuse.ipserverone.com/opensuse/",
       "rsync": "rsync://opensuse.ipserverone.com/opensuse-full",
-      "ftp": ""
-    },
-    {
-      "country": "Oman",
-      "name": "Sultan.Qaboos.University",
-      "http": "http://mirror.squ.edu.om/opensuse/opensuse",
-      "rsync": "",
       "ftp": ""
     },
     {
@@ -234,7 +234,7 @@
       "ftp": "ftp://opensuse.mirror.liquidtelecom.com/opensuse"
     },
     {
-      "country": "South Africa",
+      "country": "South.Africa",
       "name": "TENET-Tertiary.Education.Network",
       "http": "http://opensuse.mirror.ac.za/",
       "rsync": "rsync://opensuse.mirror.ac.za/opensuse/",
@@ -266,9 +266,9 @@
     {
       "country": "Belgium",
       "name": "BELNET-The.network.of.knowledge",
-      "http": "http://ftp.belnet.be/mirror/ftp.opensuse.org/",
+      "http": "http://ftp.belnet.be/mirror/ftp.opensuse.org/opensuse",
       "rsync": "",
-      "ftp": "ftp://ftp.belnet.be/mirror/ftp.opensuse.org/"
+      "ftp": "ftp://ftp.belnet.be/mirror/ftp.opensuse.org/opensuse"
     },
     {
       "country": "Belgium",
@@ -334,35 +334,35 @@
       "ftp": ""
     },
     {
-      "country": "Czech Republic",
+      "country": "Czech.Republic",
       "name": "CZ.NIC",
       "http": "http://mirrors.nic.cz/opensuse/opensuse/",
       "rsync": "rsync://mirrors.nic.cz/opensuse/opensuse/",
       "ftp": "ftp://mirrors.nic.cz/pub/opensuse/opensuse/"
     },
     {
-      "country": "Czech Republic",
+      "country": "Czech.Republic",
       "name": "CZLUG-Czech.Linux.User.Group",
       "http": "http://ftp.linux.cz/pub/linux/opensuse/",
       "rsync": "rsync://ftp.linux.cz/pub/linux/opensuse/",
       "ftp": "ftp://ftp.linux.cz/pub/linux/opensuse/"
     },
     {
-      "country": "Czech Republic",
+      "country": "Czech.Republic",
       "name": "KINDL&PARTNERI.advokatni.kancelar.s.r.o.",
-      "http": "http://opensuse.akkp.eu/",
+      "http": "http://opensuse.kp-ak.eu/",
       "rsync": "rsync://opensuse.akkp.eu/opensuse",
       "ftp": ""
     },
     {
-      "country": "Czech Republic",
+      "country": "Czech.Republic",
       "name": "Silicon.Hill.Student’s.Union.CTU",
       "http": "http://ftp.sh.cvut.cz/opensuse/",
       "rsync": "rsync://ftp.sh.cvut.cz/opensuse/",
       "ftp": "ftp://ftp.sh.cvut.cz/opensuse/"
     },
     {
-      "country": "Czech Republic",
+      "country": "Czech.Republic",
       "name": "UPC.Česká.republika",
       "http": "http://mirror.karneval.cz/pub/linux/opensuse/",
       "rsync": "rsync://mirror.karneval.cz/opensuse",
@@ -462,9 +462,9 @@
     {
       "country": "Germany",
       "name": "University.of.Erlangen-Nürnberg",
-      "http": "http://ftp.uni-erlangen.de/pub/mirrors/opensuse/",
+      "http": "http://ftp.uni-erlangen.de/opensuse/",
       "rsync": "",
-      "ftp": "ftp://ftp.uni-erlangen.de/pub/mirrors/opensuse/"
+      "ftp": "ftp://ftp.uni-erlangen.de/opensuse/"
     },
     {
       "country": "Germany",
@@ -496,9 +496,9 @@
     },
     {
       "country": "Germany",
-      "name": "openSUSE.Heroes-sponsored.by.QSC.AG",
-      "http": "http://widehat.opensuse.org/",
-      "rsync": "rsync://62.146.92.210/opensuse/",
+      "name": "openSUSE Heroes - sponsored by q.beyond",
+      "http": "https://rsync.opensuse.org/",
+      "rsync": "rsync://62.146.92.202:8873/opensuse/",
       "ftp": ""
     },
     {
@@ -551,35 +551,35 @@
       "ftp": ""
     },
     {
-      "country": "United Kingdom",
+      "country": "United.Kingdom",
       "name": "Coreix.Ltd",
       "http": "http://mirrors.coreix.net/opensuse/",
       "rsync": "rsync://mirrors.coreix.net/mirrors/opensuse/",
       "ftp": "ftp://mirrors.coreix.net/opensuse/"
     },
     {
-      "country": "United Kingdom",
+      "country": "United.Kingdom",
       "name": "Get.Hosted.Online",
       "http": "http://mirrors.gethosted.online/opensuse",
       "rsync": "rsync://mirrors.gethosted.online/opensuse",
       "ftp": ""
     },
     {
-      "country": "United Kingdom",
+      "country": "United.Kingdom",
       "name": "Rackspace.Hosting.Inc.",
       "http": "http://mirror.rackspace.co.uk/openSUSE/",
       "rsync": "",
       "ftp": ""
     },
     {
-      "country": "United Kingdom",
+      "country": "United.Kingdom",
       "name": "University.Of.Kent-UK.Mirror.Service",
       "http": "http://www.mirrorservice.org/sites/download.opensuse.org/",
       "rsync": "rsync://rsync.mirrorservice.org/download.opensuse.org/",
       "ftp": "ftp://www.mirrorservice.org/sites/download.opensuse.org/"
     },
     {
-      "country": "United Kingdom",
+      "country": "United.Kingdom",
       "name": "University.of.Oxford",
       "http": "http://mirror.ox.ac.uk/sites/ftp.opensuse.org/pub/opensuse/",
       "rsync": "",
@@ -618,7 +618,7 @@
       "name": "GARR-The.Italian.Academic&Research.Network",
       "http": "http://opensuse.mirror.garr.it/mirrors/opensuse",
       "rsync": "rsync://opensuse.mirror.garr.it/opensuse/",
-      "ftp": "ftp://opensuse.mirror.garr.it/mirrors/opensuse"
+      "ftp": ""
     },
     {
       "country": "Latvia",
@@ -639,13 +639,6 @@
       "name": "iHost",
       "http": "http://mirror.ihost.md/opensuse/",
       "rsync": "rsync://mirror.ihost.md/opensuse/",
-      "ftp": ""
-    },
-    {
-      "country": "Netherlands",
-      "name": "Easy.Lee",
-      "http": "http://mirror.easylee.nl/opensuse",
-      "rsync": "rsync://mirror.easylee.nl/opensuse",
       "ftp": ""
     },
     {
@@ -672,16 +665,16 @@
     {
       "country": "Netherlands",
       "name": "NLUUG.Surfnet",
-      "http": "http://ftp1.nluug.nl/os/Linux/distr/opensuse/",
-      "rsync": "rsync://ftp1.nluug.nl/opensuse/",
-      "ftp": "ftp://ftp1.nluug.nl/pub/os/Linux/distr/opensuse/"
+      "http": "http://ftp2.nluug.nl/os/Linux/distr/opensuse/",
+      "rsync": "rsync://ftp2.nluug.nl/opensuse/",
+      "ftp": "ftp://ftp2.nluug.nl/pub/os/Linux/distr/opensuse/"
     },
     {
       "country": "Netherlands",
       "name": "NLUUG.Surfnet",
-      "http": "http://ftp2.nluug.nl/os/Linux/distr/opensuse/",
-      "rsync": "rsync://ftp2.nluug.nl/opensuse/",
-      "ftp": "ftp://ftp2.nluug.nl/pub/os/Linux/distr/opensuse/"
+      "http": "http://ftp1.nluug.nl/os/Linux/distr/opensuse/",
+      "rsync": "rsync://ftp1.nluug.nl/opensuse/",
+      "ftp": "ftp://ftp1.nluug.nl/pub/os/Linux/distr/opensuse/"
     },
     {
       "country": "Netherlands",
@@ -703,13 +696,6 @@
       "http": "http://ftp.icm.edu.pl/pub/Linux/opensuse/",
       "rsync": "rsync://ftp.icm.edu.pl/pub/Linux/opensuse/",
       "ftp": "ftp://ftp.icm.edu.pl/pub/Linux/opensuse/"
-    },
-    {
-      "country": "Poland",
-      "name": "Poznań.Supercomputing.and.Networking.Center",
-      "http": "http://ftp.man.poznan.pl/linux/opensuse/",
-      "rsync": "rsync://ftp.man.poznan.pl/public/linux/opensuse/",
-      "ftp": "ftp://ftp.man.poznan.pl/pub/linux/opensuse/"
     },
     {
       "country": "Poland",
@@ -741,41 +727,27 @@
     },
     {
       "country": "Romania",
-      "name": "NAV.Communications",
-      "http": "http://mirrors.nav.ro/opensuse",
-      "rsync": "rsync://mirrors.nav.ro/opensuse",
-      "ftp": "ftp://mirrors.nav.ro/opensuse"
-    },
-    {
-      "country": "Romania",
       "name": "nxtHost.com",
       "http": "http://mirrors.nxthost.com/opensuse/",
       "rsync": "rsync://mirrors.nxthost.com/opensuse/",
       "ftp": ""
     },
     {
-      "country": "Russian Federation",
-      "name": "CHG-Scientific.Center.in.Chernogolovka.RAS",
-      "http": "http://ftp.chg.ru/pub/opensuse/",
-      "rsync": "rsync://ftp.chg.ru/opensuse/",
-      "ftp": "ftp://ftp.chg.ru/pub/opensuse/"
-    },
-    {
-      "country": "Russian Federation",
+      "country": "Russian.Federation",
       "name": "Tomsk.State.Pedagogical.University",
       "http": "http://mirror.tspu.ru/opensuse/",
       "rsync": "rsync://mirror.tspu.ru/opensuse/",
       "ftp": "ftp://mirror.tspu.ru/opensuse/"
     },
     {
-      "country": "Russian Federation",
+      "country": "Russian.Federation",
       "name": "ia64-linux.org",
       "http": "http://mirror.linux-ia64.org/opensuse/",
       "rsync": "rsync://rsync.mirror.linux-ia64.org/opensuse/",
       "ftp": ""
     },
     {
-      "country": "Russian Federation",
+      "country": "Russian.Federation",
       "name": "Яндекс.Yandex",
       "http": "http://mirror.yandex.ru/opensuse/",
       "rsync": "rsync://mirror.yandex.ru/opensuse/",
@@ -825,9 +797,30 @@
     },
     {
       "country": "Ukraine",
+      "name": "Astra ISP",
+      "http": "http://opensuse.astra.in.ua",
+      "rsync": "rsync://opensuse.astra.in.ua/opensuse",
+      "ftp": ""
+    },
+    {
+      "country": "Ukraine",
+      "name": "IP-Connect Vinnytsia",
+      "http": "http://opensuse.ip-connect.info/",
+      "rsync": "rsync://opensuse.ip-connect.info/opensuse",
+      "ftp": ""
+    },
+    {
+      "country": "Ukraine",
       "name": "Ivan.Barabash",
       "http": "http://fastmirror.pp.ua/opensuse/",
       "rsync": "rsync://fastmirror.pp.ua/opensuse/",
+      "ftp": ""
+    },
+    {
+      "country": "Ukraine",
+      "name": "VSYS Host",
+      "http": "http://mirror.vsys.host/opensuse/opensuse",
+      "rsync": "rsync://mirror.vsys.host/opensuse",
       "ftp": ""
     }
   ],
@@ -848,13 +841,6 @@
     },
     {
       "country": "Canada",
-      "name": "Free.Mirror",
-      "http": "http://opensuse.freemirror.org/opensuse",
-      "rsync": "rsync://opensuse.freemirror.org/opensuse",
-      "ftp": ""
-    },
-    {
-      "country": "Canada",
       "name": "University.of.Waterloo",
       "http": "http://mirror.csclub.uwaterloo.ca/opensuse/",
       "rsync": "rsync://mirror.csclub.uwaterloo.ca/opensuse/",
@@ -868,212 +854,191 @@
       "ftp": ""
     },
     {
-      "country": "Costa Rica",
+      "country": "Costa.Rica",
       "name": "Universidad.de.Costa.Rica",
       "http": "http://mirrors.ucr.ac.cr/opensuse/",
       "rsync": "rsync://mirrors.ucr.ac.cr/opensuse/",
       "ftp": "ftp://mirrors.ucr.ac.cr/opensuse/"
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "Bernhard.M.Wiedemann",
       "http": "http://opensuse.zq1.de/",
       "rsync": "rsync://hotel.zq1.de/opensuse/",
       "ftp": ""
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "Datto.Inc.",
       "http": "http://mirror.datto.com/opensuse/",
       "rsync": "rsync://mirror.datto.com/opensuse/",
       "ftp": ""
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "ETTE.biz",
       "http": "http://mirror.ette.biz/opensuse/",
       "rsync": "rsync://mirror.ette.biz/opensuse",
       "ftp": ""
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "Georgia.Institute.of.Technology",
       "http": "http://www.gtlib.gatech.edu/pub/opensuse/",
       "rsync": "rsync://mirror.gtlib.gatech.edu/opensuse/",
       "ftp": "ftp://www.gtlib.gatech.edu/pub/opensuse/"
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "Indiana.University",
-      "http": "http://ftp.ussg.iu.edu/linux/opensuse/",
+      "http": "http://ftp.ussg.iu.edu/linux/opensuse/opensuse",
       "rsync": "rsync://ftp.ussg.iu.edu/opensuse/",
       "ftp": "ftp://ftp.ussg.iu.edu/linux/opensuse/"
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "Leaseweb",
       "http": "http://mirror.dal10.us.leaseweb.net/opensuse",
       "rsync": "rsync://mirror.dal10.us.leaseweb.net/opensuse",
       "ftp": "ftp://mirror.dal10.us.leaseweb.net/opensuse"
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "Leaseweb",
       "http": "http://mirror.us.leaseweb.net/opensuse",
       "rsync": "rsync://mirror.us.leaseweb.net/opensuse",
       "ftp": "ftp://mirror.us.leaseweb.net/opensuse"
     },
     {
-      "country": "United States",
-      "name": "Leaseweb",
-      "http": "http://mirror.sfo12.us.leaseweb.net/opensuse",
-      "rsync": "rsync://mirror.sfo12.us.leaseweb.net/opensuse",
-      "ftp": "ftp://mirror.sfo12.us.leaseweb.net/opensuse"
-    },
-    {
-      "country": "United States",
+      "country": "United.States",
       "name": "Linux.Foundation.Portland.Oregon.USA",
       "http": "http://suse.mobile-central.org/",
       "rsync": "rsync://suse.mobile-central.org/opensuse/",
       "ftp": ""
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "Linux.Kernel.Archives.US.East",
       "http": "http://ewr.edge.kernel.org/opensuse",
       "rsync": "rsync://mirrors.kernel.org/opensuse",
       "ftp": ""
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "Linux.Kernel.Archives.US.West",
       "http": "http://sjc.edge.kernel.org/opensuse",
       "rsync": "rsync://mirrors.kernel.org/opensuse",
       "ftp": ""
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "Princeton.University.Mathematics",
       "http": "http://mirror.math.princeton.edu/pub/opensuse-full/opensuse",
       "rsync": "rsync://mirror.math.princeton.edu/pub/opensuse-full/opensuse",
       "ftp": ""
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "Purdue.Linux.Users.Group",
       "http": "http://plug-mirror.rcac.purdue.edu/opensuse",
       "rsync": "rsync://plug-mirror.rcac.purdue.edu/opensuse",
       "ftp": "ftp://plug-mirror.rcac.purdue.edu/opensuse"
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "Rackspace.Hosting.Inc.",
       "http": "http://mirror.rackspace.com/openSUSE/",
       "rsync": "rsync://mirror.rackspace.com/opensuse/",
       "ftp": "ftp://mirror.rackspace.com/openSUSE/"
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "Rochester.Institute.of.Technology",
       "http": "http://mirrors.rit.edu/opensuse/",
       "rsync": "rsync://mirrors.rit.edu/opensuse/",
       "ftp": ""
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "SUSE.Linux.Products.GmbH",
       "http": "http://opensuse-mirror-gce-ap.susecloud.net",
       "rsync": "rsync://opensuse-mirror-gce-ap.susecloud.net/opensuse/",
       "ftp": "ftp://pensuse-mirror-gce-ap.susecloud.net"
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "SUSE.Linux.Products.GmbH",
       "http": "http://opensuse-mirror-gce-us.opensu.se/",
       "rsync": "rsync://opensuse-mirror-gce-us.opensu.se/opensuse/",
       "ftp": ""
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "Siena.College",
       "http": "http://mirror.siena.edu/opensuse",
       "rsync": "rsync://mirror.siena.edu/opensuse/",
       "ftp": ""
     },
     {
-      "country": "United States",
-      "name": "Silicon.Valley.Web.Hosting.LLC",
-      "http": "http://mirror.sjc02.svwh.net/opensuse/",
-      "rsync": "rsync://mirror.sjc02.svwh.net/opensuse/",
-      "ftp": ""
-    },
-    {
-      "country": "United States",
+      "country": "United.States",
       "name": "TDS.Telecom",
       "http": "http://suse.mirrors.tds.net/pub/opensuse/",
       "rsync": "rsync://suse.mirrors.tds.net/opensuse/opensuse/",
       "ftp": ""
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "The.Clarkson.Open.Source.Institute",
       "http": "http://mirror.clarkson.edu/opensuse/",
       "rsync": "rsync://mirror.clarkson.edu/opensuse/",
       "ftp": ""
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "University.of.Maryland.College.Park",
       "http": "http://mirror.umd.edu/opensuse/",
       "rsync": "rsync://mirror.umd.edu/opensuse/",
       "ftp": ""
     },
     {
-      "country": "United States",
-      "name": "University.of.Utah",
-      "http": "http://opensuse.cs.utah.edu/",
-      "rsync": "rsync://opensuse.cs.utah.edu/opensuse/",
-      "ftp": "ftp://opensuse.cs.utah.edu/opensuse/"
-    },
-    {
-      "country": "United States",
+      "country": "United.States",
       "name": "Virginia.Tech.Transportation.Institute",
       "http": "http://mirror.vtti.vt.edu/opensuse/",
       "rsync": "rsync://mirror.vtti.vt.edu/opensuse/",
       "ftp": "ftp://mirror.vtti.vt.edu/opensuse/"
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "WPI.ACM",
       "http": "http://mirrors.acm.wpi.edu/opensuse/",
       "rsync": "rsync://mirrors.acm.wpi.edu::opensuse/",
       "ftp": ""
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "sfo-korg-mirror",
       "http": "http://sfo-korg-mirror.kernel.org/opensuse/",
       "rsync": "rsync://sfo-korg-mirror.kernel.org/opensuse/",
       "ftp": "ftp://sfo-korg-mirror.kernel.org/opensuse/"
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "ibiblio.org",
       "http": "http://distro.ibiblio.org/opensuse/",
       "rsync": "",
       "ftp": ""
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "openSUSE",
       "http": "https://provo-mirror.opensuse.org/",
       "rsync": "rsync://provo-downloadcontent.opensuse.org/repositories-scan",
       "ftp": "ftp://provo-mirror.opensuse.org/pub/opensuse/"
     },
     {
-      "country": "United States",
+      "country": "United.States",
       "name": "openSUSE.Heroes",
-      "http": "https://provo-mirror.opensuse.org/",
+      "http": "http://provo-mirror.opensuse.org/",
       "rsync": "rsync://provo-mirror.opensuse.org/opensuse/",
       "ftp": "ftp://provo-mirror.opensuse.org/pub/opensuse/"
     }
@@ -1115,14 +1080,14 @@
       "ftp": "ftp://ftp.iinet.net.au/pub/opensuse/"
     },
     {
-      "country": "New Zealand",
+      "country": "New.Zealand",
       "name": "TheoM’s.Mirror.Service",
       "http": "http://opensuse.mirrors.theom.nz",
       "rsync": "rsync://rsync.mirrors.theom.nz/opensuse",
       "ftp": ""
     },
     {
-      "country": "New Zealand",
+      "country": "New.Zealand",
       "name": "UFONE",
       "http": "http://opensuse.mirrors.uf1.nz",
       "rsync": "rsync://opensuse.mirrors.uf1.nz",

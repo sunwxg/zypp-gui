@@ -11,6 +11,7 @@ use clap::{App, Arg};
 
 mod name_convert;
 use crate::name_convert::NAME_CONVERT;
+use crate::name_convert::COUNTRY_CONVERT;
 
 const NS: &'static str = "metadata/common";
 const NSHEAD: &'static str = r#"<metadata xmlns="metadata/common" xmlns:rpm="metadata/rpm">"#;
@@ -54,6 +55,10 @@ fn main() {
     for i in NAME_CONVERT {
         name_map.insert(i.0.to_string(), i.1.to_string());
     }
+    let mut country_map: HashMap<String, String> = HashMap::new();
+    for i in COUNTRY_CONVERT {
+        country_map.insert(i.0.to_string(), i.1.to_string());
+    }
 
     let mut buffer = String::new();
     let _ = std::io::stdin().read_to_string(&mut buffer);
@@ -83,7 +88,7 @@ fn main() {
             continue;
         }
 
-        _region.push(get_site(c, name_map.clone()));
+        _region.push(get_site(c, name_map.clone(), country_map.clone()));
     }
     _map.insert(_region_name, _region);
     if print_number {
@@ -106,7 +111,7 @@ fn main() {
     }
 }
 
-fn get_site(e: &Element, name_map: HashMap<String, String>) -> Site {
+fn get_site(e: &Element, name_map: HashMap<String, String>, country_map: HashMap<String, String>) -> Site {
     let mut country = String::new();
     let mut name = String::new();
     let mut http = (String::new(), String::new());
@@ -117,7 +122,10 @@ fn get_site(e: &Element, name_map: HashMap<String, String>) -> Site {
         if c1.is("td", NS) {
             for c2 in c1.children() {
                 if c2.is("img", NS) {
-                    country = c1.text().trim().to_string();
+                    country = match country_map.get(c1.text().trim()) {
+                        Some(country) => country.to_string(),
+                        None => c1.text().trim().to_string(),
+                    };
                 }
                 if c2.is("a", NS) {
                     match c2.text().as_str() {

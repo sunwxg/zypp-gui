@@ -310,3 +310,26 @@ pub static NAME_CONVERT:&'static [(&'static str, &'static str)] = &[
 ("standaloneInstaller.com",
 "standaloneInstaller.com"),
 ];
+
+pub static COUNTRY_CONVERT:&'static [(&'static str, &'static str)] = &[
+("Hong Kong",
+"Hong.Kong"),
+("Costa Rica",
+"Costa.Rica"),
+("Czech Republic",
+"Czech.Republic"),
+("Iran, Islamic Republic of",
+"Iran,Islamic.Republic.of"),
+("Korea, Republic of",
+"Korea,Republic.of"),
+("New Zealand",
+"New.Zealand"),
+("Russian Federation",
+"Russian.Federation"),
+("South Africa",
+"South.Africa"),
+("United Kingdom",
+"United.Kingdom"),
+("United States",
+"United.States"),
+];
