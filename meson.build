@@ -1,7 +1,7 @@
 project(
   'zypp-gui',
   'rust',
-  version: '0.1.2',
+  version: '0.2.0',
   meson_version: '>= 0.50',
 )
 
