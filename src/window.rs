@@ -2,7 +2,6 @@ use gettextrs::*;
 use gtk::gio;
 use gtk::glib;
 use gtk::prelude::*;
-use libhandy::prelude::*;
 use log::{debug, info};
 use std::cell::{Ref, RefCell};
 use std::rc::Rc;
@@ -20,11 +19,11 @@ use crate::util::{ButtonState, PKmessage, PackageInfo};
 
 #[derive(Clone)]
 pub struct Window {
-    window: libhandy::ApplicationWindow,
+    window: libadwaita::ApplicationWindow,
     stack_box: gtk::Stack,
     stack_list: gtk::ScrolledWindow,
     progress_bar: gtk::ProgressBar,
-    stack_label: libhandy::Clamp,
+    stack_label: libadwaita::Clamp,
     progress: gtk::Box,
     progress_label: gtk::Label,
     list_box: gtk::ListBox,
@@ -44,7 +43,7 @@ pub struct Window {
 impl Window {
     pub fn new(packagekit_state: PackagekitState, application: gtk::Application) -> Self {
         let builder = gtk::Builder::from_resource("/zypp/gui/ui/window.ui");
-        let win: libhandy::ApplicationWindow = builder.object("window").unwrap();
+        let win: libadwaita::ApplicationWindow = builder.object("window").unwrap();
         win.set_application(Some(&application));
 
         let button: gtk::Button = builder.object("download_button").unwrap();
@@ -55,7 +54,7 @@ impl Window {
         let stack_box: gtk::Stack = builder.object("stack_box").unwrap();
         let stack_list = builder.object("stack_list").unwrap();
         let progress_bar: gtk::ProgressBar = builder.object("progress_bar").unwrap();
-        let stack_label: libhandy::Clamp = builder.object("stack_label").unwrap();
+        let stack_label: libadwaita::Clamp = builder.object("stack_label").unwrap();
         let progress: gtk::Box = builder.object("progress").unwrap();
         let progress_label: gtk::Label = builder.object("progress_label").unwrap();
         stack_box.set_visible_child(&stack_label);
@@ -104,7 +103,7 @@ impl Window {
         window
     }
 
-    pub fn window(&self) -> &libhandy::ApplicationWindow {
+    pub fn window(&self) -> &libadwaita::ApplicationWindow {
         &self.window
     }
 
@@ -172,6 +171,7 @@ impl Window {
     }
 
     fn button_connect(&self) {
+        /*
         {
             let application = self.application.clone();
             self.window.connect_delete_event(move |window, _| {
@@ -179,17 +179,18 @@ impl Window {
                 let flag = application.flags();
                 if flag == gio::ApplicationFlags::IS_SERVICE {
                     window.hide();
-                    Inhibit(true)
+                    //Inhibit(true)
                 } else {
-                    Inhibit(false)
+                    //Inhibit(false)
                 }
             });
         }
+            */
         let builder = self.builder.clone();
         {
             let button: gtk::Button = builder.object("button_settings").unwrap();
-            let deck: libhandy::Deck = builder.object("deck").unwrap();
-            let page_settings: libhandy::Leaflet = builder.object("page_settings").unwrap();
+            let deck: libadwaita::ViewStack = builder.object("viewstack").unwrap();
+            let page_settings: libadwaita::Leaflet = builder.object("page_settings").unwrap();
             button.connect_clicked(move |_| {
                 deck.set_visible_child(&page_settings);
             });
@@ -197,7 +198,7 @@ impl Window {
 
         {
             let button: gtk::Button = builder.object("button_deck_back").unwrap();
-            let deck: libhandy::Deck = builder.object("deck").unwrap();
+            let deck: libadwaita::ViewStack = builder.object("viewstack").unwrap();
             let page_update: gtk::Box = builder.object("page_update").unwrap();
             button.connect_clicked(move |_| {
                 deck.set_visible_child(&page_update);
@@ -207,10 +208,10 @@ impl Window {
         {
             let button: gtk::ToggleButton = builder.object("search_button").unwrap();
             let button_stack: gtk::Stack = builder.object("button_stack").unwrap();
-            let search_bar: libhandy::Clamp = builder.object("search_bar").unwrap();
+            let search_bar: libadwaita::Clamp = builder.object("search_bar").unwrap();
             let update_button: gtk::Box = builder.object("update_button").unwrap();
             let search_box: gtk::ScrolledWindow = builder.object("search_box").unwrap();
-            let search_entry: gtk::SearchEntry = builder.object("search_entry").unwrap();
+            let search_entry: gtk::Entry = builder.object("search_entry").unwrap();
             let this = self.clone();
             button.connect_toggled(move |b| {
                 if b.is_active() {
@@ -329,7 +330,7 @@ impl Window {
         }
         drop(state);
 
-        let deck: libhandy::Deck = self.builder.object("deck").unwrap();
+        let deck: libadwaita::ViewStack = self.builder.object("viewstack").unwrap();
         let page_update: gtk::Box = self.builder.object("page_update").unwrap();
         deck.set_visible_child(&page_update);
 
@@ -360,7 +361,7 @@ impl Window {
     fn update_progress(&self, percentage: i32) {
         self.show_progress();
         self.progress_bar.set_fraction(percentage as f64 / 100.0);
-        self.progress_bar.show_all();
+        self.progress_bar.show();
     }
 
     fn update_progress_text(&self, text: Option<String>) {
@@ -376,7 +377,7 @@ impl Window {
         }
         let fmt = format!("<b>{}</b>  {}", v[0], v[1]);
         self.progress_label.set_markup(fmt.as_str());
-        self.progress_label.show_all();
+        self.progress_label.show();
     }
 
     fn update_list(&self, package_list: Vec<PackageInfo>) {
@@ -394,15 +395,26 @@ impl Window {
             version.push_str(" → ");
             version.push_str(info.version_new.as_str());
             row.set_version(version);
-            list_box.add(&row.row().to_owned());
+            list_box.append(&row.row().to_owned());
         }
     }
 
     fn clear_list(&self) {
         let list_box = &self.list_box;
-        let children = list_box.children();
-        for child in children {
+        let mut child = match list_box.first_child() {
+            Some(child) => child,
+            None => return,
+        };
+
+        loop {
+            let next_child = child.next_sibling();
             list_box.remove(&child);
+            match next_child {
+                Some(c) => {
+                    child = c;
+                }
+                None => break,
+            };
         }
     }
 

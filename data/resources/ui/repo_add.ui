@@ -4,21 +4,15 @@
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkImage" id="cancel">
     <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="stock">gtk-cancel</property>
   </object>
   <object class="GtkImage" id="ok">
     <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="stock">gtk-apply</property>
   </object>
   <object class="GtkWindow" id="repo_add_window">
-    <property name="can-focus">False</property>
     <property name="default-width">440</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can-focus">False</property>
         <property name="margin-start">20</property>
         <property name="margin-end">20</property>
         <property name="margin-top">10</property>
@@ -27,122 +21,62 @@
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can-focus">False</property>
             <property name="margin-top">5</property>
             <property name="margin-bottom">5</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="label" translatable="yes">Name:</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <object class="GtkEntry" id="repo_name">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
         </child>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can-focus">False</property>
             <property name="margin-top">5</property>
             <property name="margin-bottom">5</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="label" translatable="yes">Url:</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <object class="GtkEntry" id="repo_url">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkButtonBox">
+          <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can-focus">False</property>
             <property name="margin-top">5</property>
             <property name="margin-bottom">5</property>
-            <property name="layout-style">expand</property>
+            <property name="homogeneous">True</property>
             <child>
               <object class="GtkButton" id="add_cancel">
                 <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
-                <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="image">cancel</property>
-                <property name="always-show-image">True</property>
               </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <object class="GtkButton" id="add_ok">
                 <property name="label" translatable="yes">OK</property>
                 <property name="visible">True</property>
-                <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="image">ok</property>
-                <property name="always-show-image">True</property>
               </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
         </child>
       </object>
     </child>

@@ -1,17 +1,17 @@
 use crate::util::SearchInfo;
 use gettextrs::*;
 use gtk::prelude::*;
-use libhandy::prelude::*;
+use libadwaita::prelude::*;
 
 pub struct SearchRow {
-    row: libhandy::ActionRow,
+    row: libadwaita::ActionRow,
     button: gtk::Button,
 }
 
 impl SearchRow {
     pub fn new(info: SearchInfo) -> Self {
         let builder = gtk::Builder::from_resource("/zypp/gui/ui/search_row.ui");
-        let row: libhandy::ActionRow = builder.object("row").unwrap();
+        let row: libadwaita::ActionRow = builder.object("row").unwrap();
         let button: gtk::Button = builder.object("operation_button").unwrap();
         if info.info == "installed" {
             button.set_label(&gettext("Remove"));
@@ -25,7 +25,7 @@ impl SearchRow {
         }
     }
 
-    pub fn row(&self) -> &libhandy::ActionRow {
+    pub fn row(&self) -> &libadwaita::ActionRow {
         &self.row
     }
 
@@ -34,10 +34,10 @@ impl SearchRow {
     }
 
     pub fn set_title(&self, name: String) {
-        self.row.set_title(Some(&name.to_string()));
+        self.row.set_title(&name.to_string());
     }
 
     pub fn set_subtitle(&self, subtitle: String) {
-        self.row.set_subtitle(Some(&subtitle.to_string()));
+        self.row.set_subtitle(&subtitle.to_string());
     }
 }

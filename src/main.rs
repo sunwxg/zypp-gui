@@ -37,13 +37,13 @@ fn main() {
     glib::set_application_name("zypp gui");
     glib::set_prgname(Some("zypp-gui"));
 
-    gtk::init().expect("Unable to start GTK3");
-    libhandy::init();
+    gtk::init().expect("Unable to start GTK4");
+    libadwaita::init().expect("Unable to init libadwaita");
 
     let res = gio::Resource::load(RESOURCES_FILE).expect("Could not load gresource file");
     gio::resources_register(&res);
 
-    setup_css();
+    //setup_css();
     let application = gtk::Application::new(Some(config::APP_ID), Default::default());
     application.connect_startup(build_ui);
 
@@ -60,18 +60,18 @@ fn build_ui(application: &gtk::Application) {
     application.connect_activate(move |_| {
         info!("activate");
         window.first_show();
-        window.window().show_all();
+        window.window().show();
     });
 }
 
-fn setup_css() {
-    let provider = gtk::CssProvider::new();
-    provider.load_from_resource("/zypp/gui/style.css");
-    if let Some(screen) = gdk::Screen::default() {
-        gtk::StyleContext::add_provider_for_screen(
-            &screen,
-            &provider,
-            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
-        );
-    }
-}
+//fn setup_css() {
+//let provider = gtk::CssProvider::new();
+//provider.load_from_resource("/zypp/gui/style.css");
+//if let Some(screen) = gdk::Screen::default() {
+//gtk::StyleContext::add_provider_for_screen(
+//&screen,
+//&provider,
+//gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+//);
+//}
+//}

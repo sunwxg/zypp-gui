@@ -1,7 +1,6 @@
 extern crate serde;
 extern crate serde_json;
 
-use gtk::prelude::*;
 use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::io::prelude::*;
@@ -31,21 +30,15 @@ pub struct Site {
 #[derive(Clone)]
 pub struct MirrorSettings {
     data: Data,
-    mirror_page: gtk::Box,
-    main_window: libhandy::ApplicationWindow,
+    main_window: libadwaita::ApplicationWindow,
 }
 
 impl MirrorSettings {
     pub fn new(builder: &gtk::Builder) -> Self {
         let data = MirrorSettings::read_data();
-        let mirror_page: gtk::Box = builder.object("mirror_page").unwrap();
-        let main_window: libhandy::ApplicationWindow = builder.object("window").unwrap();
+        let main_window: libadwaita::ApplicationWindow = builder.object("window").unwrap();
 
-        let mirror = Self {
-            data,
-            mirror_page,
-            main_window,
-        };
+        let mirror = Self { data, main_window };
 
         mirror.creat_row(builder);
         mirror
@@ -90,42 +83,42 @@ impl MirrorSettings {
             let list_box: gtk::ListBox = builder.object("asia").unwrap();
             for site in self.data.asia.clone() {
                 let row = MirrorRow::new(site, self.main_window.clone());
-                list_box.add(&row.row().to_owned());
+                list_box.append(&row.row().to_owned());
             }
         }
         {
             let list_box: gtk::ListBox = builder.object("africa").unwrap();
             for site in self.data.africa.clone() {
                 let row = MirrorRow::new(site, self.main_window.clone());
-                list_box.add(&row.row().to_owned());
+                list_box.append(&row.row().to_owned());
             }
         }
         {
             let list_box: gtk::ListBox = builder.object("europe").unwrap();
             for site in self.data.europe.clone() {
                 let row = MirrorRow::new(site, self.main_window.clone());
-                list_box.add(&row.row().to_owned());
+                list_box.append(&row.row().to_owned());
             }
         }
         {
             let list_box: gtk::ListBox = builder.object("north_america").unwrap();
             for site in self.data.north_america.clone() {
                 let row = MirrorRow::new(site, self.main_window.clone());
-                list_box.add(&row.row().to_owned());
+                list_box.append(&row.row().to_owned());
             }
         }
         {
             let list_box: gtk::ListBox = builder.object("oceania").unwrap();
             for site in self.data.oceania.clone() {
                 let row = MirrorRow::new(site, self.main_window.clone());
-                list_box.add(&row.row().to_owned());
+                list_box.append(&row.row().to_owned());
             }
         }
         {
             let list_box: gtk::ListBox = builder.object("south_america").unwrap();
             for site in self.data.south_america.clone() {
                 let row = MirrorRow::new(site, self.main_window.clone());
-                list_box.add(&row.row().to_owned());
+                list_box.append(&row.row().to_owned());
             }
         }
     }

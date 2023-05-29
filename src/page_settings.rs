@@ -1,11 +1,10 @@
-use gtk::gdk;
+//use gtk::gdk;
 use gtk::gio;
 use gtk::gio::prelude::*;
 use gtk::gio::File;
 use gtk::glib;
 use gtk::prelude::*;
-use libhandy::prelude::*;
-use libhandy::NavigationDirection;
+use libadwaita::NavigationDirection;
 use log::debug;
 use std::thread;
 
@@ -17,7 +16,7 @@ use crate::zypper::{RepoInfo, Settings, Zypper};
 #[derive(Clone)]
 pub struct PageSettings {
     list_box: gtk::Box,
-    main_window: libhandy::ApplicationWindow,
+    main_window: libadwaita::ApplicationWindow,
 }
 
 impl PageSettings {
@@ -25,8 +24,8 @@ impl PageSettings {
         let list_box: gtk::Box = builder.object("repo_box").unwrap();
         let repo_add_button: gtk::Button = builder.object("repo_add").unwrap();
         let top_right_box: gtk::Box = builder.object("top_right_box").unwrap();
-        top_right_box.add(&repo_add_button);
-        let main_window: libhandy::ApplicationWindow = builder.object("window").unwrap();
+        top_right_box.append(&repo_add_button);
+        let main_window: libadwaita::ApplicationWindow = builder.object("window").unwrap();
         MirrorSettings::new(builder);
         AdditionalRepo::new(builder);
 
@@ -49,22 +48,33 @@ impl PageSettings {
         let list_box = self.list_box.clone();
         for info in repo_list {
             let row = RepoRow::new(info.clone());
-            list_box.pack_start(&row.row().to_owned(), true, true, 0);
+            list_box.prepend(&row.row().to_owned());
             self.row_button_connect(&row, info.clone());
         }
     }
 
     fn clear_repo_list(&self) {
-        let children = self.list_box.children();
-        for child in children {
+        let mut child = match self.list_box.first_child() {
+            Some(child) => child,
+            None => return,
+        };
+
+        loop {
+            let next_child = child.next_sibling();
             self.list_box.remove(&child);
+            match next_child {
+                Some(c) => {
+                    child = c;
+                }
+                None => break,
+            };
         }
     }
 
     fn row_button_connect(&self, row: &RepoRow, info: RepoInfo) {
         {
             let id = String::from(info.id.clone());
-            row.enable().connect_changed_active(move |switch| {
+            row.enable().connect_activate(move |switch| {
                 Zypper::change_repo(id.clone(), Settings::Enable(switch.is_active()));
             });
         }
@@ -92,7 +102,7 @@ impl PageSettings {
     fn button_connect(&self, builder: &gtk::Builder) {
         {
             let button: gtk::Button = builder.object("button_leaflet_back").unwrap();
-            let page_settings: libhandy::Leaflet = builder.object("page_settings").unwrap();
+            let page_settings: libadwaita::Leaflet = builder.object("page_settings").unwrap();
             button.connect_clicked(move |_| {
                 page_settings.navigate(NavigationDirection::Back);
             });
@@ -103,20 +113,27 @@ impl PageSettings {
             let this: gtk::Stack = builder.object("setting_stack").unwrap();
             let repo_add_button: gtk::Button = builder.object("repo_add").unwrap();
             let top_right_box: gtk::Box = builder.object("top_right_box").unwrap();
-            let page_settings: libhandy::Leaflet = builder.object("page_settings").unwrap();
-            stack
-                .connect_local("notify::visible-child", true, move |_| {
-                    page_settings.navigate(NavigationDirection::Forward);
-                    if this.visible_child_name().unwrap() == "Repo List" {
-                        top_right_box.add(&repo_add_button);
-                    } else {
-                        for w in top_right_box.children() {
-                            top_right_box.remove(&w);
+            let page_settings: libadwaita::Leaflet = builder.object("page_settings").unwrap();
+            stack.connect_local("notify::visible-child", true, move |_| {
+                page_settings.navigate(NavigationDirection::Forward);
+                if this.visible_child_name().unwrap() == "Repo List" {
+                    top_right_box.append(&repo_add_button);
+                } else {
+                    let mut child = match top_right_box.first_child() {
+                        Some(child) => child,
+                        None => return None,
+                    };
+                    loop {
+                        top_right_box.remove(&child);
+                        if let Some(next_child) = child.next_sibling() {
+                            child = next_child;
+                        } else {
+                            break;
                         }
                     }
-                    None
-                })
-                .expect("connecting to visible-child failed");
+                }
+                None
+            });
         }
 
         {
@@ -132,7 +149,7 @@ impl PageSettings {
         let builder = gtk::Builder::from_resource("/zypp/gui/ui/repo_add.ui");
         let window: gtk::Window = builder.object("repo_add_window").unwrap();
         window.set_modal(true);
-        window.set_type_hint(gdk::WindowTypeHint::Dialog);
+        //window.set_type_hint(gdk::WindowTypeHint::Dialog);
         window.set_transient_for(Some(&self.main_window));
 
         let cancel: gtk::Button = builder.object("add_cancel").unwrap();
@@ -159,22 +176,20 @@ impl PageSettings {
     }
 
     fn create_dialog(&self, id: String) {
-        let dialog = gtk::MessageDialogBuilder::new()
-            .transient_for(&self.main_window)
-            .modal(true)
-            .buttons(gtk::ButtonsType::OkCancel)
-            .text("Do you want to delete this repo?")
-            .build();
+        let dialog = gtk::MessageDialog::new(
+            Some(&self.main_window),
+            gtk::DialogFlags::DESTROY_WITH_PARENT | gtk::DialogFlags::MODAL,
+            gtk::MessageType::Error,
+            gtk::ButtonsType::OkCancel,
+            "Do you want to delete this repo?",
+        );
 
-        dialog.connect_response(move |dialog, event| {
-            if event == gtk::ResponseType::Ok {
+        dialog.run_async(move |obj, answer| {
+            obj.close();
+            if answer == gtk::ResponseType::Ok {
                 Zypper::delete_repo(id.to_string());
-                dialog.close()
-            } else if event == gtk::ResponseType::Cancel {
-                dialog.close()
             }
         });
-        dialog.show_all();
     }
 
     fn monitor_repo_dir(&self) {

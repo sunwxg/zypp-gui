@@ -1,23 +1,23 @@
 use gtk::prelude::*;
-use libhandy::prelude::*;
+use libadwaita::prelude::*;
 
 use crate::mirror::Site;
 use crate::mirror_window::MirrorWindow;
 
 #[derive(Clone)]
 pub struct MirrorRow {
-    row: libhandy::ActionRow,
+    row: libadwaita::ActionRow,
     site: Site,
-    main_window: libhandy::ApplicationWindow,
+    main_window: libadwaita::ApplicationWindow,
 }
 
 impl MirrorRow {
-    pub fn new(site: Site, main_window: libhandy::ApplicationWindow) -> Self {
+    pub fn new(site: Site, main_window: libadwaita::ApplicationWindow) -> Self {
         let builder = gtk::Builder::from_resource("/zypp/gui/ui/mirror_row.ui");
-        let row: libhandy::ActionRow = builder.object("mirror_row").unwrap();
+        let row: libadwaita::ActionRow = builder.object("mirror_row").unwrap();
         let title = format!("{}  {}", site.country.clone(), site.name.clone());
-        row.set_title(Some(title.as_str()));
-        row.set_icon_name(site.country.to_lowercase().as_str());
+        row.set_title(title.as_str());
+        row.set_icon_name(Some(site.country.to_lowercase().as_str()));
 
         let mirror_row = Self {
             row,
@@ -29,7 +29,7 @@ impl MirrorRow {
         mirror_row
     }
 
-    pub fn row(&self) -> &libhandy::ActionRow {
+    pub fn row(&self) -> &libadwaita::ActionRow {
         &self.row
     }
 
@@ -39,7 +39,7 @@ impl MirrorRow {
             self.row.connect_activated(move |_| {
                 let window = MirrorWindow::new(this.site.clone());
                 window.window().set_transient_for(Some(&this.main_window));
-                window.window().show_all();
+                window.window().show();
             });
         }
     }

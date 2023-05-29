@@ -33,7 +33,7 @@ zypp gui differs from YaST software management to:
 #### meson
 1. Install dependences:
 ```
-zypper in meson gcc cargo glib2-devel gtk3-devel systemd-devel libpackagekit-glib2-devel polkit-devel libhandy-devel
+zypper in meson gcc cargo glib2-devel gtk4-devel systemd-devel libpackagekit-glib2-devel polkit-devel libadwaita-devel
 ```
 2. Compile:
 ```

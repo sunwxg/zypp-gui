@@ -1,5 +1,3 @@
-use gtk::prelude::*;
-
 pub struct ListRow {
     row: gtk::Box,
     name: gtk::Label,

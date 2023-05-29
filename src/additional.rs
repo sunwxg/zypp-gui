@@ -2,7 +2,7 @@ extern crate serde;
 extern crate serde_json;
 
 use gtk::prelude::*;
-use libhandy::prelude::*;
+use libadwaita::prelude::*;
 use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::io::prelude::*;
@@ -31,14 +31,14 @@ struct Repo {
 pub struct AdditionalRepo {
     data: Data,
     additional_page: gtk::ListBox,
-    main_window: libhandy::ApplicationWindow,
+    main_window: libadwaita::ApplicationWindow,
 }
 
 impl AdditionalRepo {
     pub fn new(builder: &gtk::Builder) -> Self {
         let data = AdditionalRepo::read_data();
         let additional_page: gtk::ListBox = builder.object("additional_page").unwrap();
-        let main_window: libhandy::ApplicationWindow = builder.object("window").unwrap();
+        let main_window: libadwaita::ApplicationWindow = builder.object("window").unwrap();
 
         let this = Self {
             data,
@@ -69,10 +69,10 @@ impl AdditionalRepo {
     fn creat_row(&self) {
         for data in self.data.list.clone() {
             let builder = gtk::Builder::from_resource("/zypp/gui/ui/additional_row.ui");
-            let row: libhandy::ExpanderRow = builder.object("additional_row").unwrap();
+            let row: libadwaita::ExpanderRow = builder.object("additional_row").unwrap();
             let sub_row: gtk::Label = builder.object("repo_info").unwrap();
             let button: gtk::Button = builder.object("button_add").unwrap();
-            row.set_title(Some(&data.name));
+            row.set_title(&data.name);
             sub_row.set_markup(&data.info);
 
             let this = self.clone();
@@ -94,7 +94,7 @@ impl AdditionalRepo {
                 }
             });
 
-            self.additional_page.add(&row.to_owned());
+            self.additional_page.append(&row.to_owned());
         }
     }
 
@@ -115,19 +115,17 @@ impl AdditionalRepo {
     }
 
     fn create_dialog(&self, text: String) {
-        let dialog = gtk::MessageDialogBuilder::new()
-            .transient_for(&self.main_window)
-            .modal(true)
-            .buttons(gtk::ButtonsType::Cancel)
-            .text(&text)
-            .build();
+        let dialog = gtk::MessageDialog::new(
+            Some(&self.main_window),
+            gtk::DialogFlags::DESTROY_WITH_PARENT | gtk::DialogFlags::MODAL,
+            gtk::MessageType::Error,
+            gtk::ButtonsType::Cancel,
+            &text,
+        );
 
-        dialog.connect_response(move |dialog, event| {
-            if event == gtk::ResponseType::Cancel {
-                dialog.close()
-            }
+        dialog.run_async(move |obj, _answer| {
+            obj.close();
         });
-        dialog.show_all();
     }
 
     fn check_system(&self) -> SYSTEM {

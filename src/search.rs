@@ -12,7 +12,7 @@ use crate::util::{PKmessage, SearchInfo};
 
 #[derive(Clone)]
 pub struct SearchPackage {
-    search_entry: gtk::SearchEntry,
+    search_entry: gtk::Entry,
     list_box: gtk::ListBox,
     stack_box: gtk::Stack,
     pub search_box: gtk::ScrolledWindow,
@@ -33,12 +33,12 @@ impl SearchPackage {
         notification: notification::Notification,
         packagekit_state: PackagekitState,
     ) -> Self {
-        let search_entry: gtk::SearchEntry = builder.object("search_entry").unwrap();
+        let search_entry: gtk::Entry = builder.object("search_entry").unwrap();
         let list_box: gtk::ListBox = builder.object("search_list_box").unwrap();
         let stack_box: gtk::Stack = builder.object("stack_box").unwrap();
         let search_box: gtk::ScrolledWindow = builder.object("search_box").unwrap();
 
-        let package_meta = PackageMeta::new(search_entry.clone());
+        let package_meta = PackageMeta::new();
 
         let search = Self {
             search_entry,
@@ -58,7 +58,7 @@ impl SearchPackage {
     }
 
     fn connect_signal(&self) {
-        let entry: gtk::SearchEntry = self.search_entry.clone();
+        let entry: gtk::Entry = self.search_entry.clone();
         let this = self.clone();
         entry.connect_activate(move |entry| {
             let text = entry.text();
@@ -102,15 +102,25 @@ impl SearchPackage {
             let v: Vec<&str> = info.id.split(';').collect();
             let subtitle = format!("{}  {}  {}\n{}", v[1], v[2], v[3], info.summary);
             row.set_subtitle(subtitle);
-            list_box.add(&row.row().to_owned());
+            list_box.append(&row.row().to_owned());
         }
     }
 
     fn clear_list(&self) {
         let list_box = &self.list_box;
-        let children = list_box.children();
-        for child in children {
+        let mut child = match list_box.first_child() {
+            Some(child) => child,
+            None => return,
+        };
+        loop {
+            let next_child = child.next_sibling();
             list_box.remove(&child);
+            match next_child {
+                Some(c) => {
+                    child = c;
+                }
+                None => break,
+            };
         }
     }
 

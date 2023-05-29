@@ -1,6 +1,5 @@
 use gtk::gio::prelude::*;
 use gtk::glib;
-use gtk::prelude::*;
 use log::debug;
 use std::cell::{Ref, RefCell};
 use std::collections::{HashMap, HashSet};
@@ -27,7 +26,7 @@ pub struct Meta {
     summary: String,
     description: String,
     location: String,
-    raw: String,
+    //raw: String,
 }
 
 #[derive(Clone, Debug)]
@@ -35,7 +34,7 @@ pub struct RepoPackages {
     repo: String,
     file: String,
     enable: bool,
-    priority: i32,
+    //priority: i32,
     meta: Rc<RefCell<HashMap<String, Meta>>>,
     busy: Rc<RefCell<bool>>,
 }
@@ -59,15 +58,15 @@ impl RepoPackages {
 pub struct PackageMeta {
     data: Rc<RefCell<Vec<RepoPackages>>>,
     sys_arch: String,
-    search_entry: gtk::SearchEntry,
+    //search_entry: gtk::Entry,
 }
 
 impl PackageMeta {
-    pub fn new(search_entry: gtk::SearchEntry) -> PackageMeta {
+    pub fn new() -> PackageMeta {
         let this = Self {
             data: Rc::new(RefCell::new(vec![])),
             sys_arch: PackageMeta::get_sys_arch(),
-            search_entry: search_entry,
+            //search_entry: search_entry,
         };
 
         this
@@ -92,7 +91,7 @@ impl PackageMeta {
         for f in out.lines() {
             let mut _repo = String::new();
             let mut _enable = false;
-            let mut priority = 99;
+            let mut _priority = 99;
             if f.contains("primary") {
                 let v: Vec<&str> = f
                     .strip_prefix("/var/cache/zypp/raw/")
@@ -113,14 +112,14 @@ impl PackageMeta {
                 if value.len() > 0 && value.contains("priority=") {
                     let s = value.strip_suffix("\n").unwrap();
                     let v: Vec<&str> = s.split(|c| c == '=').collect();
-                    priority = v[1].parse::<i32>().unwrap();
+                    _priority = v[1].parse::<i32>().unwrap();
                 }
 
                 repo_package.push(RepoPackages {
                     repo: _repo,
                     file: f.to_string(),
                     enable: _enable,
-                    priority: priority,
+                    //priority: _priority,
                     meta: Rc::new(RefCell::new(HashMap::new())),
                     busy: Rc::new(RefCell::new(false)),
                 });
@@ -187,7 +186,7 @@ impl PackageMeta {
             summary: String::new(),
             description: String::new(),
             location: String::new(),
-            raw: String::new(),
+            //raw: String::new(),
         }
     }
 
@@ -446,6 +445,6 @@ impl PackageMeta {
         entry_completion.set_popup_completion(true);
         entry_completion.set_model(Some(&store));
 
-        self.search_entry.set_completion(Some(&entry_completion));
+        //self.search_entry.set_completion(Some(&entry_completion));
     }
 }

@@ -2,8 +2,8 @@
 <!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
-  <requires lib="libhandy" version="0.0"/>
-  <object class="HdyExpanderRow" id="additional_row">
+  <requires lib="libadwaita" version="0.0"/>
+  <object class="AdwExpanderRow" id="additional_row">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <property name="title" translatable="yes">Repo</property>
@@ -29,17 +29,11 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">start</property>
-            <property name="margin-left">5</property>
             <property name="margin-start">5</property>
             <property name="wrap">True</property>
             <property name="wrap-mode">word</property>
             <property name="label" translatable="yes">info</property>
           </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
         </child>
       </object>
     </child>

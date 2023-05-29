@@ -11,7 +11,7 @@ pub struct MirrorWindow {
     window: gtk::Window,
     site: Site,
     map: HashMap<String, String>,
-    radio_buttons: Vec<gtk::RadioButton>,
+    radio_buttons: Vec<gtk::ToggleButton>,
 }
 
 impl MirrorWindow {
@@ -74,16 +74,15 @@ impl MirrorWindow {
             return;
         }
 
-        let first_button: gtk::RadioButton = gtk::RadioButton::with_mnemonic(&list[0]);
+        let first_button: gtk::ToggleButton = gtk::ToggleButton::with_mnemonic(&list[0]);
         first_button.set_widget_name(&list[0]);
-        button_box.add(&first_button.to_owned());
+        button_box.append(&first_button.to_owned());
         self.radio_buttons.push(first_button.clone());
 
         for i in 1..list.len() {
-            let button: gtk::RadioButton =
-                gtk::RadioButton::with_mnemonic_from_widget(&first_button, &list[i]);
+            let button: gtk::ToggleButton = gtk::ToggleButton::with_mnemonic(&list[i]);
             button.set_widget_name(&list[i]);
-            button_box.add(&button.to_owned());
+            button_box.append(&button.to_owned());
             self.radio_buttons.push(button.clone());
         }
     }
@@ -199,28 +198,28 @@ impl MirrorWindow {
         for i in list.clone() {
             text = format!("{}{}, {}\n", text, i.1, i.0);
         }
-        let dialog = gtk::MessageDialogBuilder::new()
-            .transient_for(&self.window)
-            .modal(true)
-            .buttons(gtk::ButtonsType::OkCancel)
-            .text(&text)
-            .build();
 
-        let this = self.clone();
-        dialog.connect_response(move |dialog, event| {
-            let l = list.clone();
-            if event == gtk::ResponseType::Ok {
+        let dialog = gtk::MessageDialog::new(
+            Some(&self.window),
+            gtk::DialogFlags::DESTROY_WITH_PARENT | gtk::DialogFlags::MODAL,
+            gtk::MessageType::Error,
+            gtk::ButtonsType::OkCancel,
+            &text,
+        );
+
+        let window = self.window.clone();
+        dialog.run_async(move |obj, _answer| {
+            obj.close();
+            if _answer == gtk::ResponseType::Ok {
+                let l = list.clone();
                 thread::spawn(move || {
                     for i in l {
                         Zypper::add_repo(i.1, i.0);
                     }
                 });
-                dialog.close();
-                this.window.close()
-            } else if event == gtk::ResponseType::Cancel {
-                dialog.close()
+                //&self.window.close();
+                window.close();
             }
         });
-        dialog.show_all();
     }
 }

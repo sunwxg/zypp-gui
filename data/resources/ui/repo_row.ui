@@ -19,73 +19,57 @@
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
         <property name="margin-top">5</property>
         <property name="margin-bottom">5</property>
+        <property name="halign">start</property>
+        <property name="homogeneous">True</property>
+        <property name="halign">fill</property>
         <child>
           <object class="GtkLabel" id="name">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">5</property>
             <property name="label" translatable="yes">label</property>
+            <property name="halign">start</property>
+            <property name="margin-start">5</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
         </child>
         <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <object class="GtkButton" id="delete_button">
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <property name="margin-right">10</property>
+          <object class="GtkBox">
+            <property name="halign">end</property>
             <property name="margin-end">10</property>
             <child>
-              <object class="GtkImage">
+              <object class="GtkButton" id="delete_button">
                 <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="icon-name">user-trash-symbolic</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="icon-name">user-trash-symbolic</property>
+                  </object>
+                </child>
               </object>
             </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack-type">end</property>
-            <property name="position">3</property>
-          </packing>
         </child>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
     </child>
     <child>
-      <object class="GtkListBox">
+      <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="selection-mode">none</property>
-        <property name="activate-on-single-click">False</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkListBoxRow">
+          <object class="GtkBox">
+            <property name="homogeneous">True</property>
+            <property name="halign">fill</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <child>
               <object class="GtkBox">
+                <property name="homogeneous">True</property>
+                <property name="halign">fill</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="margin-start">6</property>
@@ -99,20 +83,22 @@
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
                     <property name="halign">start</property>
-                    <property name="margin-right">5</property>
                     <property name="margin-end">5</property>
-                    <property name="draw-indicator">True</property>
                   </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="margin-start">5</property>
+                        <property name="label" translatable="yes">Priority</property>
+                      </object>
+                    </child>
                     <child>
                       <object class="GtkSpinButton" id="priority_button">
                         <property name="visible">True</property>
@@ -122,78 +108,32 @@
                         <property name="adjustment">priority_adjust</property>
                         <property name="value">90</property>
                       </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="halign">start</property>
-                        <property name="margin-left">5</property>
-                        <property name="margin-start">5</property>
-                        <property name="label" translatable="yes">Priority</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
                     </child>
                   </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="halign">end</property>
                     <property name="valign">center</property>
                     <child>
                       <object class="GtkSwitch" id="enable_switch">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                       </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
                     </child>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="pack-type">end</property>
-                    <property name="position">2</property>
-                  </packing>
                 </child>
               </object>
             </child>
           </object>
         </child>
         <child>
-          <object class="GtkListBoxRow">
+          <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
-            <child>
-              <object class="GtkSeparator">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkListBoxRow">
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
+            <property name="homogeneous">True</property>
             <child>
               <object class="GtkLabel" id="url">
                 <property name="visible">True</property>
@@ -217,11 +157,6 @@
           <class name="repo-box"/>
         </style>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">3</property>
-      </packing>
     </child>
   </object>
 </interface>
