@@ -1,12 +1,12 @@
 # ZYPP GUI 
 
-It's a GUI applicaion working on openSUSE distro. Application runs as a deamon to monitor the system update. When there is new update, application can update the system. Application can search, install and remove the package, change the settings of repos. It achieves some functions of command `zypper`.
+It's a GUI application working on openSUSE distro. Application runs as a daemon to monitor the system update. Application can update the system, search, install and remove the package, change the settings of repos. It achieves some functions of command zypper.
 
 zypp gui differs from GNOME software to:
 - support general openSUSE desktop environments instead of GNOME only
 
 zypp gui differs from YaST software management to:
-- support desktop integration (eg. update detection and notification)
+- support desktop integration (e.g. update detection and notification)
 
 ## Targets:
 - [x] Refresh the repos, download the packages, install the update.
