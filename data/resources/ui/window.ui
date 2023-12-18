@@ -23,6 +23,7 @@
      <object class="GtkBox" id="page_update">
       <property name="can-focus">False</property>
       <property name="vexpand">True</property>
+      <property name="hexpand">True</property>
       <property name="orientation">vertical</property>
       <child>
        <object class="AdwHeaderBar" id="headerbar1">
@@ -129,6 +130,7 @@
               <property name="visible">True</property>
               <property name="can-focus">True</property>
               <property name="receives-default">True</property>
+              <property name="margin-end">10</property>
              </object>
             </child>
             <child>
@@ -137,6 +139,7 @@
               <property name="can-focus">True</property>
               <property name="receives-default">True</property>
               <property name="margin-end">10</property>
+              <property name="margin-start">10</property>
              </object>
             </child>
            </object>
@@ -171,6 +174,7 @@
         <property name="margin-start">20</property>
         <property name="margin-end">20</property>
         <property name="vexpand">True</property>
+        <property name="hexpand">True</property>
         <child>
          <object class="GtkScrolledWindow" id="stack_list">
           <property name="visible">True</property>
@@ -185,11 +189,15 @@
               <property name="visible">True</property>
               <property name="can-focus">False</property>
               <property name="orientation">vertical</property>
+              <property name="vexpand">True</property>
+              <property name="hexpand">True</property>
               <child>
                <object class="GtkListBox" id="list_box">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="selection-mode">none</property>
+                <property name="vexpand">True</property>
+                <property name="hexpand">True</property>
                </object>
               </child>
               <child>
