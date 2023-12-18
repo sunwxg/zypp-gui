@@ -165,13 +165,27 @@ impl PackageMeta {
     }
 
     fn read_file(file: String, sender: glib::Sender<Message>) {
-        let process = Command::new("gzip")
+        let command;
+        let words: Vec<&str> = file.split('.').collect();
+        match words.last() {
+            Some(last_word) => match *last_word {
+                "gz" => command = "gzip",
+                "zst" => command = "zstd",
+                _ => {
+                    return;
+                }
+            },
+            None => {
+                return;
+            }
+        }
+
+        let process = Command::new(command)
             .arg("-dc")
             .arg(file)
             .stdout(Stdio::piped())
             .output()
             .expect("failed to execute rpm");
-
         let buffer = String::from_utf8_lossy(&process.stdout).to_string();
 
         PackageMeta::parse_line_by_line(buffer, sender);
