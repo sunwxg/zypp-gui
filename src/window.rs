@@ -36,12 +36,12 @@ pub struct Window {
     search: search::SearchPackage,
     notification: notification::Notification,
     packagekit_state: PackagekitState,
-    application: gtk::Application,
+    application: libadwaita::Application,
     sender_connect_id: Rc<RefCell<Option<glib::SignalHandlerId>>>,
 }
 
 impl Window {
-    pub fn new(packagekit_state: PackagekitState, application: gtk::Application) -> Self {
+    pub fn new(packagekit_state: PackagekitState, application: libadwaita::Application) -> Self {
         let builder = gtk::Builder::from_resource("/zypp/gui/ui/window.ui");
         let win: libadwaita::ApplicationWindow = builder.object("window").unwrap();
         win.set_application(Some(&application));

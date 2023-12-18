@@ -44,18 +44,21 @@ fn main() {
     gio::resources_register(&res);
 
     //setup_css();
-    let application = gtk::Application::new(Some(config::APP_ID), Default::default());
-    application.connect_startup(build_ui);
+    let application = libadwaita::Application::new(Some(config::APP_ID), Default::default());
+    application.connect_startup(|app| {
+        build_ui(app);
+    });
 
     info!("zypp gui ({})", config::APP_ID);
     info!("Version: {} ({})", config::VERSION, config::PROFILE);
     application.run();
 }
 
-fn build_ui(application: &gtk::Application) {
+fn build_ui(application: &libadwaita::Application) {
     info!("startup");
     let packagekit_state = PackagekitState::new();
     let window = Window::new(packagekit_state, application.clone());
+    //let window = libadwaita::ApplicationWindow::new(application);
 
     application.connect_activate(move |_| {
         info!("activate");
