@@ -3,81 +3,55 @@ using Adw 1;
 
 Button repo_add {
   label: _("Add");
-  visible: true;
-  can-focus: true;
   receives-default: true;
 }
 
 Adw.ApplicationWindow window {
-  can-focus: false;
   vexpand: true;
   default-width: 800;
   default-height: 600;
 
   Adw.ViewStack viewstack {
-    visible: true;
-    can-focus: false;
     vexpand: true;
 
     Box page_update {
-      can-focus: false;
       vexpand: true;
       hexpand: true;
       orientation: vertical;
 
       Adw.HeaderBar headerbar1 {
-        visible: true;
-        can-focus: false;
 
         ToggleButton search_button {
-          visible: true;
-          can-focus: true;
           receives-default: true;
 
           Image {
-            visible: true;
-            can-focus: false;
             icon-name: "edit-find-symbolic";
           }
         }
 
         Button button_settings {
-          visible: true;
-          can-focus: true;
           receives-default: true;
 
           Image {
-            visible: true;
-            can-focus: false;
             icon-name: "applications-system-symbolic";
           }
         }
       }
 
       Revealer notification_bar {
-        visible: true;
-        can-focus: false;
         valign: start;
 
         Box notification_box {
-          visible: true;
-          can-focus: false;
 
           Label notification_label {
-            visible: true;
-            can-focus: false;
             label: _("Notification here.");
             wrap: true;
           }
 
           Button notification_button {
-            visible: true;
-            can-focus: true;
             receives-default: true;
 
             Image {
-              visible: true;
-              can-focus: false;
               icon-name: "window-close-symbolic";
             }
           }
@@ -89,11 +63,8 @@ Adw.ApplicationWindow window {
       }
 
       Stack button_stack {
-        visible: true;
-        can-focus: false;
 
         Box update_button {
-          visible: true;
           homogeneous: true;
           margin-start: 20;
           margin-end: 20;
@@ -102,8 +73,6 @@ Adw.ApplicationWindow window {
 
           Button cancel_button {
             label: _("Cancel");
-            visible: true;
-            can-focus: true;
             receives-default: true;
             halign: start;
           }
@@ -113,15 +82,12 @@ Adw.ApplicationWindow window {
 
             Button download_button {
               label: _("Download");
-              visible: true;
-              can-focus: true;
               receives-default: true;
               margin-end: 10;
             }
 
             Button offline_update_button {
               label: _("Offline Update");
-              can-focus: true;
               receives-default: true;
               margin-end: 10;
               margin-start: 10;
@@ -130,12 +96,8 @@ Adw.ApplicationWindow window {
         }
 
         Adw.Clamp search_bar {
-          visible: true;
-          can-focus: false;
 
           Entry search_entry {
-            visible: true;
-            can-focus: true;
             margin-start: 40;
             margin-end: 40;
             margin-top: 5;
@@ -148,32 +110,22 @@ Adw.ApplicationWindow window {
       }
 
       Stack stack_box {
-        visible: true;
-        can-focus: false;
         margin-start: 20;
         margin-end: 20;
         vexpand: true;
         hexpand: true;
 
         ScrolledWindow stack_list {
-          visible: true;
-          can-focus: true;
           margin-bottom: 10;
 
           Viewport {
-            visible: true;
-            can-focus: false;
 
             Box {
-              visible: true;
-              can-focus: false;
               orientation: vertical;
               vexpand: true;
               hexpand: true;
 
               ListBox list_box {
-                visible: true;
-                can-focus: false;
                 selection-mode: none;
                 vexpand: true;
                 hexpand: true;
@@ -183,16 +135,12 @@ Adw.ApplicationWindow window {
         }
 
         Box progress {
-          visible: true;
-          can-focus: false;
           valign: center;
           margin-start: 20;
           margin-end: 20;
           orientation: vertical;
 
           Label progress_label {
-            visible: true;
-            can-focus: false;
             valign: center;
             margin-bottom: 10;
             hexpand: true;
@@ -201,8 +149,6 @@ Adw.ApplicationWindow window {
           }
 
           ProgressBar progress_bar {
-            visible: true;
-            can-focus: false;
             valign: center;
             margin-start: 20;
             margin-end: 20;
@@ -211,34 +157,22 @@ Adw.ApplicationWindow window {
         }
 
         Adw.Clamp stack_label {
-          visible: true;
-          can-focus: false;
 
           Label label {
-            visible: true;
-            can-focus: false;
             label: _("<b>No update.</b>");
             use-markup: true;
           }
         }
 
         ScrolledWindow search_box {
-          visible: true;
-          can-focus: true;
           margin-bottom: 10;
 
           Viewport {
-            visible: true;
-            can-focus: false;
 
             Box {
-              visible: true;
-              can-focus: false;
               orientation: vertical;
 
               ListBox search_list_box {
-                visible: true;
-                can-focus: false;
               }
             }
           }
@@ -247,29 +181,20 @@ Adw.ApplicationWindow window {
     }
 
     Adw.Leaflet page_settings {
+      can-navigate-back: true;
       Box {
-        visible: true;
-        can-focus: false;
         orientation: vertical;
 
         Revealer {
-          visible: true;
-          can-focus: false;
           reveal-child: true;
 
           Adw.HeaderBar headerbar2 {
-            visible: true;
-            can-focus: false;
             decoration-layout: "";
 
             Button button_deck_back {
-              visible: true;
-              can-focus: true;
               receives-default: true;
 
               Image {
-                visible: true;
-                can-focus: false;
                 icon-name: "go-previous-symbolic";
               }
             }
@@ -278,8 +203,6 @@ Adw.ApplicationWindow window {
 
         StackSidebar {
           width-request: 100;
-          visible: true;
-          can-focus: false;
           vexpand: true;
           stack: setting_stack;
 
@@ -290,8 +213,6 @@ Adw.ApplicationWindow window {
       }
 
       Separator {
-        visible: true;
-        can-focus: false;
         vexpand: true;
         orientation: vertical;
 
@@ -301,42 +222,29 @@ Adw.ApplicationWindow window {
       }
 
       Box {
-        visible: true;
-        can-focus: false;
         hexpand: true;
         orientation: vertical;
 
         Revealer {
-          visible: true;
-          can-focus: false;
           transition-type: none;
           reveal-child: true;
 
           Stack header_bar_stack {
-            visible: true;
-            can-focus: false;
 
             Adw.HeaderBar back_header_bar {
-              visible: true;
-              can-focus: false;
               hexpand: true;
 
               Button button_leaflet_back {
                 visible: bind page_settings.folded;
-                can-focus: true;
                 receives-default: false;
                 use-underline: true;
 
                 Image {
-                  visible: true;
-                  can-focus: false;
                   icon-name: "go-previous-symbolic";
                 }
               }
 
               Box top_right_box {
-                visible: true;
-                can-focus: false;
               }
             }
           }
@@ -344,29 +252,22 @@ Adw.ApplicationWindow window {
 
         Stack setting_stack {
           vexpand: true;
-          vhomogeneous: true;
+          vhomogeneous: false;
 
           StackPage {
             name: "Repo List";
             title: _("Repo List");
             child: 
             ScrolledWindow repo_list {
-              visible: true;
-              can-focus: true;
               vexpand: true;
               hexpand: true;
 
               Box {
-                visible: true;
-                can-focus: false;
                 orientation: vertical;
-                homogeneous: true;
 
                 Box repo_box {
-                  visible: true;
-                  can-focus: false;
                   orientation: vertical;
-                  homogeneous: true;
+                  homogeneous: false;
                   hexpand: true;
                 }
               }
@@ -380,38 +281,24 @@ Adw.ApplicationWindow window {
             title: _("Mirrors");
             child: 
             ScrolledWindow mirror {
-              visible: true;
-              can-focus: true;
 
               Viewport {
-                visible: true;
-                can-focus: false;
 
                 Adw.Clamp {
-                  visible: true;
-                  can-focus: false;
 
                   Box {
-                    visible: true;
-                    can-focus: false;
                     orientation: vertical;
 
                     Box mirror_page {
-                      visible: true;
-                      can-focus: false;
                       margin-start: 20;
                       margin-end: 20;
                       orientation: vertical;
 
                       Box {
-                        visible: true;
-                        can-focus: false;
                         margin-top: 10;
                         orientation: vertical;
 
                         Label {
-                          visible: true;
-                          can-focus: false;
                           halign: start;
                           margin-top: 10;
                           margin-bottom: 5;
@@ -419,8 +306,6 @@ Adw.ApplicationWindow window {
                         }
 
                         ListBox asia {
-                          visible: true;
-                          can-focus: false;
                           selection-mode: none;
 
                           styles [
@@ -430,14 +315,10 @@ Adw.ApplicationWindow window {
                       }
 
                       Box {
-                        visible: true;
-                        can-focus: false;
                         margin-top: 10;
                         orientation: vertical;
 
                         Label {
-                          visible: true;
-                          can-focus: false;
                           halign: start;
                           margin-top: 10;
                           margin-bottom: 5;
@@ -445,8 +326,6 @@ Adw.ApplicationWindow window {
                         }
 
                         ListBox africa {
-                          visible: true;
-                          can-focus: false;
                           selection-mode: none;
 
                           styles [
@@ -456,14 +335,10 @@ Adw.ApplicationWindow window {
                       }
 
                       Box {
-                        visible: true;
-                        can-focus: false;
                         margin-top: 10;
                         orientation: vertical;
 
                         Label {
-                          visible: true;
-                          can-focus: false;
                           halign: start;
                           margin-top: 10;
                           margin-bottom: 5;
@@ -471,8 +346,6 @@ Adw.ApplicationWindow window {
                         }
 
                         ListBox europe {
-                          visible: true;
-                          can-focus: false;
                           selection-mode: none;
 
                           styles [
@@ -482,14 +355,10 @@ Adw.ApplicationWindow window {
                       }
 
                       Box {
-                        visible: true;
-                        can-focus: false;
                         margin-top: 10;
                         orientation: vertical;
 
                         Label {
-                          visible: true;
-                          can-focus: false;
                           halign: start;
                           margin-top: 10;
                           margin-bottom: 5;
@@ -497,8 +366,6 @@ Adw.ApplicationWindow window {
                         }
 
                         ListBox north_america {
-                          visible: true;
-                          can-focus: false;
                           selection-mode: none;
 
                           styles [
@@ -508,14 +375,10 @@ Adw.ApplicationWindow window {
                       }
 
                       Box {
-                        visible: true;
-                        can-focus: false;
                         margin-top: 10;
                         orientation: vertical;
 
                         Label {
-                          visible: true;
-                          can-focus: false;
                           halign: start;
                           margin-top: 10;
                           margin-bottom: 5;
@@ -523,8 +386,6 @@ Adw.ApplicationWindow window {
                         }
 
                         ListBox oceania {
-                          visible: true;
-                          can-focus: false;
                           selection-mode: none;
 
                           styles [
@@ -534,14 +395,10 @@ Adw.ApplicationWindow window {
                       }
 
                       Box {
-                        visible: true;
-                        can-focus: false;
                         margin-top: 10;
                         orientation: vertical;
 
                         Label {
-                          visible: true;
-                          can-focus: false;
                           halign: start;
                           margin-top: 10;
                           margin-bottom: 5;
@@ -549,8 +406,6 @@ Adw.ApplicationWindow window {
                         }
 
                         ListBox south_america {
-                          visible: true;
-                          can-focus: false;
                           selection-mode: none;
 
                           styles [
@@ -572,20 +427,10 @@ Adw.ApplicationWindow window {
             title: _("Additional Repos");
             child: 
             ScrolledWindow additional_repo {
-              visible: true;
-              can-focus: true;
 
               Viewport {
-                visible: true;
-                can-focus: false;
-
                 Adw.Clamp {
-                  visible: true;
-                  can-focus: false;
-
                   Box {
-                    visible: true;
-                    can-focus: false;
                     margin-start: 20;
                     margin-end: 20;
                     margin-top: 20;
@@ -593,8 +438,6 @@ Adw.ApplicationWindow window {
                     orientation: vertical;
 
                     ListBox additional_page {
-                      visible: true;
-                      can-focus: false;
                     }
                   }
                 }

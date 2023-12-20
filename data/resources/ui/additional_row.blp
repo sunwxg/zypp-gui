@@ -2,8 +2,6 @@ using Gtk 4.0;
 using Adw 1;
 
 Adw.ExpanderRow additional_row {
-  visible: true;
-  can-focus: false;
   title: _("Repo");
 
   styles [
@@ -13,7 +11,6 @@ Adw.ExpanderRow additional_row {
   [action]
   Button button_add {
     label: _("Add");
-    visible: true;
     valign: center;
 
     styles [
@@ -22,12 +19,8 @@ Adw.ExpanderRow additional_row {
   }
 
   Box {
-    visible: true;
-    can-focus: false;
 
     Label repo_info {
-      visible: true;
-      can-focus: false;
       halign: start;
       margin-start: 5;
       wrap: true;

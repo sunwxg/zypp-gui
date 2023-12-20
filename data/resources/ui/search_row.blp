@@ -2,8 +2,6 @@ using Gtk 4.0;
 using Adw 1;
 
 Adw.ActionRow row {
-  visible: true;
-  can-focus: true;
   activatable: false;
   selectable: false;
   title: _("title");
@@ -13,8 +11,6 @@ Adw.ActionRow row {
   Button operation_button {
     label: _("Install");
     width-request: 100;
-    visible: true;
-    can-focus: true;
     receives-default: false;
     halign: end;
     valign: center;
