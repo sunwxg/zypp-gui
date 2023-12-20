@@ -1,0 +1,28 @@
+using Gtk 4.0;
+using Adw 1;
+
+Adw.ActionRow mirror_row {
+  visible: true;
+  can-focus: true;
+  title: _("Hello");
+  activatable: true;
+
+  Label {
+    visible: true;
+    can-focus: true;
+  }
+
+  Image {
+    visible: true;
+    can-focus: false;
+    icon-name: "go-next-symbolic";
+
+    styles [
+      "dim-label",
+    ]
+  }
+
+  styles [
+    "content",
+  ]
+}

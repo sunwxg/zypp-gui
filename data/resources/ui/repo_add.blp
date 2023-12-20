@@ -1,0 +1,73 @@
+using Gtk 4.0;
+
+Image cancel {
+  visible: true;
+}
+
+Image ok {
+  visible: true;
+}
+
+Window repo_add_window {
+  default-width: 440;
+
+  Box {
+    visible: true;
+    margin-start: 20;
+    margin-end: 20;
+    margin-top: 10;
+    margin-bottom: 10;
+    orientation: vertical;
+
+    Box {
+      visible: true;
+      margin-top: 5;
+      margin-bottom: 5;
+      orientation: vertical;
+
+      Label {
+        visible: true;
+        halign: start;
+        label: _("Name:");
+      }
+
+      Entry repo_name {
+      }
+    }
+
+    Box {
+      visible: true;
+      margin-top: 5;
+      margin-bottom: 5;
+      orientation: vertical;
+
+      Label {
+        visible: true;
+        halign: start;
+        label: _("Url:");
+      }
+
+      Entry repo_url {
+      }
+    }
+
+    Box {
+      visible: true;
+      margin-top: 5;
+      margin-bottom: 5;
+      homogeneous: true;
+
+      Button add_cancel {
+        label: _("Cancel");
+        visible: true;
+        receives-default: true;
+      }
+
+      Button add_ok {
+        label: _("OK");
+        visible: true;
+        receives-default: true;
+      }
+    }
+  }
+}

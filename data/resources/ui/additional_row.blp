@@ -1,0 +1,38 @@
+using Gtk 4.0;
+using Adw 1;
+
+Adw.ExpanderRow additional_row {
+  visible: true;
+  can-focus: false;
+  title: _("Repo");
+
+  styles [
+    "additional-box",
+  ]
+
+  [action]
+  Button button_add {
+    label: _("Add");
+    visible: true;
+    valign: center;
+
+    styles [
+      "list-button",
+    ]
+  }
+
+  Box {
+    visible: true;
+    can-focus: false;
+
+    Label repo_info {
+      visible: true;
+      can-focus: false;
+      halign: start;
+      margin-start: 5;
+      wrap: true;
+      wrap-mode: word;
+      label: _("info");
+    }
+  }
+}
