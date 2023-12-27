@@ -21,6 +21,7 @@ use crate::util::{ButtonState, PKmessage, PackageInfo};
 pub struct Window {
     window: libadwaita::ApplicationWindow,
     stack_box: gtk::Stack,
+    page_settings: page_settings::PageSettings,
     stack_list: gtk::ScrolledWindow,
     progress_bar: gtk::ProgressBar,
     stack_label: libadwaita::Clamp,
@@ -72,11 +73,15 @@ impl Window {
             notification.clone(),
             packagekit_state.clone(),
         );
-        let _page_settings = page_settings::PageSettings::new(&builder);
+
+        let deck: libadwaita::ViewStack = builder.object("viewstack").unwrap();
+        let page_settings = page_settings::PageSettings::new(&builder);
+        deck.add(&page_settings.widget);
 
         let window = Self {
             window: win,
             stack_box: stack_box,
+            page_settings: page_settings,
             stack_list: stack_list,
             progress_bar: progress_bar,
             stack_label: stack_label,
@@ -190,14 +195,14 @@ impl Window {
         {
             let button: gtk::Button = builder.object("button_settings").unwrap();
             let deck: libadwaita::ViewStack = builder.object("viewstack").unwrap();
-            let page_settings: libadwaita::Leaflet = builder.object("page_settings").unwrap();
+            let page_settings: libadwaita::Leaflet = self.page_settings.widget.clone();
             button.connect_clicked(move |_| {
                 deck.set_visible_child(&page_settings);
             });
         }
 
         {
-            let button: gtk::Button = builder.object("button_deck_back").unwrap();
+            let button: gtk::Button = self.page_settings.button_deck_back.clone();
             let deck: libadwaita::ViewStack = builder.object("viewstack").unwrap();
             let page_update: gtk::Box = builder.object("page_update").unwrap();
             button.connect_clicked(move |_| {

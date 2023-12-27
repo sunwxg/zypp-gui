@@ -15,21 +15,28 @@ use crate::zypper::{RepoInfo, Settings, Zypper};
 
 #[derive(Clone)]
 pub struct PageSettings {
+    pub widget: libadwaita::Leaflet,
+    pub button_deck_back: gtk::Button,
     list_box: gtk::Box,
     main_window: libadwaita::ApplicationWindow,
 }
 
 impl PageSettings {
-    pub fn new(builder: &gtk::Builder) -> Self {
+    pub fn new(main_builder: &gtk::Builder) -> Self {
+        let builder = gtk::Builder::from_resource("/zypp/gui/ui/page_settings.ui");
+        let widget: libadwaita::Leaflet = builder.object("page_settings").unwrap();
+        let button_deck_back: gtk::Button = builder.object("button_deck_back").unwrap();
         let list_box: gtk::Box = builder.object("repo_box").unwrap();
         let repo_add_button: gtk::Button = builder.object("repo_add").unwrap();
         let top_right_box: gtk::Box = builder.object("top_right_box").unwrap();
         top_right_box.append(&repo_add_button);
-        let main_window: libadwaita::ApplicationWindow = builder.object("window").unwrap();
-        MirrorSettings::new(builder);
-        AdditionalRepo::new(builder);
+        let main_window: libadwaita::ApplicationWindow = main_builder.object("window").unwrap();
+        MirrorSettings::new(main_builder, &builder);
+        AdditionalRepo::new(main_builder, &builder);
 
         let page_settings = Self {
+            widget,
+            button_deck_back,
             list_box,
             main_window,
         };

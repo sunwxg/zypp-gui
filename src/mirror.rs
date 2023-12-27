@@ -34,9 +34,9 @@ pub struct MirrorSettings {
 }
 
 impl MirrorSettings {
-    pub fn new(builder: &gtk::Builder) -> Self {
+    pub fn new(main_builder: &gtk::Builder, builder: &gtk::Builder) -> Self {
         let data = MirrorSettings::read_data();
-        let main_window: libadwaita::ApplicationWindow = builder.object("window").unwrap();
+        let main_window: libadwaita::ApplicationWindow = main_builder.object("window").unwrap();
 
         let mirror = Self { data, main_window };
 

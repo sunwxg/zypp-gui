@@ -9,6 +9,7 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/mirror_row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/mirror_window.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/additional_row.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/page_settings.ui</file>
 
     <file compressed="true">style.css</file>
   </gresource>

@@ -35,10 +35,10 @@ pub struct AdditionalRepo {
 }
 
 impl AdditionalRepo {
-    pub fn new(builder: &gtk::Builder) -> Self {
+    pub fn new(main_builder: &gtk::Builder, builder: &gtk::Builder) -> Self {
         let data = AdditionalRepo::read_data();
         let additional_page: gtk::ListBox = builder.object("additional_page").unwrap();
-        let main_window: libadwaita::ApplicationWindow = builder.object("window").unwrap();
+        let main_window: libadwaita::ApplicationWindow = main_builder.object("window").unwrap();
 
         let this = Self {
             data,
