@@ -38,13 +38,13 @@ fn main() {
     glib::set_prgname(Some("zypp-gui"));
 
     gtk::init().expect("Unable to start GTK4");
-    libadwaita::init().expect("Unable to init libadwaita");
+    adw::init().expect("Unable to init adw");
 
     let res = gio::Resource::load(RESOURCES_FILE).expect("Could not load gresource file");
     gio::resources_register(&res);
 
     //setup_css();
-    let application = libadwaita::Application::new(Some(config::APP_ID), Default::default());
+    let application = adw::Application::new(Some(config::APP_ID), Default::default());
     application.connect_startup(|app| {
         build_ui(app);
     });
@@ -54,11 +54,11 @@ fn main() {
     application.run();
 }
 
-fn build_ui(application: &libadwaita::Application) {
+fn build_ui(application: &adw::Application) {
     info!("startup");
     let packagekit_state = PackagekitState::new();
     let window = Window::new(packagekit_state, application.clone());
-    //let window = libadwaita::ApplicationWindow::new(application);
+    //let window = adw::ApplicationWindow::new(application);
 
     application.connect_activate(move |_| {
         info!("activate");

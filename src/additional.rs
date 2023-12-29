@@ -1,8 +1,8 @@
 extern crate serde;
 extern crate serde_json;
 
+use adw::prelude::*;
 use gtk::prelude::*;
-use libadwaita::prelude::*;
 use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::io::prelude::*;
@@ -31,14 +31,14 @@ struct Repo {
 pub struct AdditionalRepo {
     data: Data,
     additional_page: gtk::ListBox,
-    main_window: libadwaita::ApplicationWindow,
+    main_window: adw::ApplicationWindow,
 }
 
 impl AdditionalRepo {
     pub fn new(main_builder: &gtk::Builder, builder: &gtk::Builder) -> Self {
         let data = AdditionalRepo::read_data();
         let additional_page: gtk::ListBox = builder.object("additional_page").unwrap();
-        let main_window: libadwaita::ApplicationWindow = main_builder.object("window").unwrap();
+        let main_window: adw::ApplicationWindow = main_builder.object("window").unwrap();
 
         let this = Self {
             data,
@@ -69,7 +69,7 @@ impl AdditionalRepo {
     fn creat_row(&self) {
         for data in self.data.list.clone() {
             let builder = gtk::Builder::from_resource("/zypp/gui/ui/additional_row.ui");
-            let row: libadwaita::ExpanderRow = builder.object("additional_row").unwrap();
+            let row: adw::ExpanderRow = builder.object("additional_row").unwrap();
             let sub_row: gtk::Label = builder.object("repo_info").unwrap();
             let button: gtk::Button = builder.object("button_add").unwrap();
             row.set_title(&data.name);

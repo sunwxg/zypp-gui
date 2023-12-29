@@ -1,277 +1,203 @@
 using Gtk 4.0;
 using Adw 1;
 
-Button repo_add {
-  label: _("Add");
-  receives-default: true;
-}
-
-Adw.Leaflet page_settings {
-  can-navigate-back: true;
-  Box {
-    orientation: vertical;
-
-    Revealer {
-      reveal-child: true;
-
-      Adw.HeaderBar headerbar2 {
-        decoration-layout: "";
-
-        Button button_deck_back {
-          receives-default: true;
-
-          Image {
-            icon-name: "go-previous-symbolic";
-          }
-        }
-      }
-    }
-
-    StackSidebar {
-      width-request: 100;
-      vexpand: true;
-      stack: setting_stack;
-
-      styles [
-        "content",
-      ]
-    }
-  }
-
-  Separator {
-    vexpand: true;
-    orientation: vertical;
-
-    styles [
-      "sidebar",
-    ]
-  }
-
-  Box {
-    hexpand: true;
-    orientation: vertical;
-
-    Revealer {
-      transition-type: none;
-      reveal-child: true;
-
-      Stack header_bar_stack {
-
-        Adw.HeaderBar back_header_bar {
-          hexpand: true;
-
-          Button button_leaflet_back {
-            visible: bind page_settings.folded;
-            receives-default: false;
-            use-underline: true;
-
-            Image {
+Adw.NavigationSplitView page_settings {
+  sidebar:     Adw.NavigationPage {
+    title: _("Sidebar");
+    child: Adw.ToolbarView {
+      [top]
+      Adw.HeaderBar {
+          title-widget:   Adw.WindowTitle {
+            title: _("Settings");
+          };
+          [start]
+          Button button_deck_back {
               icon-name: "go-previous-symbolic";
-            }
           }
-
-          Box top_right_box {
-          }
-        }
       }
-    }
-
-    Stack setting_stack {
-      vexpand: true;
-      vhomogeneous: false;
-
-      StackPage {
-        name: "Repo List";
-        title: _("Repo List");
-        child: 
-        ScrolledWindow repo_list {
+      StackSidebar {
+          width-request: 100;
           vexpand: true;
-          hexpand: true;
+          stack: setting_stack;
+          styles [ "content", ]
+      }
+    };
+  };
 
-          Box {
-            orientation: vertical;
-
-            Box repo_box {
-              orientation: vertical;
-              homogeneous: false;
-              hexpand: true;
-            }
+  content: Adw.NavigationPage {
+      title: _("Content");
+      child: Adw.ToolbarView {
+          [top]
+          Adw.HeaderBar top_right_box {
+              show-title: false;
+              [start]
+              Button repo_add {
+                label: _("Add");
+              }
           }
+      content: Stack setting_stack {
+        vexpand: true;
+        hexpand: true;
+        StackPage {
+          name: "Repo List";
+          title: _("Repo List");
+          child:
+          ScrolledWindow repo_list {
+            Viewport {
+              Adw.Clamp {
+                Box repo_box {
+                  orientation: vertical;
+                  homogeneous: true;
+                }
+              }
+            }
+          };
         }
 
-        ;
-      }
+        StackPage {
+          name: "Mirrors";
+          title: _("Mirrors");
+          child: 
+          ScrolledWindow mirror {
+            Viewport {
+              Adw.Clamp {
+                Box {
+                  orientation: vertical;
+                  Box mirror_page {
+                    orientation: vertical;
 
-      StackPage {
-        name: "Mirrors";
-        title: _("Mirrors");
-        child: 
-        ScrolledWindow mirror {
+                    Box {
+                      margin-top: 10;
+                      orientation: vertical;
 
-          Viewport {
+                      Label {
+                        halign: start;
+                        margin-top: 10;
+                        margin-bottom: 5;
+                        label: _("Asia");
+                      }
 
-            Adw.Clamp {
+                      ListBox asia {
+                        selection-mode: none;
+                        styles [ "mirror-box", ]
+                      }
+                    }
 
-              Box {
-                orientation: vertical;
+                    Box {
+                      margin-top: 10;
+                      orientation: vertical;
 
-                Box mirror_page {
+                      Label {
+                        halign: start;
+                        margin-top: 10;
+                        margin-bottom: 5;
+                        label: _("Africa");
+                      }
+
+                      ListBox africa {
+                        selection-mode: none;
+                        styles [ "mirror-box", ]
+                      }
+                    }
+
+                    Box {
+                      margin-top: 10;
+                      orientation: vertical;
+
+                      Label {
+                        halign: start;
+                        margin-top: 10;
+                        margin-bottom: 5;
+                        label: _("Europe");
+                      }
+
+                      ListBox europe {
+                        selection-mode: none;
+                        styles [ "mirror-box", ]
+                      }
+                    }
+
+                    Box {
+                      margin-top: 10;
+                      orientation: vertical;
+
+                      Label {
+                        halign: start;
+                        margin-top: 10;
+                        margin-bottom: 5;
+                        label: _("North America");
+                      }
+
+                      ListBox north_america {
+                        selection-mode: none;
+                        styles [ "mirror-box", ]
+                      }
+                    }
+
+                    Box {
+                      margin-top: 10;
+                      orientation: vertical;
+
+                      Label {
+                        halign: start;
+                        margin-top: 10;
+                        margin-bottom: 5;
+                        label: _("Oceania");
+                      }
+
+                      ListBox oceania {
+                        selection-mode: none;
+                        styles [ "mirror-box", ]
+                      }
+                    }
+
+                    Box {
+                      margin-top: 10;
+                      orientation: vertical;
+
+                      Label {
+                        halign: start;
+                        margin-top: 10;
+                        margin-bottom: 5;
+                        label: _("South America");
+                      }
+
+                      ListBox south_america {
+                        selection-mode: none;
+                        styles [ "mirror-box", ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          ;
+        }
+
+        StackPage {
+          name: "Additional Repos";
+          title: _("Additional Repos");
+          child: 
+          ScrolledWindow additional_repo {
+
+            Viewport {
+              Adw.Clamp {
+                Box {
                   margin-start: 20;
                   margin-end: 20;
+                  margin-top: 20;
+                  margin-bottom: 20;
                   orientation: vertical;
 
-                  Box {
-                    margin-top: 10;
-                    orientation: vertical;
-
-                    Label {
-                      halign: start;
-                      margin-top: 10;
-                      margin-bottom: 5;
-                      label: _("Asia");
-                    }
-
-                    ListBox asia {
-                      selection-mode: none;
-
-                      styles [
-                        "mirror-box",
-                      ]
-                    }
-                  }
-
-                  Box {
-                    margin-top: 10;
-                    orientation: vertical;
-
-                    Label {
-                      halign: start;
-                      margin-top: 10;
-                      margin-bottom: 5;
-                      label: _("Africa");
-                    }
-
-                    ListBox africa {
-                      selection-mode: none;
-
-                      styles [
-                        "mirror-box",
-                      ]
-                    }
-                  }
-
-                  Box {
-                    margin-top: 10;
-                    orientation: vertical;
-
-                    Label {
-                      halign: start;
-                      margin-top: 10;
-                      margin-bottom: 5;
-                      label: _("Europe");
-                    }
-
-                    ListBox europe {
-                      selection-mode: none;
-
-                      styles [
-                        "mirror-box",
-                      ]
-                    }
-                  }
-
-                  Box {
-                    margin-top: 10;
-                    orientation: vertical;
-
-                    Label {
-                      halign: start;
-                      margin-top: 10;
-                      margin-bottom: 5;
-                      label: _("North America");
-                    }
-
-                    ListBox north_america {
-                      selection-mode: none;
-
-                      styles [
-                        "mirror-box",
-                      ]
-                    }
-                  }
-
-                  Box {
-                    margin-top: 10;
-                    orientation: vertical;
-
-                    Label {
-                      halign: start;
-                      margin-top: 10;
-                      margin-bottom: 5;
-                      label: _("Oceania");
-                    }
-
-                    ListBox oceania {
-                      selection-mode: none;
-
-                      styles [
-                        "mirror-box",
-                      ]
-                    }
-                  }
-
-                  Box {
-                    margin-top: 10;
-                    orientation: vertical;
-
-                    Label {
-                      halign: start;
-                      margin-top: 10;
-                      margin-bottom: 5;
-                      label: _("South America");
-                    }
-
-                    ListBox south_america {
-                      selection-mode: none;
-
-                      styles [
-                        "mirror-box",
-                      ]
-                    }
+                  ListBox additional_page {
                   }
                 }
               }
             }
-          }
+          };
         }
-
-        ;
-      }
-
-      StackPage {
-        name: "Additional Repos";
-        title: _("Additional Repos");
-        child: 
-        ScrolledWindow additional_repo {
-
-          Viewport {
-            Adw.Clamp {
-              Box {
-                margin-start: 20;
-                margin-end: 20;
-                margin-top: 20;
-                margin-bottom: 20;
-                orientation: vertical;
-
-                ListBox additional_page {
-                }
-              }
-            }
-          }
-        }
-
-        ;
-      }
-    }
-  }
+    };
+   };
+  };
 }

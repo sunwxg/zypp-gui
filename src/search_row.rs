@@ -1,17 +1,17 @@
 use crate::util::SearchInfo;
+use adw::prelude::*;
 use gettextrs::*;
 use gtk::prelude::*;
-use libadwaita::prelude::*;
 
 pub struct SearchRow {
-    row: libadwaita::ActionRow,
+    row: adw::ActionRow,
     button: gtk::Button,
 }
 
 impl SearchRow {
     pub fn new(info: SearchInfo) -> Self {
         let builder = gtk::Builder::from_resource("/zypp/gui/ui/search_row.ui");
-        let row: libadwaita::ActionRow = builder.object("row").unwrap();
+        let row: adw::ActionRow = builder.object("row").unwrap();
         let button: gtk::Button = builder.object("operation_button").unwrap();
         if info.info == "installed" {
             button.set_label(&gettext("Remove"));
@@ -25,7 +25,7 @@ impl SearchRow {
         }
     }
 
-    pub fn row(&self) -> &libadwaita::ActionRow {
+    pub fn row(&self) -> &adw::ActionRow {
         &self.row
     }
 

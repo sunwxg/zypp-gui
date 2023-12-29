@@ -19,12 +19,12 @@ use crate::util::{ButtonState, PKmessage, PackageInfo};
 
 #[derive(Clone)]
 pub struct Window {
-    window: libadwaita::ApplicationWindow,
+    window: adw::ApplicationWindow,
     stack_box: gtk::Stack,
     page_settings: page_settings::PageSettings,
     stack_list: gtk::ScrolledWindow,
     progress_bar: gtk::ProgressBar,
-    stack_label: libadwaita::Clamp,
+    stack_label: adw::Clamp,
     progress: gtk::Box,
     progress_label: gtk::Label,
     list_box: gtk::ListBox,
@@ -37,14 +37,14 @@ pub struct Window {
     search: search::SearchPackage,
     notification: notification::Notification,
     packagekit_state: PackagekitState,
-    application: libadwaita::Application,
+    application: adw::Application,
     sender_connect_id: Rc<RefCell<Option<glib::SignalHandlerId>>>,
 }
 
 impl Window {
-    pub fn new(packagekit_state: PackagekitState, application: libadwaita::Application) -> Self {
+    pub fn new(packagekit_state: PackagekitState, application: adw::Application) -> Self {
         let builder = gtk::Builder::from_resource("/zypp/gui/ui/window.ui");
-        let win: libadwaita::ApplicationWindow = builder.object("window").unwrap();
+        let win: adw::ApplicationWindow = builder.object("window").unwrap();
         win.set_application(Some(&application));
 
         let button: gtk::Button = builder.object("download_button").unwrap();
@@ -55,7 +55,7 @@ impl Window {
         let stack_box: gtk::Stack = builder.object("stack_box").unwrap();
         let stack_list = builder.object("stack_list").unwrap();
         let progress_bar: gtk::ProgressBar = builder.object("progress_bar").unwrap();
-        let stack_label: libadwaita::Clamp = builder.object("stack_label").unwrap();
+        let stack_label: adw::Clamp = builder.object("stack_label").unwrap();
         let progress: gtk::Box = builder.object("progress").unwrap();
         let progress_label: gtk::Label = builder.object("progress_label").unwrap();
         stack_box.set_visible_child(&stack_label);
@@ -74,7 +74,7 @@ impl Window {
             packagekit_state.clone(),
         );
 
-        let deck: libadwaita::ViewStack = builder.object("viewstack").unwrap();
+        let deck: adw::ViewStack = builder.object("viewstack").unwrap();
         let page_settings = page_settings::PageSettings::new(&builder);
         deck.add(&page_settings.widget);
 
@@ -108,7 +108,7 @@ impl Window {
         window
     }
 
-    pub fn window(&self) -> &libadwaita::ApplicationWindow {
+    pub fn window(&self) -> &adw::ApplicationWindow {
         &self.window
     }
 
@@ -176,26 +176,11 @@ impl Window {
     }
 
     fn button_connect(&self) {
-        /*
-        {
-            let application = self.application.clone();
-            self.window.connect_delete_event(move |window, _| {
-                debug!("window delete event");
-                let flag = application.flags();
-                if flag == gio::ApplicationFlags::IS_SERVICE {
-                    window.hide();
-                    //Inhibit(true)
-                } else {
-                    //Inhibit(false)
-                }
-            });
-        }
-            */
         let builder = self.builder.clone();
         {
             let button: gtk::Button = builder.object("button_settings").unwrap();
-            let deck: libadwaita::ViewStack = builder.object("viewstack").unwrap();
-            let page_settings: libadwaita::Leaflet = self.page_settings.widget.clone();
+            let deck: adw::ViewStack = builder.object("viewstack").unwrap();
+            let page_settings: adw::NavigationSplitView = self.page_settings.widget.clone();
             button.connect_clicked(move |_| {
                 deck.set_visible_child(&page_settings);
             });
@@ -203,7 +188,7 @@ impl Window {
 
         {
             let button: gtk::Button = self.page_settings.button_deck_back.clone();
-            let deck: libadwaita::ViewStack = builder.object("viewstack").unwrap();
+            let deck: adw::ViewStack = builder.object("viewstack").unwrap();
             let page_update: gtk::Box = builder.object("page_update").unwrap();
             button.connect_clicked(move |_| {
                 deck.set_visible_child(&page_update);
@@ -213,7 +198,7 @@ impl Window {
         {
             let button: gtk::ToggleButton = builder.object("search_button").unwrap();
             let button_stack: gtk::Stack = builder.object("button_stack").unwrap();
-            let search_bar: libadwaita::Clamp = builder.object("search_bar").unwrap();
+            let search_bar: adw::Clamp = builder.object("search_bar").unwrap();
             let update_button: gtk::Box = builder.object("update_button").unwrap();
             let search_box: gtk::ScrolledWindow = builder.object("search_box").unwrap();
             let search_entry: gtk::Entry = builder.object("search_entry").unwrap();
@@ -335,7 +320,7 @@ impl Window {
         }
         drop(state);
 
-        let deck: libadwaita::ViewStack = self.builder.object("viewstack").unwrap();
+        let deck: adw::ViewStack = self.builder.object("viewstack").unwrap();
         let page_update: gtk::Box = self.builder.object("page_update").unwrap();
         deck.set_visible_child(&page_update);
 
@@ -428,7 +413,7 @@ impl Window {
     }
 
     fn get_updates(&self) {
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
         self.cancel_button_connect(tx.clone());
 
         thread::spawn(move || {
@@ -451,7 +436,7 @@ impl Window {
                 PKmessage::PackageListInstalled(list) => {
                     let list_slice = &list[..];
                     let package_list_slice = &mut package_list[..];
-                    for mut p in package_list_slice {
+                    for p in package_list_slice {
                         for l in list_slice {
                             if p.name == l.name {
                                 p.version_current = l.version_current.clone();
@@ -471,12 +456,16 @@ impl Window {
                 }
                 _ => {}
             }
-            glib::Continue(is_continue)
+            if is_continue {
+                glib::ControlFlow::Continue
+            } else {
+                glib::ControlFlow::Break
+            }
         });
     }
 
     fn download_updates(&self) {
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
         self.cancel_button_connect(tx.clone());
 
         thread::spawn(move || {
@@ -503,12 +492,16 @@ impl Window {
                 }
                 _ => {}
             }
-            glib::Continue(is_continue)
+            if is_continue {
+                glib::ControlFlow::Continue
+            } else {
+                glib::ControlFlow::Break
+            }
         });
     }
 
     pub fn updates(&self) {
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
         self.cancel_button_connect(tx.clone());
 
         thread::spawn(move || {
@@ -535,7 +528,11 @@ impl Window {
                 }
                 _ => {}
             }
-            glib::Continue(is_continue)
+            if is_continue {
+                glib::ControlFlow::Continue
+            } else {
+                glib::ControlFlow::Break
+            }
         });
     }
 }

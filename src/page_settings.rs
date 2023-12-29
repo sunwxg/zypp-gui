@@ -4,7 +4,6 @@ use gtk::gio::prelude::*;
 use gtk::gio::File;
 use gtk::glib;
 use gtk::prelude::*;
-use libadwaita::NavigationDirection;
 use log::debug;
 use std::thread;
 
@@ -15,22 +14,19 @@ use crate::zypper::{RepoInfo, Settings, Zypper};
 
 #[derive(Clone)]
 pub struct PageSettings {
-    pub widget: libadwaita::Leaflet,
+    pub widget: adw::NavigationSplitView,
     pub button_deck_back: gtk::Button,
     list_box: gtk::Box,
-    main_window: libadwaita::ApplicationWindow,
+    main_window: adw::ApplicationWindow,
 }
 
 impl PageSettings {
     pub fn new(main_builder: &gtk::Builder) -> Self {
         let builder = gtk::Builder::from_resource("/zypp/gui/ui/page_settings.ui");
-        let widget: libadwaita::Leaflet = builder.object("page_settings").unwrap();
+        let widget: adw::NavigationSplitView = builder.object("page_settings").unwrap();
         let button_deck_back: gtk::Button = builder.object("button_deck_back").unwrap();
         let list_box: gtk::Box = builder.object("repo_box").unwrap();
-        let repo_add_button: gtk::Button = builder.object("repo_add").unwrap();
-        let top_right_box: gtk::Box = builder.object("top_right_box").unwrap();
-        top_right_box.append(&repo_add_button);
-        let main_window: libadwaita::ApplicationWindow = main_builder.object("window").unwrap();
+        let main_window: adw::ApplicationWindow = main_builder.object("window").unwrap();
         MirrorSettings::new(main_builder, &builder);
         AdditionalRepo::new(main_builder, &builder);
 
@@ -108,35 +104,18 @@ impl PageSettings {
 
     fn button_connect(&self, builder: &gtk::Builder) {
         {
-            let button: gtk::Button = builder.object("button_leaflet_back").unwrap();
-            let page_settings: libadwaita::Leaflet = builder.object("page_settings").unwrap();
-            button.connect_clicked(move |_| {
-                page_settings.navigate(NavigationDirection::Back);
-            });
-        }
-
-        {
             let stack: gtk::Stack = builder.object("setting_stack").unwrap();
             let this: gtk::Stack = builder.object("setting_stack").unwrap();
             let repo_add_button: gtk::Button = builder.object("repo_add").unwrap();
-            let top_right_box: gtk::Box = builder.object("top_right_box").unwrap();
-            let page_settings: libadwaita::Leaflet = builder.object("page_settings").unwrap();
+            let top_right_box: adw::HeaderBar = builder.object("top_right_box").unwrap();
             stack.connect_local("notify::visible-child", true, move |_| {
-                page_settings.navigate(NavigationDirection::Forward);
                 if this.visible_child_name().unwrap() == "Repo List" {
-                    top_right_box.append(&repo_add_button);
+                    if repo_add_button.parent() == None {
+                        top_right_box.pack_start(&repo_add_button);
+                    }
                 } else {
-                    let mut child = match top_right_box.first_child() {
-                        Some(child) => child,
-                        None => return None,
-                    };
-                    loop {
-                        top_right_box.remove(&child);
-                        if let Some(next_child) = child.next_sibling() {
-                            child = next_child;
-                        } else {
-                            break;
-                        }
+                    if repo_add_button.parent() != None {
+                        top_right_box.remove(&repo_add_button);
                     }
                 }
                 None
@@ -156,7 +135,6 @@ impl PageSettings {
         let builder = gtk::Builder::from_resource("/zypp/gui/ui/repo_add.ui");
         let window: gtk::Window = builder.object("repo_add_window").unwrap();
         window.set_modal(true);
-        //window.set_type_hint(gdk::WindowTypeHint::Dialog);
         window.set_transient_for(Some(&self.main_window));
 
         let cancel: gtk::Button = builder.object("add_cancel").unwrap();
@@ -200,7 +178,7 @@ impl PageSettings {
     }
 
     fn monitor_repo_dir(&self) {
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
         thread::spawn(move || {
             let mainloop = glib::MainLoop::new(None, true);
             let path = std::path::Path::new("/etc/zypp/repos.d");
@@ -227,7 +205,7 @@ impl PageSettings {
         rx.attach(None, move |_| {
             this.clear_repo_list();
             this.build_repo_list();
-            glib::Continue(true)
+            glib::ControlFlow::Continue
         });
     }
 }

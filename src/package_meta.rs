@@ -132,7 +132,7 @@ impl PackageMeta {
             if !r.enable {
                 continue;
             }
-            let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+            let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
 
             r.set_busy(true);
             let file = r.file.clone();
@@ -159,7 +159,7 @@ impl PackageMeta {
                         this.add_package_name_set();
                     }
                 }
-                glib::Continue(true)
+                glib::ControlFlow::Continue
             });
         }
     }

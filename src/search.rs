@@ -157,7 +157,7 @@ impl SearchPackage {
 
     /*
     fn search_names(&self, text: glib::GString) {
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
 
         thread::spawn(move || {
             packagekit::search_names(tx, text);
@@ -180,7 +180,7 @@ impl SearchPackage {
                 }
                 _ => {}
             }
-            glib::Continue(true)
+            glib::ControlFlow::Continue
         });
     }
     */
@@ -192,7 +192,7 @@ impl SearchPackage {
     }
 
     fn install_packages(&self, id: String) {
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
 
         thread::spawn(move || {
             packagekit::install_packages(tx, id);
@@ -216,12 +216,12 @@ impl SearchPackage {
                 }
                 _ => {}
             }
-            glib::Continue(true)
+            glib::ControlFlow::Continue
         });
     }
 
     fn remove_packages(&self, id: String) {
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
 
         thread::spawn(move || {
             packagekit::remove_packages(tx, id);
@@ -245,7 +245,7 @@ impl SearchPackage {
                 }
                 _ => {}
             }
-            glib::Continue(true)
+            glib::ControlFlow::Continue
         });
     }
 }
