@@ -1,4 +1,5 @@
 //use gtk::gdk;
+use glib::clone;
 use gtk::gio;
 use gtk::gio::prelude::*;
 use gtk::gio::File;
@@ -178,7 +179,8 @@ impl PageSettings {
     }
 
     fn monitor_repo_dir(&self) {
-        let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
+        let (tx, rx) = async_channel::bounded(1);
+
         thread::spawn(move || {
             let mainloop = glib::MainLoop::new(None, true);
             let path = std::path::Path::new("/etc/zypp/repos.d");
@@ -195,17 +197,20 @@ impl PageSettings {
                     || event == gio::FileMonitorEvent::Deleted
                     || event == gio::FileMonitorEvent::ChangesDoneHint
                 {
-                    tx.send("repo changed")
-                        .expect("Couldn't send data to channel");
+                    glib::spawn_future_local(clone!(@strong tx => async move {
+                        tx.send("repo changed").await.expect("Couldn't send data to channel");
+                    }));
                 }
             });
             mainloop.run();
         });
+
         let this = self.clone();
-        rx.attach(None, move |_| {
-            this.clear_repo_list();
-            this.build_repo_list();
-            glib::ControlFlow::Continue
+        glib::spawn_future_local(async move {
+            while let Ok(_) = rx.recv().await {
+                this.clear_repo_list();
+                this.build_repo_list();
+            }
         });
     }
 }

@@ -13,6 +13,8 @@ use crate::packagekit;
 use crate::packagekit::{
     do_reboot, offline_update_prepared, offline_update_trigger, PackagekitState,
 };
+use async_channel;
+
 use crate::page_settings;
 use crate::search;
 use crate::util::{ButtonState, PKmessage, PackageInfo};
@@ -242,15 +244,14 @@ impl Window {
         }
     }
 
-    fn cancel_button_connect(&self, sender: glib::Sender<PKmessage>) {
+    fn cancel_button_connect(&self, sender: async_channel::Sender<PKmessage>) {
         self.disconnect_cancel_button();
         self.cancel_button.set_visible(true);
         let this = self.clone();
         let id = self.cancel_button.connect_clicked(move |_| {
-            match sender.send(PKmessage::Error("The job was canceled".to_string())) {
-                Err(_) => debug!("cancel button sender sending fail"),
-                _ => {}
-            }
+            sender
+                .send_blocking(PKmessage::Error("The job was canceled".to_string()))
+                .expect("Couldn't send data to channel");
             this.disconnect_cancel_button();
         });
         self.sender_connect_id.replace(Some(id));
@@ -413,7 +414,7 @@ impl Window {
     }
 
     fn get_updates(&self) {
-        let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
+        let (tx, rx) = async_channel::bounded(1);
         self.cancel_button_connect(tx.clone());
 
         thread::spawn(move || {
@@ -423,49 +424,44 @@ impl Window {
         let this = self.clone();
         self.update_progress(0);
         let mut package_list: Box<Vec<PackageInfo>> = Box::new(vec![]);
-        rx.attach(None, move |message| {
-            let mut is_continue = true;
-            match message {
-                PKmessage::PackageListNew(list) => {
-                    if list.len() == 0 {
-                        this.set_state(ButtonState::Refresh);
-                    } else {
-                        package_list = Box::new(list.clone());
-                    }
-                }
-                PKmessage::PackageListInstalled(list) => {
-                    let list_slice = &list[..];
-                    let package_list_slice = &mut package_list[..];
-                    for p in package_list_slice {
-                        for l in list_slice {
-                            if p.name == l.name {
-                                p.version_current = l.version_current.clone();
-                            }
+        glib::spawn_future_local(async move {
+            while let Ok(message) = rx.recv().await {
+                match message {
+                    PKmessage::PackageListNew(list) => {
+                        if list.len() == 0 {
+                            this.set_state(ButtonState::Refresh);
+                        } else {
+                            package_list = Box::new(list.clone());
                         }
                     }
-                    this.set_state(ButtonState::Download);
-                    this.update_list(package_list.to_vec());
+                    PKmessage::PackageListInstalled(list) => {
+                        let list_slice = &list[..];
+                        let package_list_slice = &mut package_list[..];
+                        for p in package_list_slice {
+                            for l in list_slice {
+                                if p.name == l.name {
+                                    p.version_current = l.version_current.clone();
+                                }
+                            }
+                        }
+                        this.set_state(ButtonState::Download);
+                        this.update_list(package_list.to_vec());
+                    }
+                    PKmessage::Progress((percentage, _)) => {
+                        this.update_progress(percentage);
+                    }
+                    PKmessage::Error(text) => {
+                        this.show_notification(text);
+                        this.set_state(ButtonState::Refresh);
+                    }
+                    _ => {}
                 }
-                PKmessage::Progress((percentage, _)) => {
-                    this.update_progress(percentage);
-                }
-                PKmessage::Error(text) => {
-                    this.show_notification(text);
-                    this.set_state(ButtonState::Refresh);
-                    is_continue = false;
-                }
-                _ => {}
-            }
-            if is_continue {
-                glib::ControlFlow::Continue
-            } else {
-                glib::ControlFlow::Break
             }
         });
     }
 
     fn download_updates(&self) {
-        let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
+        let (tx, rx) = async_channel::bounded(1);
         self.cancel_button_connect(tx.clone());
 
         thread::spawn(move || {
@@ -474,34 +470,29 @@ impl Window {
 
         let this = self.clone();
         this.update_progress(0);
-        rx.attach(None, move |message| {
-            let mut is_continue = true;
-            match message {
-                PKmessage::DownloadFinish => {
-                    debug!("DownloadFinish");
-                    this.set_state(ButtonState::Update);
+        glib::spawn_future_local(async move {
+            while let Ok(message) = rx.recv().await {
+                match message {
+                    PKmessage::DownloadFinish => {
+                        debug!("DownloadFinish");
+                        this.set_state(ButtonState::Update);
+                    }
+                    PKmessage::Progress((percentage, id)) => {
+                        this.update_progress(percentage);
+                        this.update_progress_text(id);
+                    }
+                    PKmessage::Error(text) => {
+                        this.show_notification(text);
+                        this.set_state(ButtonState::Refresh);
+                    }
+                    _ => {}
                 }
-                PKmessage::Progress((percentage, id)) => {
-                    this.update_progress(percentage);
-                    this.update_progress_text(id);
-                }
-                PKmessage::Error(text) => {
-                    this.show_notification(text);
-                    this.set_state(ButtonState::Refresh);
-                    is_continue = false;
-                }
-                _ => {}
-            }
-            if is_continue {
-                glib::ControlFlow::Continue
-            } else {
-                glib::ControlFlow::Break
             }
         });
     }
 
     pub fn updates(&self) {
-        let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
+        let (tx, rx) = async_channel::bounded(1);
         self.cancel_button_connect(tx.clone());
 
         thread::spawn(move || {
@@ -510,28 +501,23 @@ impl Window {
 
         let this = self.clone();
         self.update_progress(0);
-        rx.attach(None, move |message| {
-            let mut is_continue = true;
-            match message {
-                PKmessage::UpdateFinish => {
-                    debug!("UpdateFinish");
-                    this.set_state(ButtonState::Refresh);
+        glib::spawn_future_local(async move {
+            while let Ok(message) = rx.recv().await {
+                match message {
+                    PKmessage::UpdateFinish => {
+                        debug!("UpdateFinish");
+                        this.set_state(ButtonState::Refresh);
+                    }
+                    PKmessage::Progress((percentage, id)) => {
+                        this.update_progress(percentage);
+                        this.update_progress_text(id);
+                    }
+                    PKmessage::Error(text) => {
+                        this.show_notification(text);
+                        this.set_state(ButtonState::Refresh);
+                    }
+                    _ => {}
                 }
-                PKmessage::Progress((percentage, id)) => {
-                    this.update_progress(percentage);
-                    this.update_progress_text(id);
-                }
-                PKmessage::Error(text) => {
-                    this.show_notification(text);
-                    this.set_state(ButtonState::Refresh);
-                    is_continue = false;
-                }
-                _ => {}
-            }
-            if is_continue {
-                glib::ControlFlow::Continue
-            } else {
-                glib::ControlFlow::Break
             }
         });
     }

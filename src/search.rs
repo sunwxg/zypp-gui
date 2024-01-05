@@ -192,7 +192,7 @@ impl SearchPackage {
     }
 
     fn install_packages(&self, id: String) {
-        let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
+        let (tx, rx) = async_channel::bounded(1);
 
         thread::spawn(move || {
             packagekit::install_packages(tx, id);
@@ -200,28 +200,29 @@ impl SearchPackage {
 
         let this = self.clone();
         this.update_progress(0);
-        rx.attach(None, move |message| {
-            match message {
-                PKmessage::InstallFinish => {
-                    debug!("InstallFinish");
-                    this.update_search_list(vec![]);
+        glib::spawn_future_local(async move {
+            while let Ok(message) = rx.recv().await {
+                match message {
+                    PKmessage::InstallFinish => {
+                        debug!("InstallFinish");
+                        this.update_search_list(vec![]);
+                    }
+                    PKmessage::Progress((percentage, id)) => {
+                        this.update_progress(percentage);
+                        this.update_progress_text(id);
+                    }
+                    PKmessage::Error(text) => {
+                        this.show_notification(text);
+                        this.update_search_list(vec![]);
+                    }
+                    _ => {}
                 }
-                PKmessage::Progress((percentage, id)) => {
-                    this.update_progress(percentage);
-                    this.update_progress_text(id);
-                }
-                PKmessage::Error(text) => {
-                    this.show_notification(text);
-                    this.update_search_list(vec![]);
-                }
-                _ => {}
             }
-            glib::ControlFlow::Continue
         });
     }
 
     fn remove_packages(&self, id: String) {
-        let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
+        let (tx, rx) = async_channel::bounded(1);
 
         thread::spawn(move || {
             packagekit::remove_packages(tx, id);
@@ -229,23 +230,24 @@ impl SearchPackage {
 
         let this = self.clone();
         this.update_progress(0);
-        rx.attach(None, move |message| {
-            match message {
-                PKmessage::RemoveFinish => {
-                    debug!("RemoveFinish");
-                    this.update_search_list(vec![]);
+        glib::spawn_future_local(async move {
+            while let Ok(message) = rx.recv().await {
+                match message {
+                    PKmessage::RemoveFinish => {
+                        debug!("RemoveFinish");
+                        this.update_search_list(vec![]);
+                    }
+                    PKmessage::Progress((percentage, id)) => {
+                        this.update_progress(percentage);
+                        this.update_progress_text(id);
+                    }
+                    PKmessage::Error(text) => {
+                        this.show_notification(text);
+                        this.update_search_list(vec![]);
+                    }
+                    _ => {}
                 }
-                PKmessage::Progress((percentage, id)) => {
-                    this.update_progress(percentage);
-                    this.update_progress_text(id);
-                }
-                PKmessage::Error(text) => {
-                    this.show_notification(text);
-                    this.update_search_list(vec![]);
-                }
-                _ => {}
             }
-            glib::ControlFlow::Continue
         });
     }
 }

@@ -1,7 +1,6 @@
 use crate::util::SearchInfo;
 use adw::prelude::*;
 use gettextrs::*;
-use gtk::prelude::*;
 
 pub struct SearchRow {
     row: adw::ActionRow,

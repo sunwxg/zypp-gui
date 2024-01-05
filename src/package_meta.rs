@@ -1,3 +1,4 @@
+use gtk::gio;
 use gtk::gio::prelude::*;
 use gtk::glib;
 use log::debug;
@@ -132,7 +133,7 @@ impl PackageMeta {
             if !r.enable {
                 continue;
             }
-            let (tx, rx) = glib::MainContext::channel(glib::Priority::default());
+            let (tx, rx) = async_channel::bounded(1);
 
             r.set_busy(true);
             let file = r.file.clone();
@@ -143,28 +144,29 @@ impl PackageMeta {
             let mut meta_hash: HashMap<String, Meta> = HashMap::new();
             let repo = r.clone();
             let this = self.clone();
-            rx.attach(None, move |message| {
-                match message {
-                    Message::Data(data) => {
-                        meta_hash.insert(data.location.clone(), data.clone());
-                    }
-                    Message::Finish => {
-                        debug!(
-                            "Repo {} has {} packages",
-                            repo.repo.clone(),
-                            meta_hash.len()
-                        );
-                        repo.meta.replace(meta_hash.clone());
-                        repo.set_busy(false);
-                        this.add_package_name_set();
+            glib::spawn_future_local(async move {
+                while let Ok(message) = rx.recv().await {
+                    match message {
+                        Message::Data(data) => {
+                            meta_hash.insert(data.location.clone(), data.clone());
+                        }
+                        Message::Finish => {
+                            debug!(
+                                "Repo {} has {} packages",
+                                repo.repo.clone(),
+                                meta_hash.len()
+                            );
+                            repo.meta.replace(meta_hash.clone());
+                            repo.set_busy(false);
+                            this.add_package_name_set();
+                        }
                     }
                 }
-                glib::ControlFlow::Continue
             });
         }
     }
 
-    fn read_file(file: String, sender: glib::Sender<Message>) {
+    fn read_file(file: String, sender: async_channel::Sender<Message>) {
         let command;
         let words: Vec<&str> = file.split('.').collect();
         match words.last() {
@@ -204,7 +206,7 @@ impl PackageMeta {
         }
     }
 
-    fn parse_line_by_line(buffer: String, sender: glib::Sender<Message>) {
+    fn parse_line_by_line(buffer: String, sender: async_channel::Sender<Message>) {
         let mut data = PackageMeta::new_data();
         let mut in_description = false;
         let mut head = true;
@@ -234,9 +236,12 @@ impl PackageMeta {
 
             if line.starts_with(END) {
                 //data.raw.push_str(line);
-                sender
-                    .send(Message::Data(data.clone()))
-                    .expect("Couldn't send data to channel");
+                let message = data.clone();
+                let tx = sender.clone();
+                gio::spawn_blocking(move || {
+                    tx.send_blocking(Message::Data(message))
+                        .expect("Couldn't send data to channel");
+                });
 
                 head = true;
                 continue;
@@ -297,9 +302,11 @@ impl PackageMeta {
             //data.raw.push_str(line);
             //data.raw.push_str("\n");
         }
-        sender
-            .send(Message::Finish)
-            .expect("Couldn't send data to channel");
+        let tx = sender.clone();
+        gio::spawn_blocking(move || {
+            tx.send_blocking(Message::Finish)
+                .expect("Couldn't send data to channel");
+        });
     }
 
     fn get_tag(line: &str, tag: &str, end: &str) -> String {

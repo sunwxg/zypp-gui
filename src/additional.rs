@@ -2,7 +2,6 @@ extern crate serde;
 extern crate serde_json;
 
 use adw::prelude::*;
-use gtk::prelude::*;
 use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::io::prelude::*;

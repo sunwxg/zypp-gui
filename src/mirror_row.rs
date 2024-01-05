@@ -1,5 +1,4 @@
 use adw::prelude::*;
-use gtk::prelude::*;
 
 use crate::mirror::Site;
 use crate::mirror_window::MirrorWindow;
