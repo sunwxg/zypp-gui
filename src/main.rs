@@ -15,7 +15,6 @@ mod util;
 mod window;
 mod zypper;
 
-extern crate gtk;
 use config::{GETTEXT_PACKAGE, LOCALEDIR, RESOURCES_FILE};
 use gettextrs::*;
 use gtk::gio;

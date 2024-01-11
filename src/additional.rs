@@ -1,6 +1,3 @@
-extern crate serde;
-extern crate serde_json;
-
 use adw::prelude::*;
 use serde::{Deserialize, Serialize};
 use std::fs::File;

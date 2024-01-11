@@ -1,8 +1,3 @@
-extern crate minidom;
-extern crate serde;
-extern crate serde_json;
-extern crate clap;
-
 use std::collections::HashMap;
 use std::io::prelude::*;
 use minidom::Element;
