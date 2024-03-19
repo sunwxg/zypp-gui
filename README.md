@@ -46,4 +46,4 @@ meson install -C _builddir
 ```
 
 #### Open Build Service
-[OBS Link](https://build.opensuse.org/package/show/home:xiaoguang_wang:branches:GNOME:Factory/openSUSE-software)
+[OBS Link](https://build.opensuse.org/package/show/openSUSE:Factory/zypp-gui)
