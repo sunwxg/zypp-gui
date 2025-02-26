@@ -8,7 +8,8 @@ pub enum Settings {
     Priority(i32),
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
+#[allow(dead_code)]
 pub struct RepoInfo {
     pub id: String,
     pub alias: String,
@@ -43,8 +44,8 @@ impl Zypper {
         } else {
             false
         };
-        let priority = r[6].trim().to_string().parse::<i32>().unwrap();
-        let url = r[8].trim().to_string();
+        let priority = r[7].trim().to_string().parse::<i32>().unwrap();
+        let url = r[9].trim().to_string();
 
         RepoInfo {
             id: id,
