@@ -84,7 +84,7 @@ impl Zypper {
         let mut _value = String::new();
         match settings {
             Settings::Enable(s) => args.push(if s { "-e" } else { "-d" }),
-            Settings::Refresh(s) => args.push(if s { "-r" } else { "-n" }),
+            Settings::Refresh(s) => args.push(if s { "-f" } else { "-F" }),
             Settings::Priority(s) => {
                 args.push("-p");
                 _value = s.to_string();

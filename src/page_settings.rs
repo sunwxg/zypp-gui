@@ -78,19 +78,19 @@ impl PageSettings {
     fn row_button_connect(&self, row: &RepoRow, info: RepoInfo) {
         {
             let id = String::from(info.id.clone());
-            row.enable().connect_activate(move |switch| {
+            row.enable().connect_active_notify(move |switch| {
                 Zypper::change_repo(id.clone(), Settings::Enable(switch.is_active()));
             });
         }
         {
             let id = String::from(info.id.clone());
-            row.refresh().connect_toggled(move |b| {
+            row.refresh().connect_active_notify(move |b| {
                 Zypper::change_repo(id.clone(), Settings::Refresh(b.is_active()));
             });
         }
         {
             let id = String::from(info.id.clone());
-            row.priority().connect_value_changed(move |b| {
+            row.priority().connect_value_notify(move |b| {
                 Zypper::change_repo(id.clone(), Settings::Priority(b.value() as i32));
             });
         }

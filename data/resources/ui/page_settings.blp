@@ -48,6 +48,7 @@ Adw.NavigationSplitView page_settings {
                 Box repo_box {
                   orientation: vertical;
                   homogeneous: true;
+                  spacing: 20;
                 }
               }
             }
@@ -57,7 +58,7 @@ Adw.NavigationSplitView page_settings {
         StackPage {
           name: "Mirrors";
           title: _("Mirrors");
-          child: 
+          child:
           ScrolledWindow mirror {
             Viewport {
               Adw.Clamp {
@@ -178,7 +179,7 @@ Adw.NavigationSplitView page_settings {
         StackPage {
           name: "Additional Repos";
           title: _("Additional Repos");
-          child: 
+          child:
           ScrolledWindow additional_repo {
 
             Viewport {

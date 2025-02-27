@@ -19,13 +19,13 @@ fn main() {
         )
         .arg(
             Arg::with_name("refresh")
-                .short("r")
+                .short("f")
                 .long("refresh")
                 .help("Refresh the repo"),
         )
         .arg(
             Arg::with_name("no-refresh")
-                .short("n")
+                .short("F")
                 .long("no-refresh")
                 .help("Not refresh the repo"),
         )
@@ -102,9 +102,9 @@ fn modify_repo(matches: ArgMatches) {
     } else if matches.is_present("disable") {
         args.push("-d");
     } else if matches.is_present("refresh") {
-        args.push("-r");
+        args.push("-f");
     } else if matches.is_present("no-refresh") {
-        args.push("-n");
+        args.push("-F");
     } else if matches.is_present("cpg") {
         args.push("-g");
     } else if matches.is_present("no-cpg") {
