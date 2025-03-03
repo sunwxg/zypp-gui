@@ -44,10 +44,10 @@ fi
 
 echo "--Checking style--"
 #cargo fmt --all -- --check
-cargo fmt --manifest-path Cargo.toml -- --check
+cargo fmt --manifest-path zypp-gui/Cargo.toml -- --check
 if test $? != 0; then
     echo "--Checking style fail--"
-    echo "Please fix the above issues, either manually or by running: cargo fmt --manifest-path Cargo.toml"
+    echo "Please fix the above issues, either manually or by running: cargo fmt --manifest-path zypp-gui/Cargo.toml"
 
     exit -1
 fi

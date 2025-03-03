@@ -14,7 +14,7 @@ config = configure_file(
 run_command(
   'cp',
   meson.build_root() / 'src' / 'config.rs',
-  meson.source_root() / 'src' / 'config.rs',
+  meson.source_root() / 'zypp-gui' / 'src' / 'config.rs',
   check: true
 )
 

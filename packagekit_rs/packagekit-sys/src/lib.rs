@@ -3,16 +3,22 @@
 // DO NOT EDIT
 
 #![allow(non_camel_case_types, non_upper_case_globals, non_snake_case)]
-#![allow(clippy::approx_constant, clippy::type_complexity, clippy::unreadable_literal, clippy::upper_case_acronyms)]
+#![allow(
+    clippy::approx_constant,
+    clippy::type_complexity,
+    clippy::unreadable_literal,
+    clippy::upper_case_acronyms
+)]
 
+use gio_sys as gio;
 use glib_sys as glib;
 use gobject_sys as gobject;
-use gio_sys as gio;
 
 #[allow(unused_imports)]
-use libc::{c_int, c_char, c_uchar, c_float, c_uint, c_double,
-    c_short, c_ushort, c_long, c_ulong,
-    c_void, size_t, ssize_t, intptr_t, uintptr_t, time_t, FILE};
+use libc::{
+    c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, c_void,
+    intptr_t, size_t, ssize_t, time_t, uintptr_t, FILE,
+};
 
 #[allow(unused_imports)]
 use glib::{gboolean, gconstpointer, gpointer, GType};
@@ -407,12 +413,18 @@ pub const PK_UPGRADE_KIND_ENUM_COMPLETE: PkUpgradeKindEnum = 3;
 pub const PK_UPGRADE_KIND_ENUM_LAST: PkUpgradeKindEnum = 4;
 
 // Constants
-pub const PK_DBUS_INTERFACE: *const c_char = b"org.freedesktop.PackageKit\0" as *const u8 as *const c_char;
-pub const PK_DBUS_INTERFACE_OFFLINE: *const c_char = b"org.freedesktop.PackageKit.Offline\0" as *const u8 as *const c_char;
-pub const PK_DBUS_INTERFACE_TRANSACTION: *const c_char = b"org.freedesktop.PackageKit.Transaction\0" as *const u8 as *const c_char;
-pub const PK_DBUS_PATH: *const c_char = b"/org/freedesktop/PackageKit\0" as *const u8 as *const c_char;
-pub const PK_DBUS_SERVICE: *const c_char = b"org.freedesktop.PackageKit\0" as *const u8 as *const c_char;
-pub const PK_DESKTOP_DEFAULT_APPLICATION_DIR: *const c_char = b"/usr/share/applications\0" as *const u8 as *const c_char;
+pub const PK_DBUS_INTERFACE: *const c_char =
+    b"org.freedesktop.PackageKit\0" as *const u8 as *const c_char;
+pub const PK_DBUS_INTERFACE_OFFLINE: *const c_char =
+    b"org.freedesktop.PackageKit.Offline\0" as *const u8 as *const c_char;
+pub const PK_DBUS_INTERFACE_TRANSACTION: *const c_char =
+    b"org.freedesktop.PackageKit.Transaction\0" as *const u8 as *const c_char;
+pub const PK_DBUS_PATH: *const c_char =
+    b"/org/freedesktop/PackageKit\0" as *const u8 as *const c_char;
+pub const PK_DBUS_SERVICE: *const c_char =
+    b"org.freedesktop.PackageKit\0" as *const u8 as *const c_char;
+pub const PK_DESKTOP_DEFAULT_APPLICATION_DIR: *const c_char =
+    b"/usr/share/applications\0" as *const u8 as *const c_char;
 pub const PK_MAJOR_VERSION: c_int = 1;
 pub const PK_MICRO_VERSION: c_int = 2;
 pub const PK_MINOR_VERSION: c_int = 2;
@@ -421,12 +433,16 @@ pub const PK_PACKAGE_ID_ARCH: c_int = 2;
 pub const PK_PACKAGE_ID_DATA: c_int = 3;
 pub const PK_PACKAGE_ID_NAME: c_int = 0;
 pub const PK_PACKAGE_ID_VERSION: c_int = 1;
-pub const PK_SYSTEM_PACKAGE_CACHE_FILENAME: *const c_char = b"/var/lib/PackageKit/package-cache.db\0" as *const u8 as *const c_char;
-pub const PK_SYSTEM_PACKAGE_LIST_FILENAME: *const c_char = b"/var/lib/PackageKit/system.package-list\0" as *const u8 as *const c_char;
+pub const PK_SYSTEM_PACKAGE_CACHE_FILENAME: *const c_char =
+    b"/var/lib/PackageKit/package-cache.db\0" as *const u8 as *const c_char;
+pub const PK_SYSTEM_PACKAGE_LIST_FILENAME: *const c_char =
+    b"/var/lib/PackageKit/system.package-list\0" as *const u8 as *const c_char;
 
 // Callbacks
-pub type PkPackageSackFilterFunc = Option<unsafe extern "C" fn(*mut PkPackage, gpointer) -> gboolean>;
-pub type PkProgressCallback = Option<unsafe extern "C" fn(*mut PkProgress, PkProgressType, gpointer)>;
+pub type PkPackageSackFilterFunc =
+    Option<unsafe extern "C" fn(*mut PkPackage, gpointer) -> gboolean>;
+pub type PkProgressCallback =
+    Option<unsafe extern "C" fn(*mut PkProgress, PkProgressType, gpointer)>;
 
 // Records
 #[repr(C)]
@@ -443,13 +459,13 @@ pub struct PkCategoryClass {
 impl ::std::fmt::Debug for PkCategoryClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkCategoryClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -473,14 +489,14 @@ pub struct PkClientClass {
 impl ::std::fmt::Debug for PkClientClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkClientClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("changed", &self.changed)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("changed", &self.changed)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -498,13 +514,13 @@ pub struct PkClientHelperClass {
 impl ::std::fmt::Debug for PkClientHelperClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkClientHelperClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -539,20 +555,20 @@ pub struct PkControlClass {
 impl ::std::fmt::Debug for PkControlClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkControlClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("transaction_list_changed", &self.transaction_list_changed)
-         .field("updates_changed", &self.updates_changed)
-         .field("repo_list_changed", &self.repo_list_changed)
-         .field("network_state_changed", &self.network_state_changed)
-         .field("restart_schedule", &self.restart_schedule)
-         .field("locked", &self.locked)
-         .field("connection_changed", &self.connection_changed)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("transaction_list_changed", &self.transaction_list_changed)
+            .field("updates_changed", &self.updates_changed)
+            .field("repo_list_changed", &self.repo_list_changed)
+            .field("network_state_changed", &self.network_state_changed)
+            .field("restart_schedule", &self.restart_schedule)
+            .field("locked", &self.locked)
+            .field("connection_changed", &self.connection_changed)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -570,8 +586,8 @@ pub struct PkDesktopClass {
 impl ::std::fmt::Debug for PkDesktopClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkDesktopClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .finish()
     }
 }
 
@@ -594,13 +610,13 @@ pub struct PkDetailsClass {
 impl ::std::fmt::Debug for PkDetailsClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkDetailsClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -623,13 +639,13 @@ pub struct PkDistroUpgradeClass {
 impl ::std::fmt::Debug for PkDistroUpgradeClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkDistroUpgradeClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -648,9 +664,9 @@ pub struct PkEnumMatch {
 impl ::std::fmt::Debug for PkEnumMatch {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkEnumMatch @ {:p}", self))
-         .field("value", &self.value)
-         .field("string", &self.string)
-         .finish()
+            .field("value", &self.value)
+            .field("string", &self.string)
+            .finish()
     }
 }
 
@@ -668,13 +684,13 @@ pub struct PkErrorClass {
 impl ::std::fmt::Debug for PkErrorClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkErrorClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -697,13 +713,13 @@ pub struct PkEulaRequiredClass {
 impl ::std::fmt::Debug for PkEulaRequiredClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkEulaRequiredClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -726,13 +742,13 @@ pub struct PkFilesClass {
 impl ::std::fmt::Debug for PkFilesClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkFilesClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -755,13 +771,13 @@ pub struct PkItemProgressClass {
 impl ::std::fmt::Debug for PkItemProgressClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkItemProgressClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -784,13 +800,13 @@ pub struct PkMediaChangeRequiredClass {
 impl ::std::fmt::Debug for PkMediaChangeRequiredClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkMediaChangeRequiredClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -814,14 +830,14 @@ pub struct PkPackageClass {
 impl ::std::fmt::Debug for PkPackageClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkPackageClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("changed", &self.changed)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("changed", &self.changed)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -845,14 +861,14 @@ pub struct PkPackageSackClass {
 impl ::std::fmt::Debug for PkPackageSackClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkPackageSackClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("changed", &self.changed)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("changed", &self.changed)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -880,13 +896,13 @@ pub struct PkProgressClass {
 impl ::std::fmt::Debug for PkProgressClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkProgressClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -909,13 +925,13 @@ pub struct PkRepoDetailClass {
 impl ::std::fmt::Debug for PkRepoDetailClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkRepoDetailClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -938,13 +954,13 @@ pub struct PkRepoSignatureRequiredClass {
 impl ::std::fmt::Debug for PkRepoSignatureRequiredClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkRepoSignatureRequiredClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -967,13 +983,13 @@ pub struct PkRequireRestartClass {
 impl ::std::fmt::Debug for PkRequireRestartClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkRequireRestartClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -996,13 +1012,13 @@ pub struct PkResultsClass {
 impl ::std::fmt::Debug for PkResultsClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkResultsClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -1025,13 +1041,13 @@ pub struct PkSourceClass {
 impl ::std::fmt::Debug for PkSourceClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkSourceClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -1059,18 +1075,18 @@ pub struct PkTaskClass {
 impl ::std::fmt::Debug for PkTaskClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkTaskClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("untrusted_question", &self.untrusted_question)
-         .field("key_question", &self.key_question)
-         .field("eula_question", &self.eula_question)
-         .field("media_change_question", &self.media_change_question)
-         .field("simulate_question", &self.simulate_question)
-         .field("repair_question", &self.repair_question)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("untrusted_question", &self.untrusted_question)
+            .field("key_question", &self.key_question)
+            .field("eula_question", &self.eula_question)
+            .field("media_change_question", &self.media_change_question)
+            .field("simulate_question", &self.simulate_question)
+            .field("repair_question", &self.repair_question)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .finish()
     }
 }
 
@@ -1090,10 +1106,10 @@ pub struct PkTransactionListClass {
 impl ::std::fmt::Debug for PkTransactionListClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkTransactionListClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("added", &self.added)
-         .field("removed", &self.removed)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("added", &self.added)
+            .field("removed", &self.removed)
+            .finish()
     }
 }
 
@@ -1116,13 +1132,13 @@ pub struct PkTransactionPastClass {
 impl ::std::fmt::Debug for PkTransactionPastClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkTransactionPastClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -1145,13 +1161,13 @@ pub struct PkUpdateDetailClass {
 impl ::std::fmt::Debug for PkUpdateDetailClass {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkUpdateDetailClass @ {:p}", self))
-         .field("parent_class", &self.parent_class)
-         .field("_pk_reserved1", &self._pk_reserved1)
-         .field("_pk_reserved2", &self._pk_reserved2)
-         .field("_pk_reserved3", &self._pk_reserved3)
-         .field("_pk_reserved4", &self._pk_reserved4)
-         .field("_pk_reserved5", &self._pk_reserved5)
-         .finish()
+            .field("parent_class", &self.parent_class)
+            .field("_pk_reserved1", &self._pk_reserved1)
+            .field("_pk_reserved2", &self._pk_reserved2)
+            .field("_pk_reserved3", &self._pk_reserved3)
+            .field("_pk_reserved4", &self._pk_reserved4)
+            .field("_pk_reserved5", &self._pk_reserved5)
+            .finish()
     }
 }
 
@@ -1171,9 +1187,9 @@ pub struct PkCategory {
 impl ::std::fmt::Debug for PkCategory {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkCategory @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1187,9 +1203,9 @@ pub struct PkClient {
 impl ::std::fmt::Debug for PkClient {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkClient @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1203,9 +1219,9 @@ pub struct PkClientHelper {
 impl ::std::fmt::Debug for PkClientHelper {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkClientHelper @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1219,9 +1235,9 @@ pub struct PkControl {
 impl ::std::fmt::Debug for PkControl {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkControl @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1235,9 +1251,9 @@ pub struct PkDesktop {
 impl ::std::fmt::Debug for PkDesktop {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkDesktop @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1251,9 +1267,9 @@ pub struct PkDetails {
 impl ::std::fmt::Debug for PkDetails {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkDetails @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1267,9 +1283,9 @@ pub struct PkDistroUpgrade {
 impl ::std::fmt::Debug for PkDistroUpgrade {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkDistroUpgrade @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1283,9 +1299,9 @@ pub struct PkError {
 impl ::std::fmt::Debug for PkError {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkError @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1299,9 +1315,9 @@ pub struct PkEulaRequired {
 impl ::std::fmt::Debug for PkEulaRequired {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkEulaRequired @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1315,9 +1331,9 @@ pub struct PkFiles {
 impl ::std::fmt::Debug for PkFiles {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkFiles @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1331,9 +1347,9 @@ pub struct PkItemProgress {
 impl ::std::fmt::Debug for PkItemProgress {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkItemProgress @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1347,9 +1363,9 @@ pub struct PkMediaChangeRequired {
 impl ::std::fmt::Debug for PkMediaChangeRequired {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkMediaChangeRequired @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1363,9 +1379,9 @@ pub struct PkPackage {
 impl ::std::fmt::Debug for PkPackage {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkPackage @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1379,9 +1395,9 @@ pub struct PkPackageSack {
 impl ::std::fmt::Debug for PkPackageSack {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkPackageSack @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1395,9 +1411,9 @@ pub struct PkProgress {
 impl ::std::fmt::Debug for PkProgress {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkProgress @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1411,9 +1427,9 @@ pub struct PkRepoDetail {
 impl ::std::fmt::Debug for PkRepoDetail {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkRepoDetail @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1427,9 +1443,9 @@ pub struct PkRepoSignatureRequired {
 impl ::std::fmt::Debug for PkRepoSignatureRequired {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkRepoSignatureRequired @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1443,9 +1459,9 @@ pub struct PkRequireRestart {
 impl ::std::fmt::Debug for PkRequireRestart {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkRequireRestart @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1459,9 +1475,9 @@ pub struct PkResults {
 impl ::std::fmt::Debug for PkResults {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkResults @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1475,9 +1491,9 @@ pub struct PkSource {
 impl ::std::fmt::Debug for PkSource {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkSource @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1491,9 +1507,9 @@ pub struct PkTask {
 impl ::std::fmt::Debug for PkTask {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkTask @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1507,9 +1523,9 @@ pub struct PkTransactionList {
 impl ::std::fmt::Debug for PkTransactionList {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkTransactionList @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1523,9 +1539,9 @@ pub struct PkTransactionPast {
 impl ::std::fmt::Debug for PkTransactionPast {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkTransactionPast @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1539,9 +1555,9 @@ pub struct PkUpdateDetail {
 impl ::std::fmt::Debug for PkUpdateDetail {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PkUpdateDetail @ {:p}", self))
-         .field("parent", &self.parent)
-         .field("priv_", &self.priv_)
-         .finish()
+            .field("parent", &self.parent)
+            .field("priv_", &self.priv_)
+            .finish()
     }
 }
 
@@ -1712,9 +1728,13 @@ extern "C" {
     //=========================================================================
     pub fn pk_transaction_flag_enum_get_type() -> GType;
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_transaction_flag_enum_from_string(transaction_flag: *const c_char) -> PkTransactionFlagEnum;
+    pub fn pk_transaction_flag_enum_from_string(
+        transaction_flag: *const c_char,
+    ) -> PkTransactionFlagEnum;
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_transaction_flag_enum_to_string(transaction_flag: PkTransactionFlagEnum) -> *const c_char;
+    pub fn pk_transaction_flag_enum_to_string(
+        transaction_flag: PkTransactionFlagEnum,
+    ) -> *const c_char;
 
     //=========================================================================
     // PkUpdateStateEnum
@@ -1767,53 +1787,212 @@ extern "C" {
     pub fn pk_client_get_type() -> GType;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_client_new() -> *mut PkClient;
-    pub fn pk_client_create_helper_argv_envp(argv: *mut *mut *mut c_char, envp_out: *mut *mut *mut c_char) -> gboolean;
+    pub fn pk_client_create_helper_argv_envp(
+        argv: *mut *mut *mut c_char,
+        envp_out: *mut *mut *mut c_char,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_accept_eula(client: *mut PkClient, eula_id: *const c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_accept_eula(
+        client: *mut PkClient,
+        eula_id: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_accept_eula_async(client: *mut PkClient, eula_id: *const c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_accept_eula_async(
+        client: *mut PkClient,
+        eula_id: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_adopt(client: *mut PkClient, transaction_id: *const c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_adopt(
+        client: *mut PkClient,
+        transaction_id: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_adopt_async(client: *mut PkClient, transaction_id: *const c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_adopt_async(
+        client: *mut PkClient,
+        transaction_id: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_depends_on(client: *mut PkClient, filters: PkBitfield, package_ids: *mut *mut c_char, recursive: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_depends_on(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        package_ids: *mut *mut c_char,
+        recursive: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_depends_on_async(client: *mut PkClient, filters: PkBitfield, package_ids: *mut *mut c_char, recursive: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_depends_on_async(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        package_ids: *mut *mut c_char,
+        recursive: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_download_packages(client: *mut PkClient, package_ids: *mut *mut c_char, directory: *const c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_download_packages(
+        client: *mut PkClient,
+        package_ids: *mut *mut c_char,
+        directory: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_download_packages_async(client: *mut PkClient, package_ids: *mut *mut c_char, directory: *const c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_download_packages_async(
+        client: *mut PkClient,
+        package_ids: *mut *mut c_char,
+        directory: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_generic_finish(client: *mut PkClient, res: *mut gio::GAsyncResult, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_generic_finish(
+        client: *mut PkClient,
+        res: *mut gio::GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_10", feature = "dox"))]
     pub fn pk_client_get_background(client: *mut PkClient) -> gboolean;
     #[cfg(any(feature = "v0_6_10", feature = "dox"))]
     pub fn pk_client_get_cache_age(client: *mut PkClient) -> c_uint;
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_get_categories(client: *mut PkClient, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_get_categories(
+        client: *mut PkClient,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_get_categories_async(client: *mut PkClient, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_get_categories_async(
+        client: *mut PkClient,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_get_details(client: *mut PkClient, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_get_details(
+        client: *mut PkClient,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_get_details_async(client: *mut PkClient, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_get_details_async(
+        client: *mut PkClient,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_8_17", feature = "dox"))]
-    pub fn pk_client_get_details_local(client: *mut PkClient, files: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_get_details_local(
+        client: *mut PkClient,
+        files: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_8_17", feature = "dox"))]
-    pub fn pk_client_get_details_local_async(client: *mut PkClient, files: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_get_details_local_async(
+        client: *mut PkClient,
+        files: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_get_distro_upgrades(client: *mut PkClient, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_get_distro_upgrades(
+        client: *mut PkClient,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_get_distro_upgrades_async(client: *mut PkClient, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_get_distro_upgrades_async(
+        client: *mut PkClient,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_get_files(client: *mut PkClient, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_get_files(
+        client: *mut PkClient,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_get_files_async(client: *mut PkClient, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_get_files_async(
+        client: *mut PkClient,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_9_1", feature = "dox"))]
-    pub fn pk_client_get_files_local(client: *mut PkClient, files: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_get_files_local(
+        client: *mut PkClient,
+        files: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_9_1", feature = "dox"))]
-    pub fn pk_client_get_files_local_async(client: *mut PkClient, files: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_get_files_local_async(
+        client: *mut PkClient,
+        files: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_10", feature = "dox"))]
     pub fn pk_client_get_idle(client: *mut PkClient) -> gboolean;
     #[cfg(any(feature = "v0_6_10", feature = "dox"))]
@@ -1821,91 +2000,444 @@ extern "C" {
     #[cfg(any(feature = "v0_6_10", feature = "dox"))]
     pub fn pk_client_get_locale(client: *mut PkClient) -> *const c_char;
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_get_old_transactions(client: *mut PkClient, number: c_uint, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_get_old_transactions(
+        client: *mut PkClient,
+        number: c_uint,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_get_old_transactions_async(client: *mut PkClient, number: c_uint, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_get_old_transactions_async(
+        client: *mut PkClient,
+        number: c_uint,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_get_packages(client: *mut PkClient, filters: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_get_packages(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_get_packages_async(client: *mut PkClient, filters: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_get_packages_async(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_get_progress(client: *mut PkClient, transaction_id: *const c_char, cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> *mut PkProgress;
+    pub fn pk_client_get_progress(
+        client: *mut PkClient,
+        transaction_id: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkProgress;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_get_progress_async(client: *mut PkClient, transaction_id: *const c_char, cancellable: *mut gio::GCancellable, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_get_progress_async(
+        client: *mut PkClient,
+        transaction_id: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_get_progress_finish(client: *mut PkClient, res: *mut gio::GAsyncResult, error: *mut *mut glib::GError) -> *mut PkProgress;
+    pub fn pk_client_get_progress_finish(
+        client: *mut PkClient,
+        res: *mut gio::GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkProgress;
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_get_repo_list(client: *mut PkClient, filters: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_get_repo_list(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_get_repo_list_async(client: *mut PkClient, filters: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_get_repo_list_async(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_get_update_detail(client: *mut PkClient, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_get_update_detail(
+        client: *mut PkClient,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_get_update_detail_async(client: *mut PkClient, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_get_update_detail_async(
+        client: *mut PkClient,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_get_updates(client: *mut PkClient, filters: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_get_updates(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_get_updates_async(client: *mut PkClient, filters: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_get_updates_async(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_client_install_files(client: *mut PkClient, transaction_flags: PkBitfield, files: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_install_files(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        files: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_client_install_files_async(client: *mut PkClient, transaction_flags: PkBitfield, files: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_install_files_async(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        files: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_client_install_packages(client: *mut PkClient, transaction_flags: PkBitfield, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_install_packages(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_client_install_packages_async(client: *mut PkClient, transaction_flags: PkBitfield, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_install_packages_async(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_install_signature(client: *mut PkClient, type_: PkSigTypeEnum, key_id: *const c_char, package_id: *const c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_install_signature(
+        client: *mut PkClient,
+        type_: PkSigTypeEnum,
+        key_id: *const c_char,
+        package_id: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_install_signature_async(client: *mut PkClient, type_: PkSigTypeEnum, key_id: *const c_char, package_id: *const c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_install_signature_async(
+        client: *mut PkClient,
+        type_: PkSigTypeEnum,
+        key_id: *const c_char,
+        package_id: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_refresh_cache(client: *mut PkClient, force: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_refresh_cache(
+        client: *mut PkClient,
+        force: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_refresh_cache_async(client: *mut PkClient, force: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_refresh_cache_async(
+        client: *mut PkClient,
+        force: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_client_remove_packages(client: *mut PkClient, transaction_flags: PkBitfield, package_ids: *mut *mut c_char, allow_deps: gboolean, autoremove: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_remove_packages(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        package_ids: *mut *mut c_char,
+        allow_deps: gboolean,
+        autoremove: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_client_remove_packages_async(client: *mut PkClient, transaction_flags: PkBitfield, package_ids: *mut *mut c_char, allow_deps: gboolean, autoremove: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_remove_packages_async(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        package_ids: *mut *mut c_char,
+        allow_deps: gboolean,
+        autoremove: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_client_repair_system(client: *mut PkClient, transaction_flags: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_repair_system(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_client_repair_system_async(client: *mut PkClient, transaction_flags: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_repair_system_async(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_repo_enable(client: *mut PkClient, repo_id: *const c_char, enabled: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_repo_enable(
+        client: *mut PkClient,
+        repo_id: *const c_char,
+        enabled: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_repo_enable_async(client: *mut PkClient, repo_id: *const c_char, enabled: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_repo_enable_async(
+        client: *mut PkClient,
+        repo_id: *const c_char,
+        enabled: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_9_1", feature = "dox"))]
-    pub fn pk_client_repo_remove(client: *mut PkClient, transaction_flags: PkBitfield, repo_id: *const c_char, autoremove: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_repo_remove(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        repo_id: *const c_char,
+        autoremove: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_9_1", feature = "dox"))]
-    pub fn pk_client_repo_remove_async(client: *mut PkClient, transaction_flags: PkBitfield, repo_id: *const c_char, autoremove: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_repo_remove_async(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        repo_id: *const c_char,
+        autoremove: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_repo_set_data(client: *mut PkClient, repo_id: *const c_char, parameter: *const c_char, value: *const c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_repo_set_data(
+        client: *mut PkClient,
+        repo_id: *const c_char,
+        parameter: *const c_char,
+        value: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_repo_set_data_async(client: *mut PkClient, repo_id: *const c_char, parameter: *const c_char, value: *const c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_repo_set_data_async(
+        client: *mut PkClient,
+        repo_id: *const c_char,
+        parameter: *const c_char,
+        value: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_required_by(client: *mut PkClient, filters: PkBitfield, package_ids: *mut *mut c_char, recursive: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_required_by(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        package_ids: *mut *mut c_char,
+        recursive: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_required_by_async(client: *mut PkClient, filters: PkBitfield, package_ids: *mut *mut c_char, recursive: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_required_by_async(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        package_ids: *mut *mut c_char,
+        recursive: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_resolve(client: *mut PkClient, filters: PkBitfield, packages: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_resolve(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        packages: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_resolve_async(client: *mut PkClient, filters: PkBitfield, packages: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_resolve_async(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        packages: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_5", feature = "dox"))]
-    pub fn pk_client_search_details(client: *mut PkClient, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_search_details(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_5", feature = "dox"))]
-    pub fn pk_client_search_details_async(client: *mut PkClient, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_search_details_async(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_5", feature = "dox"))]
-    pub fn pk_client_search_files(client: *mut PkClient, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_search_files(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_5", feature = "dox"))]
-    pub fn pk_client_search_files_async(client: *mut PkClient, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_search_files_async(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_5", feature = "dox"))]
-    pub fn pk_client_search_groups(client: *mut PkClient, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_search_groups(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_5", feature = "dox"))]
-    pub fn pk_client_search_groups_async(client: *mut PkClient, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_search_groups_async(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_5", feature = "dox"))]
-    pub fn pk_client_search_names(client: *mut PkClient, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_search_names(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_5", feature = "dox"))]
-    pub fn pk_client_search_names_async(client: *mut PkClient, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_search_names_async(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_10", feature = "dox"))]
     pub fn pk_client_set_background(client: *mut PkClient, background: gboolean);
     #[cfg(any(feature = "v0_6_10", feature = "dox"))]
@@ -1915,17 +2447,70 @@ extern "C" {
     #[cfg(any(feature = "v0_6_10", feature = "dox"))]
     pub fn pk_client_set_locale(client: *mut PkClient, locale: *const c_char);
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_client_update_packages(client: *mut PkClient, transaction_flags: PkBitfield, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_update_packages(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_client_update_packages_async(client: *mut PkClient, transaction_flags: PkBitfield, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_update_packages_async(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v1_0_10", feature = "dox"))]
-    pub fn pk_client_upgrade_system(client: *mut PkClient, transaction_flags: PkBitfield, distro_id: *const c_char, upgrade_kind: PkUpgradeKindEnum, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_upgrade_system(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        distro_id: *const c_char,
+        upgrade_kind: PkUpgradeKindEnum,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v1_0_10", feature = "dox"))]
-    pub fn pk_client_upgrade_system_async(client: *mut PkClient, transaction_flags: PkBitfield, distro_id: *const c_char, upgrade_kind: PkUpgradeKindEnum, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_upgrade_system_async(
+        client: *mut PkClient,
+        transaction_flags: PkBitfield,
+        distro_id: *const c_char,
+        upgrade_kind: PkUpgradeKindEnum,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_client_what_provides(client: *mut PkClient, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_client_what_provides(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_client_what_provides_async(client: *mut PkClient, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_client_what_provides_async(
+        client: *mut PkClient,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
 
     //=========================================================================
     // PkClientHelper
@@ -1936,11 +2521,26 @@ extern "C" {
     #[cfg(any(feature = "v1_1_13", feature = "dox"))]
     pub fn pk_client_helper_is_active(client_helper: *mut PkClientHelper) -> gboolean;
     #[cfg(any(feature = "v0_6_10", feature = "dox"))]
-    pub fn pk_client_helper_start(client_helper: *mut PkClientHelper, socket_filename: *const c_char, argv: *mut *mut c_char, envp: *mut *mut c_char, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_client_helper_start(
+        client_helper: *mut PkClientHelper,
+        socket_filename: *const c_char,
+        argv: *mut *mut c_char,
+        envp: *mut *mut c_char,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v1_1_13", feature = "dox"))]
-    pub fn pk_client_helper_start_with_socket(client_helper: *mut PkClientHelper, socket: *mut gio::GSocket, argv: *mut *mut c_char, envp: *mut *mut c_char, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_client_helper_start_with_socket(
+        client_helper: *mut PkClientHelper,
+        socket: *mut gio::GSocket,
+        argv: *mut *mut c_char,
+        envp: *mut *mut c_char,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_6_10", feature = "dox"))]
-    pub fn pk_client_helper_stop(client_helper: *mut PkClientHelper, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_client_helper_stop(
+        client_helper: *mut PkClientHelper,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
 
     //=========================================================================
     // PkControl
@@ -1949,49 +2549,164 @@ extern "C" {
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_control_new() -> *mut PkControl;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_can_authorize_async(control: *mut PkControl, action_id: *const c_char, cancellable: *mut gio::GCancellable, callback: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_control_can_authorize_async(
+        control: *mut PkControl,
+        action_id: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        callback: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_can_authorize_finish(control: *mut PkControl, res: *mut gio::GAsyncResult, error: *mut *mut glib::GError) -> PkAuthorizeEnum;
+    pub fn pk_control_can_authorize_finish(
+        control: *mut PkControl,
+        res: *mut gio::GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> PkAuthorizeEnum;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_get_daemon_state_async(control: *mut PkControl, cancellable: *mut gio::GCancellable, callback: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_control_get_daemon_state_async(
+        control: *mut PkControl,
+        cancellable: *mut gio::GCancellable,
+        callback: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_get_daemon_state_finish(control: *mut PkControl, res: *mut gio::GAsyncResult, error: *mut *mut glib::GError) -> *mut c_char;
+    pub fn pk_control_get_daemon_state_finish(
+        control: *mut PkControl,
+        res: *mut gio::GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> *mut c_char;
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_control_get_properties(control: *mut PkControl, cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_control_get_properties(
+        control: *mut PkControl,
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_get_properties_async(control: *mut PkControl, cancellable: *mut gio::GCancellable, callback: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_control_get_properties_async(
+        control: *mut PkControl,
+        cancellable: *mut gio::GCancellable,
+        callback: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_get_properties_finish(control: *mut PkControl, res: *mut gio::GAsyncResult, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_control_get_properties_finish(
+        control: *mut PkControl,
+        res: *mut gio::GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_get_tid_async(control: *mut PkControl, cancellable: *mut gio::GCancellable, callback: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_control_get_tid_async(
+        control: *mut PkControl,
+        cancellable: *mut gio::GCancellable,
+        callback: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_get_tid_finish(control: *mut PkControl, res: *mut gio::GAsyncResult, error: *mut *mut glib::GError) -> *mut c_char;
+    pub fn pk_control_get_tid_finish(
+        control: *mut PkControl,
+        res: *mut gio::GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> *mut c_char;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_get_time_since_action_async(control: *mut PkControl, role: PkRoleEnum, cancellable: *mut gio::GCancellable, callback: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_control_get_time_since_action_async(
+        control: *mut PkControl,
+        role: PkRoleEnum,
+        cancellable: *mut gio::GCancellable,
+        callback: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_get_time_since_action_finish(control: *mut PkControl, res: *mut gio::GAsyncResult, error: *mut *mut glib::GError) -> c_uint;
+    pub fn pk_control_get_time_since_action_finish(
+        control: *mut PkControl,
+        res: *mut gio::GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> c_uint;
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_control_get_transaction_list(control: *mut PkControl, cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> *mut *mut c_char;
+    pub fn pk_control_get_transaction_list(
+        control: *mut PkControl,
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> *mut *mut c_char;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_get_transaction_list_async(control: *mut PkControl, cancellable: *mut gio::GCancellable, callback: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_control_get_transaction_list_async(
+        control: *mut PkControl,
+        cancellable: *mut gio::GCancellable,
+        callback: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_get_transaction_list_finish(control: *mut PkControl, res: *mut gio::GAsyncResult, error: *mut *mut glib::GError) -> *mut *mut c_char;
+    pub fn pk_control_get_transaction_list_finish(
+        control: *mut PkControl,
+        res: *mut gio::GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> *mut *mut c_char;
     #[cfg(any(feature = "v0_6_3", feature = "dox"))]
-    pub fn pk_control_set_proxy(control: *mut PkControl, proxy_http: *const c_char, proxy_ftp: *const c_char, cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_control_set_proxy(
+        control: *mut PkControl,
+        proxy_http: *const c_char,
+        proxy_ftp: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_6_13", feature = "dox"))]
-    pub fn pk_control_set_proxy2(control: *mut PkControl, proxy_http: *const c_char, proxy_https: *const c_char, proxy_ftp: *const c_char, proxy_socks: *const c_char, no_proxy: *const c_char, pac: *const c_char, cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_control_set_proxy2(
+        control: *mut PkControl,
+        proxy_http: *const c_char,
+        proxy_https: *const c_char,
+        proxy_ftp: *const c_char,
+        proxy_socks: *const c_char,
+        no_proxy: *const c_char,
+        pac: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_6_13", feature = "dox"))]
-    pub fn pk_control_set_proxy2_async(control: *mut PkControl, proxy_http: *const c_char, proxy_https: *const c_char, proxy_ftp: *const c_char, proxy_socks: *const c_char, no_proxy: *const c_char, pac: *const c_char, cancellable: *mut gio::GCancellable, callback: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_control_set_proxy2_async(
+        control: *mut PkControl,
+        proxy_http: *const c_char,
+        proxy_https: *const c_char,
+        proxy_ftp: *const c_char,
+        proxy_socks: *const c_char,
+        no_proxy: *const c_char,
+        pac: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        callback: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_set_proxy_async(control: *mut PkControl, proxy_http: *const c_char, proxy_ftp: *const c_char, cancellable: *mut gio::GCancellable, callback: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_control_set_proxy_async(
+        control: *mut PkControl,
+        proxy_http: *const c_char,
+        proxy_ftp: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        callback: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_control_set_proxy_finish(control: *mut PkControl, res: *mut gio::GAsyncResult, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_control_set_proxy_finish(
+        control: *mut PkControl,
+        res: *mut gio::GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_6_2", feature = "dox"))]
-    pub fn pk_control_suggest_daemon_quit(control: *mut PkControl, cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_control_suggest_daemon_quit(
+        control: *mut PkControl,
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_6_2", feature = "dox"))]
-    pub fn pk_control_suggest_daemon_quit_async(control: *mut PkControl, cancellable: *mut gio::GCancellable, callback: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_control_suggest_daemon_quit_async(
+        control: *mut PkControl,
+        cancellable: *mut gio::GCancellable,
+        callback: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_2", feature = "dox"))]
-    pub fn pk_control_suggest_daemon_quit_finish(control: *mut PkControl, res: *mut gio::GAsyncResult, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_control_suggest_daemon_quit_finish(
+        control: *mut PkControl,
+        res: *mut gio::GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
 
     //=========================================================================
     // PkDesktop
@@ -2000,13 +2715,28 @@ extern "C" {
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
     pub fn pk_desktop_new() -> *mut PkDesktop;
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_desktop_get_files_for_package(desktop: *mut PkDesktop, package: *const c_char, error: *mut *mut glib::GError) -> *mut glib::GPtrArray;
+    pub fn pk_desktop_get_files_for_package(
+        desktop: *mut PkDesktop,
+        package: *const c_char,
+        error: *mut *mut glib::GError,
+    ) -> *mut glib::GPtrArray;
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_desktop_get_package_for_file(desktop: *mut PkDesktop, filename: *const c_char, error: *mut *mut glib::GError) -> *mut c_char;
+    pub fn pk_desktop_get_package_for_file(
+        desktop: *mut PkDesktop,
+        filename: *const c_char,
+        error: *mut *mut glib::GError,
+    ) -> *mut c_char;
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_desktop_get_shown_for_package(desktop: *mut PkDesktop, package: *const c_char, error: *mut *mut glib::GError) -> *mut glib::GPtrArray;
+    pub fn pk_desktop_get_shown_for_package(
+        desktop: *mut PkDesktop,
+        package: *const c_char,
+        error: *mut *mut glib::GError,
+    ) -> *mut glib::GPtrArray;
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_desktop_open_database(desktop: *mut PkDesktop, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_desktop_open_database(
+        desktop: *mut PkDesktop,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
 
     //=========================================================================
     // PkDetails
@@ -2038,7 +2768,8 @@ extern "C" {
     #[cfg(any(feature = "v0_6_11", feature = "dox"))]
     pub fn pk_distro_upgrade_get_id(distro_upgrade: *mut PkDistroUpgrade) -> *const c_char;
     #[cfg(any(feature = "v0_6_11", feature = "dox"))]
-    pub fn pk_distro_upgrade_get_state(distro_upgrade: *mut PkDistroUpgrade) -> PkDistroUpgradeEnum;
+    pub fn pk_distro_upgrade_get_state(distro_upgrade: *mut PkDistroUpgrade)
+        -> PkDistroUpgradeEnum;
     #[cfg(any(feature = "v0_6_11", feature = "dox"))]
     pub fn pk_distro_upgrade_get_summary(distro_upgrade: *mut PkDistroUpgrade) -> *const c_char;
 
@@ -2062,7 +2793,9 @@ extern "C" {
     #[cfg(any(feature = "v1_1_8", feature = "dox"))]
     pub fn pk_eula_required_get_eula_id(eula_required: *mut PkEulaRequired) -> *const c_char;
     #[cfg(any(feature = "v1_1_8", feature = "dox"))]
-    pub fn pk_eula_required_get_license_agreement(eula_required: *mut PkEulaRequired) -> *const c_char;
+    pub fn pk_eula_required_get_license_agreement(
+        eula_required: *mut PkEulaRequired,
+    ) -> *const c_char;
     #[cfg(any(feature = "v1_1_8", feature = "dox"))]
     pub fn pk_eula_required_get_package_id(eula_required: *mut PkEulaRequired) -> *const c_char;
     #[cfg(any(feature = "v1_1_8", feature = "dox"))]
@@ -2103,19 +2836,33 @@ extern "C" {
     #[cfg(any(feature = "v0_5_4", feature = "dox"))]
     pub fn pk_package_new() -> *mut PkPackage;
     #[cfg(any(feature = "v0_5", feature = "dox"))]
-    pub fn pk_package_id_build(name: *const c_char, version: *const c_char, arch: *const c_char, data: *const c_char) -> *mut c_char;
+    pub fn pk_package_id_build(
+        name: *const c_char,
+        version: *const c_char,
+        arch: *const c_char,
+        data: *const c_char,
+    ) -> *mut c_char;
     #[cfg(any(feature = "v0_5", feature = "dox"))]
     pub fn pk_package_id_check(package_id: *const c_char) -> gboolean;
     #[cfg(any(feature = "v0_5", feature = "dox"))]
-    pub fn pk_package_id_equal_fuzzy_arch(package_id1: *const c_char, package_id2: *const c_char) -> gboolean;
+    pub fn pk_package_id_equal_fuzzy_arch(
+        package_id1: *const c_char,
+        package_id2: *const c_char,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
     pub fn pk_package_id_split(package_id: *const c_char) -> *mut *mut c_char;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_package_id_to_printable(package_id: *const c_char) -> *mut c_char;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_package_ids_add_id(package_ids: *mut *mut c_char, package_id: *const c_char) -> *mut *mut c_char;
+    pub fn pk_package_ids_add_id(
+        package_ids: *mut *mut c_char,
+        package_id: *const c_char,
+    ) -> *mut *mut c_char;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_package_ids_add_ids(package_ids: *mut *mut c_char, package_ids_new: *mut *mut c_char) -> *mut *mut c_char;
+    pub fn pk_package_ids_add_ids(
+        package_ids: *mut *mut c_char,
+        package_ids_new: *mut *mut c_char,
+    ) -> *mut *mut c_char;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_package_ids_check(package_ids: *mut *mut c_char) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
@@ -2123,9 +2870,15 @@ extern "C" {
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_package_ids_from_string(package_id: *const c_char) -> *mut *mut c_char;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_package_ids_present_id(package_ids: *mut *mut c_char, package_id: *const c_char) -> gboolean;
+    pub fn pk_package_ids_present_id(
+        package_ids: *mut *mut c_char,
+        package_id: *const c_char,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_package_ids_remove_id(package_ids: *mut *mut c_char, package_id: *const c_char) -> *mut *mut c_char;
+    pub fn pk_package_ids_remove_id(
+        package_ids: *mut *mut c_char,
+        package_id: *const c_char,
+    ) -> *mut *mut c_char;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_package_ids_to_string(package_ids: *mut *mut c_char) -> *mut c_char;
     #[cfg(any(feature = "v0_5_4", feature = "dox"))]
@@ -2147,11 +2900,19 @@ extern "C" {
     #[cfg(any(feature = "v0_6_4", feature = "dox"))]
     pub fn pk_package_get_version(package: *mut PkPackage) -> *const c_char;
     #[cfg(any(feature = "v0_8_11", feature = "dox"))]
-    pub fn pk_package_parse(package: *mut PkPackage, data: *const c_char, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_package_parse(
+        package: *mut PkPackage,
+        data: *const c_char,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_4", feature = "dox"))]
     pub fn pk_package_print(package: *mut PkPackage);
     #[cfg(any(feature = "v0_5_4", feature = "dox"))]
-    pub fn pk_package_set_id(package: *mut PkPackage, package_id: *const c_char, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_package_set_id(
+        package: *mut PkPackage,
+        package_id: *const c_char,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_8_14", feature = "dox"))]
     pub fn pk_package_set_info(package: *mut PkPackage, info: PkInfoEnum);
     #[cfg(any(feature = "v0_8_14", feature = "dox"))]
@@ -2164,25 +2925,60 @@ extern "C" {
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_package_sack_new() -> *mut PkPackageSack;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_package_sack_add_package(sack: *mut PkPackageSack, package: *mut PkPackage) -> gboolean;
+    pub fn pk_package_sack_add_package(
+        sack: *mut PkPackageSack,
+        package: *mut PkPackage,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_package_sack_add_package_by_id(sack: *mut PkPackageSack, package_id: *const c_char, error: *mut *mut glib::GError) -> gboolean;
-    pub fn pk_package_sack_add_packages_from_file(sack: *mut PkPackageSack, file: *mut gio::GFile, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_package_sack_add_package_by_id(
+        sack: *mut PkPackageSack,
+        package_id: *const c_char,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
+    pub fn pk_package_sack_add_packages_from_file(
+        sack: *mut PkPackageSack,
+        file: *mut gio::GFile,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_package_sack_clear(sack: *mut PkPackageSack);
     #[cfg(any(feature = "v0_6_3", feature = "dox"))]
-    pub fn pk_package_sack_filter(sack: *mut PkPackageSack, filter_cb: PkPackageSackFilterFunc, user_data: gpointer) -> *mut PkPackageSack;
+    pub fn pk_package_sack_filter(
+        sack: *mut PkPackageSack,
+        filter_cb: PkPackageSackFilterFunc,
+        user_data: gpointer,
+    ) -> *mut PkPackageSack;
     #[cfg(any(feature = "v0_6_2", feature = "dox"))]
-    pub fn pk_package_sack_filter_by_info(sack: *mut PkPackageSack, info: PkInfoEnum) -> *mut PkPackageSack;
+    pub fn pk_package_sack_filter_by_info(
+        sack: *mut PkPackageSack,
+        info: PkInfoEnum,
+    ) -> *mut PkPackageSack;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_package_sack_find_by_id(sack: *mut PkPackageSack, package_id: *const c_char) -> *mut PkPackage;
+    pub fn pk_package_sack_find_by_id(
+        sack: *mut PkPackageSack,
+        package_id: *const c_char,
+    ) -> *mut PkPackage;
     #[cfg(any(feature = "v0_8_16", feature = "dox"))]
-    pub fn pk_package_sack_find_by_id_name_arch(sack: *mut PkPackageSack, package_id: *const c_char) -> *mut PkPackage;
+    pub fn pk_package_sack_find_by_id_name_arch(
+        sack: *mut PkPackageSack,
+        package_id: *const c_char,
+    ) -> *mut PkPackage;
     #[cfg(any(feature = "v0_6_1", feature = "dox"))]
     pub fn pk_package_sack_get_array(sack: *mut PkPackageSack) -> *mut glib::GPtrArray;
     #[cfg(any(feature = "v0_6", feature = "dox"))]
-    pub fn pk_package_sack_get_details(package_sack: *mut PkPackageSack, cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> gboolean;
-    pub fn pk_package_sack_get_details_async(sack: *mut PkPackageSack, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_package_sack_get_details(
+        package_sack: *mut PkPackageSack,
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
+    pub fn pk_package_sack_get_details_async(
+        sack: *mut PkPackageSack,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
     pub fn pk_package_sack_get_ids(sack: *mut PkPackageSack) -> *mut *mut c_char;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
@@ -2190,25 +2986,65 @@ extern "C" {
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_package_sack_get_total_bytes(sack: *mut PkPackageSack) -> u64;
     #[cfg(any(feature = "v0_6", feature = "dox"))]
-    pub fn pk_package_sack_get_update_detail(package_sack: *mut PkPackageSack, cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_package_sack_get_update_detail(
+        package_sack: *mut PkPackageSack,
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_package_sack_get_update_detail_async(sack: *mut PkPackageSack, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_package_sack_get_update_detail_async(
+        sack: *mut PkPackageSack,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_package_sack_merge_generic_finish(sack: *mut PkPackageSack, res: *mut gio::GAsyncResult, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_package_sack_merge_generic_finish(
+        sack: *mut PkPackageSack,
+        res: *mut gio::GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_6_3", feature = "dox"))]
-    pub fn pk_package_sack_remove_by_filter(sack: *mut PkPackageSack, filter_cb: PkPackageSackFilterFunc, user_data: gpointer) -> gboolean;
+    pub fn pk_package_sack_remove_by_filter(
+        sack: *mut PkPackageSack,
+        filter_cb: PkPackageSackFilterFunc,
+        user_data: gpointer,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_package_sack_remove_package(sack: *mut PkPackageSack, package: *mut PkPackage) -> gboolean;
+    pub fn pk_package_sack_remove_package(
+        sack: *mut PkPackageSack,
+        package: *mut PkPackage,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_package_sack_remove_package_by_id(sack: *mut PkPackageSack, package_id: *const c_char) -> gboolean;
+    pub fn pk_package_sack_remove_package_by_id(
+        sack: *mut PkPackageSack,
+        package_id: *const c_char,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_6", feature = "dox"))]
-    pub fn pk_package_sack_resolve(package_sack: *mut PkPackageSack, cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_package_sack_resolve(
+        package_sack: *mut PkPackageSack,
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_package_sack_resolve_async(sack: *mut PkPackageSack, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_package_sack_resolve_async(
+        sack: *mut PkPackageSack,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_1", feature = "dox"))]
     pub fn pk_package_sack_sort(sack: *mut PkPackageSack, type_: PkPackageSackSortType);
     #[cfg(any(feature = "v0_8_6", feature = "dox"))]
-    pub fn pk_package_sack_to_file(sack: *mut PkPackageSack, file: *mut gio::GFile, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_package_sack_to_file(
+        sack: *mut PkPackageSack,
+        file: *mut gio::GFile,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
 
     //=========================================================================
     // PkProgress
@@ -2247,23 +3083,44 @@ extern "C" {
     #[cfg(any(feature = "v1_0_12", feature = "dox"))]
     pub fn pk_progress_get_uid(progress: *mut PkProgress) -> c_uint;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_progress_set_allow_cancel(progress: *mut PkProgress, allow_cancel: gboolean) -> gboolean;
+    pub fn pk_progress_set_allow_cancel(
+        progress: *mut PkProgress,
+        allow_cancel: gboolean,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_progress_set_caller_active(progress: *mut PkProgress, caller_active: gboolean) -> gboolean;
+    pub fn pk_progress_set_caller_active(
+        progress: *mut PkProgress,
+        caller_active: gboolean,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_8", feature = "dox"))]
-    pub fn pk_progress_set_download_size_remaining(progress: *mut PkProgress, download_size_remaining: u64) -> gboolean;
+    pub fn pk_progress_set_download_size_remaining(
+        progress: *mut PkProgress,
+        download_size_remaining: u64,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_progress_set_elapsed_time(progress: *mut PkProgress, elapsed_time: c_uint) -> gboolean;
+    pub fn pk_progress_set_elapsed_time(
+        progress: *mut PkProgress,
+        elapsed_time: c_uint,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_progress_set_item_progress(progress: *mut PkProgress, item_progress: *mut PkItemProgress) -> gboolean;
+    pub fn pk_progress_set_item_progress(
+        progress: *mut PkProgress,
+        item_progress: *mut PkItemProgress,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_progress_set_package(progress: *mut PkProgress, package: *mut PkPackage) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_progress_set_package_id(progress: *mut PkProgress, package_id: *const c_char) -> gboolean;
+    pub fn pk_progress_set_package_id(
+        progress: *mut PkProgress,
+        package_id: *const c_char,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_progress_set_percentage(progress: *mut PkProgress, percentage: c_int) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_progress_set_remaining_time(progress: *mut PkProgress, remaining_time: c_uint) -> gboolean;
+    pub fn pk_progress_set_remaining_time(
+        progress: *mut PkProgress,
+        remaining_time: c_uint,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_progress_set_role(progress: *mut PkProgress, role: PkRoleEnum) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
@@ -2271,9 +3128,15 @@ extern "C" {
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_progress_set_status(progress: *mut PkProgress, status: PkStatusEnum) -> gboolean;
     #[cfg(any(feature = "v0_8_8", feature = "dox"))]
-    pub fn pk_progress_set_transaction_flags(progress: *mut PkProgress, transaction_flags: u64) -> gboolean;
+    pub fn pk_progress_set_transaction_flags(
+        progress: *mut PkProgress,
+        transaction_flags: u64,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_progress_set_transaction_id(progress: *mut PkProgress, transaction_id: *const c_char) -> gboolean;
+    pub fn pk_progress_set_transaction_id(
+        progress: *mut PkProgress,
+        transaction_id: *const c_char,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_progress_set_uid(progress: *mut PkProgress, uid: c_uint) -> gboolean;
 
@@ -2315,25 +3178,47 @@ extern "C" {
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_results_add_details(results: *mut PkResults, item: *mut PkDetails) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_results_add_distro_upgrade(results: *mut PkResults, item: *mut PkDistroUpgrade) -> gboolean;
+    pub fn pk_results_add_distro_upgrade(
+        results: *mut PkResults,
+        item: *mut PkDistroUpgrade,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_results_add_eula_required(results: *mut PkResults, item: *mut PkEulaRequired) -> gboolean;
+    pub fn pk_results_add_eula_required(
+        results: *mut PkResults,
+        item: *mut PkEulaRequired,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_results_add_files(results: *mut PkResults, item: *mut PkFiles) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_results_add_media_change_required(results: *mut PkResults, item: *mut PkMediaChangeRequired) -> gboolean;
+    pub fn pk_results_add_media_change_required(
+        results: *mut PkResults,
+        item: *mut PkMediaChangeRequired,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
     pub fn pk_results_add_package(results: *mut PkResults, item: *mut PkPackage) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_results_add_repo_detail(results: *mut PkResults, item: *mut PkRepoDetail) -> gboolean;
+    pub fn pk_results_add_repo_detail(results: *mut PkResults, item: *mut PkRepoDetail)
+        -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_results_add_repo_signature_required(results: *mut PkResults, item: *mut PkRepoSignatureRequired) -> gboolean;
+    pub fn pk_results_add_repo_signature_required(
+        results: *mut PkResults,
+        item: *mut PkRepoSignatureRequired,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_results_add_require_restart(results: *mut PkResults, item: *mut PkRequireRestart) -> gboolean;
+    pub fn pk_results_add_require_restart(
+        results: *mut PkResults,
+        item: *mut PkRequireRestart,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_results_add_transaction(results: *mut PkResults, item: *mut PkTransactionPast) -> gboolean;
+    pub fn pk_results_add_transaction(
+        results: *mut PkResults,
+        item: *mut PkTransactionPast,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_results_add_update_detail(results: *mut PkResults, item: *mut PkUpdateDetail) -> gboolean;
+    pub fn pk_results_add_update_detail(
+        results: *mut PkResults,
+        item: *mut PkUpdateDetail,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_results_get_category_array(results: *mut PkResults) -> *mut glib::GPtrArray;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
@@ -2349,7 +3234,9 @@ extern "C" {
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_results_get_files_array(results: *mut PkResults) -> *mut glib::GPtrArray;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_results_get_media_change_required_array(results: *mut PkResults) -> *mut glib::GPtrArray;
+    pub fn pk_results_get_media_change_required_array(
+        results: *mut PkResults,
+    ) -> *mut glib::GPtrArray;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_results_get_package_array(results: *mut PkResults) -> *mut glib::GPtrArray;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
@@ -2357,7 +3244,9 @@ extern "C" {
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_results_get_repo_detail_array(results: *mut PkResults) -> *mut glib::GPtrArray;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_results_get_repo_signature_required_array(results: *mut PkResults) -> *mut glib::GPtrArray;
+    pub fn pk_results_get_repo_signature_required_array(
+        results: *mut PkResults,
+    ) -> *mut glib::GPtrArray;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_results_get_require_restart_array(results: *mut PkResults) -> *mut glib::GPtrArray;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
@@ -2391,101 +3280,442 @@ extern "C" {
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_task_new() -> *mut PkTask;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_depends_on_async(task: *mut PkTask, filters: PkBitfield, package_ids: *mut *mut c_char, recursive: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_depends_on_async(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        package_ids: *mut *mut c_char,
+        recursive: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_depends_on_sync(task: *mut PkTask, filters: PkBitfield, package_ids: *mut *mut c_char, recursive: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_depends_on_sync(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        package_ids: *mut *mut c_char,
+        recursive: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_download_packages_async(task: *mut PkTask, package_ids: *mut *mut c_char, directory: *const c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_download_packages_async(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        directory: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_download_packages_sync(task: *mut PkTask, package_ids: *mut *mut c_char, directory: *const c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_download_packages_sync(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        directory: *const c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_task_generic_finish(task: *mut PkTask, res: *mut gio::GAsyncResult, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_generic_finish(
+        task: *mut PkTask,
+        res: *mut gio::GAsyncResult,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v1_0_2", feature = "dox"))]
     pub fn pk_task_get_allow_downgrade(task: *mut PkTask) -> gboolean;
     #[cfg(any(feature = "v1_0_2", feature = "dox"))]
     pub fn pk_task_get_allow_reinstall(task: *mut PkTask) -> gboolean;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_categories_async(task: *mut PkTask, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_get_categories_async(
+        task: *mut PkTask,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_categories_sync(task: *mut PkTask, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_get_categories_sync(
+        task: *mut PkTask,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_details_async(task: *mut PkTask, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_get_details_async(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_details_sync(task: *mut PkTask, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_get_details_sync(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_files_async(task: *mut PkTask, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_get_files_async(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_files_sync(task: *mut PkTask, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_get_files_sync(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
     pub fn pk_task_get_only_download(task: *mut PkTask) -> gboolean;
     #[cfg(any(feature = "v0_9_5", feature = "dox"))]
     pub fn pk_task_get_only_trusted(task: *mut PkTask) -> gboolean;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_packages_async(task: *mut PkTask, filters: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_get_packages_async(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_packages_sync(task: *mut PkTask, filters: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_get_packages_sync(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_repo_list_async(task: *mut PkTask, filters: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_get_repo_list_async(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_repo_list_sync(task: *mut PkTask, filters: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_get_repo_list_sync(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_10", feature = "dox"))]
     pub fn pk_task_get_simulate(task: *mut PkTask) -> gboolean;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_update_detail_async(task: *mut PkTask, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_get_update_detail_async(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_update_detail_sync(task: *mut PkTask, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_get_update_detail_sync(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_updates_async(task: *mut PkTask, filters: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_get_updates_async(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_get_updates_sync(task: *mut PkTask, filters: PkBitfield, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_get_updates_sync(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_task_install_files_async(task: *mut PkTask, files: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_install_files_async(
+        task: *mut PkTask,
+        files: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_task_install_files_sync(task: *mut PkTask, files: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_install_files_sync(
+        task: *mut PkTask,
+        files: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_task_install_packages_async(task: *mut PkTask, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_install_packages_async(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_task_install_packages_sync(task: *mut PkTask, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_install_packages_sync(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_refresh_cache_async(task: *mut PkTask, force: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_refresh_cache_async(
+        task: *mut PkTask,
+        force: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_refresh_cache_sync(task: *mut PkTask, force: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_refresh_cache_sync(
+        task: *mut PkTask,
+        force: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_task_remove_packages_async(task: *mut PkTask, package_ids: *mut *mut c_char, allow_deps: gboolean, autoremove: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_remove_packages_async(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        allow_deps: gboolean,
+        autoremove: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_task_remove_packages_sync(task: *mut PkTask, package_ids: *mut *mut c_char, allow_deps: gboolean, autoremove: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_remove_packages_sync(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        allow_deps: gboolean,
+        autoremove: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_7_2", feature = "dox"))]
-    pub fn pk_task_repair_system_async(task: *mut PkTask, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_repair_system_async(
+        task: *mut PkTask,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_7_2", feature = "dox"))]
-    pub fn pk_task_repair_system_sync(task: *mut PkTask, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_repair_system_sync(
+        task: *mut PkTask,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_repo_enable_async(task: *mut PkTask, repo_id: *const c_char, enabled: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_repo_enable_async(
+        task: *mut PkTask,
+        repo_id: *const c_char,
+        enabled: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_repo_enable_sync(task: *mut PkTask, repo_id: *const c_char, enabled: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_repo_enable_sync(
+        task: *mut PkTask,
+        repo_id: *const c_char,
+        enabled: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_required_by_async(task: *mut PkTask, filters: PkBitfield, package_ids: *mut *mut c_char, recursive: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_required_by_async(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        package_ids: *mut *mut c_char,
+        recursive: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_required_by_sync(task: *mut PkTask, filters: PkBitfield, package_ids: *mut *mut c_char, recursive: gboolean, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_required_by_sync(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        package_ids: *mut *mut c_char,
+        recursive: gboolean,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_resolve_async(task: *mut PkTask, filters: PkBitfield, packages: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_resolve_async(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        packages: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_resolve_sync(task: *mut PkTask, filters: PkBitfield, packages: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_resolve_sync(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        packages: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_search_details_async(task: *mut PkTask, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_search_details_async(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_search_details_sync(task: *mut PkTask, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_search_details_sync(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_search_files_async(task: *mut PkTask, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_search_files_async(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_search_files_sync(task: *mut PkTask, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_search_files_sync(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_search_groups_async(task: *mut PkTask, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_search_groups_async(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_search_groups_sync(task: *mut PkTask, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_search_groups_sync(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_search_names_async(task: *mut PkTask, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_search_names_async(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_search_names_sync(task: *mut PkTask, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_search_names_sync(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v1_0_2", feature = "dox"))]
     pub fn pk_task_set_allow_downgrade(task: *mut PkTask, allow_downgrade: gboolean);
     #[cfg(any(feature = "v1_0_2", feature = "dox"))]
@@ -2497,21 +3727,70 @@ extern "C" {
     #[cfg(any(feature = "v0_6_10", feature = "dox"))]
     pub fn pk_task_set_simulate(task: *mut PkTask, simulate: gboolean);
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
-    pub fn pk_task_update_packages_async(task: *mut PkTask, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_update_packages_async(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_5_3", feature = "dox"))]
-    pub fn pk_task_update_packages_sync(task: *mut PkTask, package_ids: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_update_packages_sync(
+        task: *mut PkTask,
+        package_ids: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v1_0_12", feature = "dox"))]
-    pub fn pk_task_upgrade_system_async(task: *mut PkTask, distro_id: *const c_char, upgrade_kind: PkUpgradeKindEnum, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_upgrade_system_async(
+        task: *mut PkTask,
+        distro_id: *const c_char,
+        upgrade_kind: PkUpgradeKindEnum,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v1_0_12", feature = "dox"))]
-    pub fn pk_task_upgrade_system_sync(task: *mut PkTask, distro_id: *const c_char, upgrade_kind: PkUpgradeKindEnum, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_upgrade_system_sync(
+        task: *mut PkTask,
+        distro_id: *const c_char,
+        upgrade_kind: PkUpgradeKindEnum,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_task_user_accepted(task: *mut PkTask, request: c_uint) -> gboolean;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_task_user_declined(task: *mut PkTask, request: c_uint) -> gboolean;
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_what_provides_async(task: *mut PkTask, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, callback_ready: gio::GAsyncReadyCallback, user_data: gpointer);
+    pub fn pk_task_what_provides_async(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        callback_ready: gio::GAsyncReadyCallback,
+        user_data: gpointer,
+    );
     #[cfg(any(feature = "v0_6_5", feature = "dox"))]
-    pub fn pk_task_what_provides_sync(task: *mut PkTask, filters: PkBitfield, values: *mut *mut c_char, cancellable: *mut gio::GCancellable, progress_callback: PkProgressCallback, progress_user_data: gpointer, error: *mut *mut glib::GError) -> *mut PkResults;
+    pub fn pk_task_what_provides_sync(
+        task: *mut PkTask,
+        filters: PkBitfield,
+        values: *mut *mut c_char,
+        cancellable: *mut gio::GCancellable,
+        progress_callback: PkProgressCallback,
+        progress_user_data: gpointer,
+        error: *mut *mut glib::GError,
+    ) -> *mut PkResults;
 
     //=========================================================================
     // PkTransactionList
@@ -2556,7 +3835,9 @@ extern "C" {
     #[cfg(any(feature = "v0_5_4", feature = "dox"))]
     pub fn pk_update_detail_new() -> *mut PkUpdateDetail;
     #[cfg(any(feature = "v0_8_8", feature = "dox"))]
-    pub fn pk_update_detail_get_bugzilla_urls(update_detail: *mut PkUpdateDetail) -> *mut *mut c_char;
+    pub fn pk_update_detail_get_bugzilla_urls(
+        update_detail: *mut PkUpdateDetail,
+    ) -> *mut *mut c_char;
     #[cfg(any(feature = "v0_8_8", feature = "dox"))]
     pub fn pk_update_detail_get_changelog(update_detail: *mut PkUpdateDetail) -> *const c_char;
     #[cfg(any(feature = "v0_8_8", feature = "dox"))]
@@ -2578,7 +3859,8 @@ extern "C" {
     #[cfg(any(feature = "v0_8_8", feature = "dox"))]
     pub fn pk_update_detail_get_updates(update_detail: *mut PkUpdateDetail) -> *mut *mut c_char;
     #[cfg(any(feature = "v0_8_8", feature = "dox"))]
-    pub fn pk_update_detail_get_vendor_urls(update_detail: *mut PkUpdateDetail) -> *mut *mut c_char;
+    pub fn pk_update_detail_get_vendor_urls(update_detail: *mut PkUpdateDetail)
+        -> *mut *mut c_char;
 
     //=========================================================================
     // Other functions
@@ -2617,29 +3899,67 @@ extern "C" {
     pub fn pk_offline_auth_cancel(error: *mut *mut glib::GError) -> gboolean;
     pub fn pk_offline_auth_clear_results(error: *mut *mut glib::GError) -> gboolean;
     pub fn pk_offline_auth_invalidate(error: *mut *mut glib::GError) -> gboolean;
-    pub fn pk_offline_auth_set_action(action: PkOfflineAction, error: *mut *mut glib::GError) -> gboolean;
-    pub fn pk_offline_auth_set_prepared_ids(package_ids: *mut *mut c_char, error: *mut *mut glib::GError) -> gboolean;
-    pub fn pk_offline_auth_set_prepared_upgrade(name: *const c_char, release_ver: *const c_char, error: *mut *mut glib::GError) -> gboolean;
-    pub fn pk_offline_auth_set_results(results: *mut PkResults, error: *mut *mut glib::GError) -> gboolean;
-    pub fn pk_offline_auth_trigger(action: PkOfflineAction, error: *mut *mut glib::GError) -> gboolean;
-    pub fn pk_offline_auth_trigger_upgrade(action: PkOfflineAction, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_offline_auth_set_action(
+        action: PkOfflineAction,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
+    pub fn pk_offline_auth_set_prepared_ids(
+        package_ids: *mut *mut c_char,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
+    pub fn pk_offline_auth_set_prepared_upgrade(
+        name: *const c_char,
+        release_ver: *const c_char,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
+    pub fn pk_offline_auth_set_results(
+        results: *mut PkResults,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
+    pub fn pk_offline_auth_trigger(
+        action: PkOfflineAction,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
+    pub fn pk_offline_auth_trigger_upgrade(
+        action: PkOfflineAction,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_9_6", feature = "dox"))]
-    pub fn pk_offline_cancel(cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_offline_cancel(
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_9_6", feature = "dox"))]
-    pub fn pk_offline_clear_results(cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_offline_clear_results(
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v0_9_6", feature = "dox"))]
     pub fn pk_offline_get_action(error: *mut *mut glib::GError) -> PkOfflineAction;
     #[cfg(any(feature = "v0_9_6", feature = "dox"))]
-    pub fn pk_offline_get_action_monitor(cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> *mut gio::GFileMonitor;
+    pub fn pk_offline_get_action_monitor(
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> *mut gio::GFileMonitor;
     #[cfg(any(feature = "v0_9_6", feature = "dox"))]
     pub fn pk_offline_get_prepared_ids(error: *mut *mut glib::GError) -> *mut *mut c_char;
     #[cfg(any(feature = "v0_9_6", feature = "dox"))]
-    pub fn pk_offline_get_prepared_monitor(cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> *mut gio::GFileMonitor;
+    pub fn pk_offline_get_prepared_monitor(
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> *mut gio::GFileMonitor;
     #[cfg(any(feature = "v0_9_6", feature = "dox"))]
     pub fn pk_offline_get_prepared_sack(error: *mut *mut glib::GError) -> *mut PkPackageSack;
-    pub fn pk_offline_get_prepared_upgrade(name: *mut *mut c_char, release_ver: *mut *mut c_char, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_offline_get_prepared_upgrade(
+        name: *mut *mut c_char,
+        release_ver: *mut *mut c_char,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v1_0_12", feature = "dox"))]
-    pub fn pk_offline_get_prepared_upgrade_monitor(cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> *mut gio::GFileMonitor;
+    pub fn pk_offline_get_prepared_upgrade_monitor(
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> *mut gio::GFileMonitor;
     #[cfg(any(feature = "v1_1_2", feature = "dox"))]
     pub fn pk_offline_get_prepared_upgrade_name(error: *mut *mut glib::GError) -> *mut c_char;
     #[cfg(any(feature = "v1_0_12", feature = "dox"))]
@@ -2649,9 +3969,17 @@ extern "C" {
     #[cfg(any(feature = "v0_9_6", feature = "dox"))]
     pub fn pk_offline_get_results_mtime(error: *mut *mut glib::GError) -> u64;
     #[cfg(any(feature = "v0_9_6", feature = "dox"))]
-    pub fn pk_offline_trigger(action: PkOfflineAction, cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_offline_trigger(
+        action: PkOfflineAction,
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     #[cfg(any(feature = "v1_0_12", feature = "dox"))]
-    pub fn pk_offline_trigger_upgrade(action: PkOfflineAction, cancellable: *mut gio::GCancellable, error: *mut *mut glib::GError) -> gboolean;
+    pub fn pk_offline_trigger_upgrade(
+        action: PkOfflineAction,
+        cancellable: *mut gio::GCancellable,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
     pub fn pk_polkit_agent_close();
     pub fn pk_polkit_agent_open() -> c_int;
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
@@ -2661,7 +3989,8 @@ extern "C" {
     #[cfg(any(feature = "v0_5_2", feature = "dox"))]
     pub fn pk_role_bitfield_to_string(roles: PkBitfield) -> *mut c_char;
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
-    pub fn pk_transaction_flag_bitfield_from_string(transaction_flags: *const c_char) -> PkBitfield;
+    pub fn pk_transaction_flag_bitfield_from_string(transaction_flags: *const c_char)
+        -> PkBitfield;
     #[cfg(any(feature = "v0_8_1", feature = "dox"))]
     pub fn pk_transaction_flag_bitfield_to_string(transaction_flags: PkBitfield) -> *mut c_char;
 

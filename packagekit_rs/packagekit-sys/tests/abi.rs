@@ -3,10 +3,10 @@
 // DO NOT EDIT
 
 use package_kit_glib_sys::*;
-use std::mem::{align_of, size_of};
 use std::env;
 use std::error::Error;
 use std::ffi::OsString;
+use std::mem::{align_of, size_of};
 use std::path::Path;
 use std::process::Command;
 use std::str;
@@ -64,20 +64,17 @@ fn pkg_config_cflags(packages: &[&str]) -> Result<Vec<String>, Box<dyn Error>> {
     if packages.is_empty() {
         return Ok(Vec::new());
     }
-    let pkg_config = env::var_os("PKG_CONFIG")
-        .unwrap_or_else(|| OsString::from("pkg-config"));
+    let pkg_config = env::var_os("PKG_CONFIG").unwrap_or_else(|| OsString::from("pkg-config"));
     let mut cmd = Command::new(pkg_config);
     cmd.arg("--cflags");
     cmd.args(packages);
     let out = cmd.output()?;
     if !out.status.success() {
-        return Err(format!("command {:?} returned {}",
-                           &cmd, out.status).into());
+        return Err(format!("command {:?} returned {}", &cmd, out.status).into());
     }
     let stdout = str::from_utf8(&out.stdout)?;
     Ok(shell_words::split(stdout.trim())?)
 }
-
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 struct Layout {
@@ -172,8 +169,7 @@ fn cross_validate_layout_with_c() {
 
     let mut results = Results::default();
 
-    for ((rust_name, rust_layout), (c_name, c_layout)) in
-        RUST_LAYOUTS.iter().zip(c_layouts.iter())
+    for ((rust_name, rust_layout), (c_name, c_layout)) in RUST_LAYOUTS.iter().zip(c_layouts.iter())
     {
         if rust_name != c_name {
             results.record_failed();
@@ -214,78 +210,510 @@ fn get_c_output(name: &str) -> Result<String, Box<dyn Error>> {
 }
 
 const RUST_LAYOUTS: &[(&str, Layout)] = &[
-    ("PkAuthorizeEnum", Layout {size: size_of::<PkAuthorizeEnum>(), alignment: align_of::<PkAuthorizeEnum>()}),
-    ("PkBitfield", Layout {size: size_of::<PkBitfield>(), alignment: align_of::<PkBitfield>()}),
-    ("PkCategory", Layout {size: size_of::<PkCategory>(), alignment: align_of::<PkCategory>()}),
-    ("PkCategoryClass", Layout {size: size_of::<PkCategoryClass>(), alignment: align_of::<PkCategoryClass>()}),
-    ("PkClient", Layout {size: size_of::<PkClient>(), alignment: align_of::<PkClient>()}),
-    ("PkClientClass", Layout {size: size_of::<PkClientClass>(), alignment: align_of::<PkClientClass>()}),
-    ("PkClientError", Layout {size: size_of::<PkClientError>(), alignment: align_of::<PkClientError>()}),
-    ("PkClientHelper", Layout {size: size_of::<PkClientHelper>(), alignment: align_of::<PkClientHelper>()}),
-    ("PkClientHelperClass", Layout {size: size_of::<PkClientHelperClass>(), alignment: align_of::<PkClientHelperClass>()}),
-    ("PkControl", Layout {size: size_of::<PkControl>(), alignment: align_of::<PkControl>()}),
-    ("PkControlClass", Layout {size: size_of::<PkControlClass>(), alignment: align_of::<PkControlClass>()}),
-    ("PkControlError", Layout {size: size_of::<PkControlError>(), alignment: align_of::<PkControlError>()}),
-    ("PkDesktop", Layout {size: size_of::<PkDesktop>(), alignment: align_of::<PkDesktop>()}),
-    ("PkDesktopClass", Layout {size: size_of::<PkDesktopClass>(), alignment: align_of::<PkDesktopClass>()}),
-    ("PkDetails", Layout {size: size_of::<PkDetails>(), alignment: align_of::<PkDetails>()}),
-    ("PkDetailsClass", Layout {size: size_of::<PkDetailsClass>(), alignment: align_of::<PkDetailsClass>()}),
-    ("PkDistroUpgrade", Layout {size: size_of::<PkDistroUpgrade>(), alignment: align_of::<PkDistroUpgrade>()}),
-    ("PkDistroUpgradeClass", Layout {size: size_of::<PkDistroUpgradeClass>(), alignment: align_of::<PkDistroUpgradeClass>()}),
-    ("PkDistroUpgradeEnum", Layout {size: size_of::<PkDistroUpgradeEnum>(), alignment: align_of::<PkDistroUpgradeEnum>()}),
-    ("PkEnumMatch", Layout {size: size_of::<PkEnumMatch>(), alignment: align_of::<PkEnumMatch>()}),
-    ("PkError", Layout {size: size_of::<PkError>(), alignment: align_of::<PkError>()}),
-    ("PkErrorClass", Layout {size: size_of::<PkErrorClass>(), alignment: align_of::<PkErrorClass>()}),
-    ("PkErrorEnum", Layout {size: size_of::<PkErrorEnum>(), alignment: align_of::<PkErrorEnum>()}),
-    ("PkEulaRequired", Layout {size: size_of::<PkEulaRequired>(), alignment: align_of::<PkEulaRequired>()}),
-    ("PkEulaRequiredClass", Layout {size: size_of::<PkEulaRequiredClass>(), alignment: align_of::<PkEulaRequiredClass>()}),
-    ("PkExitEnum", Layout {size: size_of::<PkExitEnum>(), alignment: align_of::<PkExitEnum>()}),
-    ("PkFiles", Layout {size: size_of::<PkFiles>(), alignment: align_of::<PkFiles>()}),
-    ("PkFilesClass", Layout {size: size_of::<PkFilesClass>(), alignment: align_of::<PkFilesClass>()}),
-    ("PkFilterEnum", Layout {size: size_of::<PkFilterEnum>(), alignment: align_of::<PkFilterEnum>()}),
-    ("PkGroupEnum", Layout {size: size_of::<PkGroupEnum>(), alignment: align_of::<PkGroupEnum>()}),
-    ("PkInfoEnum", Layout {size: size_of::<PkInfoEnum>(), alignment: align_of::<PkInfoEnum>()}),
-    ("PkItemProgress", Layout {size: size_of::<PkItemProgress>(), alignment: align_of::<PkItemProgress>()}),
-    ("PkItemProgressClass", Layout {size: size_of::<PkItemProgressClass>(), alignment: align_of::<PkItemProgressClass>()}),
-    ("PkMediaChangeRequired", Layout {size: size_of::<PkMediaChangeRequired>(), alignment: align_of::<PkMediaChangeRequired>()}),
-    ("PkMediaChangeRequiredClass", Layout {size: size_of::<PkMediaChangeRequiredClass>(), alignment: align_of::<PkMediaChangeRequiredClass>()}),
-    ("PkMediaTypeEnum", Layout {size: size_of::<PkMediaTypeEnum>(), alignment: align_of::<PkMediaTypeEnum>()}),
-    ("PkNetworkEnum", Layout {size: size_of::<PkNetworkEnum>(), alignment: align_of::<PkNetworkEnum>()}),
-    ("PkOfflineAction", Layout {size: size_of::<PkOfflineAction>(), alignment: align_of::<PkOfflineAction>()}),
-    ("PkOfflineError", Layout {size: size_of::<PkOfflineError>(), alignment: align_of::<PkOfflineError>()}),
-    ("PkPackage", Layout {size: size_of::<PkPackage>(), alignment: align_of::<PkPackage>()}),
-    ("PkPackageClass", Layout {size: size_of::<PkPackageClass>(), alignment: align_of::<PkPackageClass>()}),
-    ("PkPackageSack", Layout {size: size_of::<PkPackageSack>(), alignment: align_of::<PkPackageSack>()}),
-    ("PkPackageSackClass", Layout {size: size_of::<PkPackageSackClass>(), alignment: align_of::<PkPackageSackClass>()}),
-    ("PkPackageSackSortType", Layout {size: size_of::<PkPackageSackSortType>(), alignment: align_of::<PkPackageSackSortType>()}),
-    ("PkProgress", Layout {size: size_of::<PkProgress>(), alignment: align_of::<PkProgress>()}),
-    ("PkProgressClass", Layout {size: size_of::<PkProgressClass>(), alignment: align_of::<PkProgressClass>()}),
-    ("PkProgressType", Layout {size: size_of::<PkProgressType>(), alignment: align_of::<PkProgressType>()}),
-    ("PkRepoDetail", Layout {size: size_of::<PkRepoDetail>(), alignment: align_of::<PkRepoDetail>()}),
-    ("PkRepoDetailClass", Layout {size: size_of::<PkRepoDetailClass>(), alignment: align_of::<PkRepoDetailClass>()}),
-    ("PkRepoSignatureRequired", Layout {size: size_of::<PkRepoSignatureRequired>(), alignment: align_of::<PkRepoSignatureRequired>()}),
-    ("PkRepoSignatureRequiredClass", Layout {size: size_of::<PkRepoSignatureRequiredClass>(), alignment: align_of::<PkRepoSignatureRequiredClass>()}),
-    ("PkRequireRestart", Layout {size: size_of::<PkRequireRestart>(), alignment: align_of::<PkRequireRestart>()}),
-    ("PkRequireRestartClass", Layout {size: size_of::<PkRequireRestartClass>(), alignment: align_of::<PkRequireRestartClass>()}),
-    ("PkRestartEnum", Layout {size: size_of::<PkRestartEnum>(), alignment: align_of::<PkRestartEnum>()}),
-    ("PkResults", Layout {size: size_of::<PkResults>(), alignment: align_of::<PkResults>()}),
-    ("PkResultsClass", Layout {size: size_of::<PkResultsClass>(), alignment: align_of::<PkResultsClass>()}),
-    ("PkRoleEnum", Layout {size: size_of::<PkRoleEnum>(), alignment: align_of::<PkRoleEnum>()}),
-    ("PkSigTypeEnum", Layout {size: size_of::<PkSigTypeEnum>(), alignment: align_of::<PkSigTypeEnum>()}),
-    ("PkSource", Layout {size: size_of::<PkSource>(), alignment: align_of::<PkSource>()}),
-    ("PkSourceClass", Layout {size: size_of::<PkSourceClass>(), alignment: align_of::<PkSourceClass>()}),
-    ("PkStatusEnum", Layout {size: size_of::<PkStatusEnum>(), alignment: align_of::<PkStatusEnum>()}),
-    ("PkTask", Layout {size: size_of::<PkTask>(), alignment: align_of::<PkTask>()}),
-    ("PkTaskClass", Layout {size: size_of::<PkTaskClass>(), alignment: align_of::<PkTaskClass>()}),
-    ("PkTransactionFlagEnum", Layout {size: size_of::<PkTransactionFlagEnum>(), alignment: align_of::<PkTransactionFlagEnum>()}),
-    ("PkTransactionList", Layout {size: size_of::<PkTransactionList>(), alignment: align_of::<PkTransactionList>()}),
-    ("PkTransactionListClass", Layout {size: size_of::<PkTransactionListClass>(), alignment: align_of::<PkTransactionListClass>()}),
-    ("PkTransactionPast", Layout {size: size_of::<PkTransactionPast>(), alignment: align_of::<PkTransactionPast>()}),
-    ("PkTransactionPastClass", Layout {size: size_of::<PkTransactionPastClass>(), alignment: align_of::<PkTransactionPastClass>()}),
-    ("PkUpdateDetail", Layout {size: size_of::<PkUpdateDetail>(), alignment: align_of::<PkUpdateDetail>()}),
-    ("PkUpdateDetailClass", Layout {size: size_of::<PkUpdateDetailClass>(), alignment: align_of::<PkUpdateDetailClass>()}),
-    ("PkUpdateStateEnum", Layout {size: size_of::<PkUpdateStateEnum>(), alignment: align_of::<PkUpdateStateEnum>()}),
-    ("PkUpgradeKindEnum", Layout {size: size_of::<PkUpgradeKindEnum>(), alignment: align_of::<PkUpgradeKindEnum>()}),
+    (
+        "PkAuthorizeEnum",
+        Layout {
+            size: size_of::<PkAuthorizeEnum>(),
+            alignment: align_of::<PkAuthorizeEnum>(),
+        },
+    ),
+    (
+        "PkBitfield",
+        Layout {
+            size: size_of::<PkBitfield>(),
+            alignment: align_of::<PkBitfield>(),
+        },
+    ),
+    (
+        "PkCategory",
+        Layout {
+            size: size_of::<PkCategory>(),
+            alignment: align_of::<PkCategory>(),
+        },
+    ),
+    (
+        "PkCategoryClass",
+        Layout {
+            size: size_of::<PkCategoryClass>(),
+            alignment: align_of::<PkCategoryClass>(),
+        },
+    ),
+    (
+        "PkClient",
+        Layout {
+            size: size_of::<PkClient>(),
+            alignment: align_of::<PkClient>(),
+        },
+    ),
+    (
+        "PkClientClass",
+        Layout {
+            size: size_of::<PkClientClass>(),
+            alignment: align_of::<PkClientClass>(),
+        },
+    ),
+    (
+        "PkClientError",
+        Layout {
+            size: size_of::<PkClientError>(),
+            alignment: align_of::<PkClientError>(),
+        },
+    ),
+    (
+        "PkClientHelper",
+        Layout {
+            size: size_of::<PkClientHelper>(),
+            alignment: align_of::<PkClientHelper>(),
+        },
+    ),
+    (
+        "PkClientHelperClass",
+        Layout {
+            size: size_of::<PkClientHelperClass>(),
+            alignment: align_of::<PkClientHelperClass>(),
+        },
+    ),
+    (
+        "PkControl",
+        Layout {
+            size: size_of::<PkControl>(),
+            alignment: align_of::<PkControl>(),
+        },
+    ),
+    (
+        "PkControlClass",
+        Layout {
+            size: size_of::<PkControlClass>(),
+            alignment: align_of::<PkControlClass>(),
+        },
+    ),
+    (
+        "PkControlError",
+        Layout {
+            size: size_of::<PkControlError>(),
+            alignment: align_of::<PkControlError>(),
+        },
+    ),
+    (
+        "PkDesktop",
+        Layout {
+            size: size_of::<PkDesktop>(),
+            alignment: align_of::<PkDesktop>(),
+        },
+    ),
+    (
+        "PkDesktopClass",
+        Layout {
+            size: size_of::<PkDesktopClass>(),
+            alignment: align_of::<PkDesktopClass>(),
+        },
+    ),
+    (
+        "PkDetails",
+        Layout {
+            size: size_of::<PkDetails>(),
+            alignment: align_of::<PkDetails>(),
+        },
+    ),
+    (
+        "PkDetailsClass",
+        Layout {
+            size: size_of::<PkDetailsClass>(),
+            alignment: align_of::<PkDetailsClass>(),
+        },
+    ),
+    (
+        "PkDistroUpgrade",
+        Layout {
+            size: size_of::<PkDistroUpgrade>(),
+            alignment: align_of::<PkDistroUpgrade>(),
+        },
+    ),
+    (
+        "PkDistroUpgradeClass",
+        Layout {
+            size: size_of::<PkDistroUpgradeClass>(),
+            alignment: align_of::<PkDistroUpgradeClass>(),
+        },
+    ),
+    (
+        "PkDistroUpgradeEnum",
+        Layout {
+            size: size_of::<PkDistroUpgradeEnum>(),
+            alignment: align_of::<PkDistroUpgradeEnum>(),
+        },
+    ),
+    (
+        "PkEnumMatch",
+        Layout {
+            size: size_of::<PkEnumMatch>(),
+            alignment: align_of::<PkEnumMatch>(),
+        },
+    ),
+    (
+        "PkError",
+        Layout {
+            size: size_of::<PkError>(),
+            alignment: align_of::<PkError>(),
+        },
+    ),
+    (
+        "PkErrorClass",
+        Layout {
+            size: size_of::<PkErrorClass>(),
+            alignment: align_of::<PkErrorClass>(),
+        },
+    ),
+    (
+        "PkErrorEnum",
+        Layout {
+            size: size_of::<PkErrorEnum>(),
+            alignment: align_of::<PkErrorEnum>(),
+        },
+    ),
+    (
+        "PkEulaRequired",
+        Layout {
+            size: size_of::<PkEulaRequired>(),
+            alignment: align_of::<PkEulaRequired>(),
+        },
+    ),
+    (
+        "PkEulaRequiredClass",
+        Layout {
+            size: size_of::<PkEulaRequiredClass>(),
+            alignment: align_of::<PkEulaRequiredClass>(),
+        },
+    ),
+    (
+        "PkExitEnum",
+        Layout {
+            size: size_of::<PkExitEnum>(),
+            alignment: align_of::<PkExitEnum>(),
+        },
+    ),
+    (
+        "PkFiles",
+        Layout {
+            size: size_of::<PkFiles>(),
+            alignment: align_of::<PkFiles>(),
+        },
+    ),
+    (
+        "PkFilesClass",
+        Layout {
+            size: size_of::<PkFilesClass>(),
+            alignment: align_of::<PkFilesClass>(),
+        },
+    ),
+    (
+        "PkFilterEnum",
+        Layout {
+            size: size_of::<PkFilterEnum>(),
+            alignment: align_of::<PkFilterEnum>(),
+        },
+    ),
+    (
+        "PkGroupEnum",
+        Layout {
+            size: size_of::<PkGroupEnum>(),
+            alignment: align_of::<PkGroupEnum>(),
+        },
+    ),
+    (
+        "PkInfoEnum",
+        Layout {
+            size: size_of::<PkInfoEnum>(),
+            alignment: align_of::<PkInfoEnum>(),
+        },
+    ),
+    (
+        "PkItemProgress",
+        Layout {
+            size: size_of::<PkItemProgress>(),
+            alignment: align_of::<PkItemProgress>(),
+        },
+    ),
+    (
+        "PkItemProgressClass",
+        Layout {
+            size: size_of::<PkItemProgressClass>(),
+            alignment: align_of::<PkItemProgressClass>(),
+        },
+    ),
+    (
+        "PkMediaChangeRequired",
+        Layout {
+            size: size_of::<PkMediaChangeRequired>(),
+            alignment: align_of::<PkMediaChangeRequired>(),
+        },
+    ),
+    (
+        "PkMediaChangeRequiredClass",
+        Layout {
+            size: size_of::<PkMediaChangeRequiredClass>(),
+            alignment: align_of::<PkMediaChangeRequiredClass>(),
+        },
+    ),
+    (
+        "PkMediaTypeEnum",
+        Layout {
+            size: size_of::<PkMediaTypeEnum>(),
+            alignment: align_of::<PkMediaTypeEnum>(),
+        },
+    ),
+    (
+        "PkNetworkEnum",
+        Layout {
+            size: size_of::<PkNetworkEnum>(),
+            alignment: align_of::<PkNetworkEnum>(),
+        },
+    ),
+    (
+        "PkOfflineAction",
+        Layout {
+            size: size_of::<PkOfflineAction>(),
+            alignment: align_of::<PkOfflineAction>(),
+        },
+    ),
+    (
+        "PkOfflineError",
+        Layout {
+            size: size_of::<PkOfflineError>(),
+            alignment: align_of::<PkOfflineError>(),
+        },
+    ),
+    (
+        "PkPackage",
+        Layout {
+            size: size_of::<PkPackage>(),
+            alignment: align_of::<PkPackage>(),
+        },
+    ),
+    (
+        "PkPackageClass",
+        Layout {
+            size: size_of::<PkPackageClass>(),
+            alignment: align_of::<PkPackageClass>(),
+        },
+    ),
+    (
+        "PkPackageSack",
+        Layout {
+            size: size_of::<PkPackageSack>(),
+            alignment: align_of::<PkPackageSack>(),
+        },
+    ),
+    (
+        "PkPackageSackClass",
+        Layout {
+            size: size_of::<PkPackageSackClass>(),
+            alignment: align_of::<PkPackageSackClass>(),
+        },
+    ),
+    (
+        "PkPackageSackSortType",
+        Layout {
+            size: size_of::<PkPackageSackSortType>(),
+            alignment: align_of::<PkPackageSackSortType>(),
+        },
+    ),
+    (
+        "PkProgress",
+        Layout {
+            size: size_of::<PkProgress>(),
+            alignment: align_of::<PkProgress>(),
+        },
+    ),
+    (
+        "PkProgressClass",
+        Layout {
+            size: size_of::<PkProgressClass>(),
+            alignment: align_of::<PkProgressClass>(),
+        },
+    ),
+    (
+        "PkProgressType",
+        Layout {
+            size: size_of::<PkProgressType>(),
+            alignment: align_of::<PkProgressType>(),
+        },
+    ),
+    (
+        "PkRepoDetail",
+        Layout {
+            size: size_of::<PkRepoDetail>(),
+            alignment: align_of::<PkRepoDetail>(),
+        },
+    ),
+    (
+        "PkRepoDetailClass",
+        Layout {
+            size: size_of::<PkRepoDetailClass>(),
+            alignment: align_of::<PkRepoDetailClass>(),
+        },
+    ),
+    (
+        "PkRepoSignatureRequired",
+        Layout {
+            size: size_of::<PkRepoSignatureRequired>(),
+            alignment: align_of::<PkRepoSignatureRequired>(),
+        },
+    ),
+    (
+        "PkRepoSignatureRequiredClass",
+        Layout {
+            size: size_of::<PkRepoSignatureRequiredClass>(),
+            alignment: align_of::<PkRepoSignatureRequiredClass>(),
+        },
+    ),
+    (
+        "PkRequireRestart",
+        Layout {
+            size: size_of::<PkRequireRestart>(),
+            alignment: align_of::<PkRequireRestart>(),
+        },
+    ),
+    (
+        "PkRequireRestartClass",
+        Layout {
+            size: size_of::<PkRequireRestartClass>(),
+            alignment: align_of::<PkRequireRestartClass>(),
+        },
+    ),
+    (
+        "PkRestartEnum",
+        Layout {
+            size: size_of::<PkRestartEnum>(),
+            alignment: align_of::<PkRestartEnum>(),
+        },
+    ),
+    (
+        "PkResults",
+        Layout {
+            size: size_of::<PkResults>(),
+            alignment: align_of::<PkResults>(),
+        },
+    ),
+    (
+        "PkResultsClass",
+        Layout {
+            size: size_of::<PkResultsClass>(),
+            alignment: align_of::<PkResultsClass>(),
+        },
+    ),
+    (
+        "PkRoleEnum",
+        Layout {
+            size: size_of::<PkRoleEnum>(),
+            alignment: align_of::<PkRoleEnum>(),
+        },
+    ),
+    (
+        "PkSigTypeEnum",
+        Layout {
+            size: size_of::<PkSigTypeEnum>(),
+            alignment: align_of::<PkSigTypeEnum>(),
+        },
+    ),
+    (
+        "PkSource",
+        Layout {
+            size: size_of::<PkSource>(),
+            alignment: align_of::<PkSource>(),
+        },
+    ),
+    (
+        "PkSourceClass",
+        Layout {
+            size: size_of::<PkSourceClass>(),
+            alignment: align_of::<PkSourceClass>(),
+        },
+    ),
+    (
+        "PkStatusEnum",
+        Layout {
+            size: size_of::<PkStatusEnum>(),
+            alignment: align_of::<PkStatusEnum>(),
+        },
+    ),
+    (
+        "PkTask",
+        Layout {
+            size: size_of::<PkTask>(),
+            alignment: align_of::<PkTask>(),
+        },
+    ),
+    (
+        "PkTaskClass",
+        Layout {
+            size: size_of::<PkTaskClass>(),
+            alignment: align_of::<PkTaskClass>(),
+        },
+    ),
+    (
+        "PkTransactionFlagEnum",
+        Layout {
+            size: size_of::<PkTransactionFlagEnum>(),
+            alignment: align_of::<PkTransactionFlagEnum>(),
+        },
+    ),
+    (
+        "PkTransactionList",
+        Layout {
+            size: size_of::<PkTransactionList>(),
+            alignment: align_of::<PkTransactionList>(),
+        },
+    ),
+    (
+        "PkTransactionListClass",
+        Layout {
+            size: size_of::<PkTransactionListClass>(),
+            alignment: align_of::<PkTransactionListClass>(),
+        },
+    ),
+    (
+        "PkTransactionPast",
+        Layout {
+            size: size_of::<PkTransactionPast>(),
+            alignment: align_of::<PkTransactionPast>(),
+        },
+    ),
+    (
+        "PkTransactionPastClass",
+        Layout {
+            size: size_of::<PkTransactionPastClass>(),
+            alignment: align_of::<PkTransactionPastClass>(),
+        },
+    ),
+    (
+        "PkUpdateDetail",
+        Layout {
+            size: size_of::<PkUpdateDetail>(),
+            alignment: align_of::<PkUpdateDetail>(),
+        },
+    ),
+    (
+        "PkUpdateDetailClass",
+        Layout {
+            size: size_of::<PkUpdateDetailClass>(),
+            alignment: align_of::<PkUpdateDetailClass>(),
+        },
+    ),
+    (
+        "PkUpdateStateEnum",
+        Layout {
+            size: size_of::<PkUpdateStateEnum>(),
+            alignment: align_of::<PkUpdateStateEnum>(),
+        },
+    ),
+    (
+        "PkUpgradeKindEnum",
+        Layout {
+            size: size_of::<PkUpgradeKindEnum>(),
+            alignment: align_of::<PkUpgradeKindEnum>(),
+        },
+    ),
 ];
 
 const RUST_CONSTANTS: &[(&str, &str)] = &[
@@ -308,11 +736,20 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) PK_CONTROL_ERROR_CANNOT_START_DAEMON", "1"),
     ("(gint) PK_CONTROL_ERROR_FAILED", "0"),
     ("PK_DBUS_INTERFACE", "org.freedesktop.PackageKit"),
-    ("PK_DBUS_INTERFACE_OFFLINE", "org.freedesktop.PackageKit.Offline"),
-    ("PK_DBUS_INTERFACE_TRANSACTION", "org.freedesktop.PackageKit.Transaction"),
+    (
+        "PK_DBUS_INTERFACE_OFFLINE",
+        "org.freedesktop.PackageKit.Offline",
+    ),
+    (
+        "PK_DBUS_INTERFACE_TRANSACTION",
+        "org.freedesktop.PackageKit.Transaction",
+    ),
     ("PK_DBUS_PATH", "/org/freedesktop/PackageKit"),
     ("PK_DBUS_SERVICE", "org.freedesktop.PackageKit"),
-    ("PK_DESKTOP_DEFAULT_APPLICATION_DIR", "/usr/share/applications"),
+    (
+        "PK_DESKTOP_DEFAULT_APPLICATION_DIR",
+        "/usr/share/applications",
+    ),
     ("(gint) PK_DISTRO_UPGRADE_ENUM_LAST", "3"),
     ("(gint) PK_DISTRO_UPGRADE_ENUM_STABLE", "1"),
     ("(gint) PK_DISTRO_UPGRADE_ENUM_UNKNOWN", "0"),
@@ -385,7 +822,10 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) PK_ERROR_ENUM_TRANSACTION_ERROR", "16"),
     ("(gint) PK_ERROR_ENUM_UNFINISHED_TRANSACTION", "66"),
     ("(gint) PK_ERROR_ENUM_UNKNOWN", "0"),
-    ("(gint) PK_ERROR_ENUM_UPDATE_FAILED_DUE_TO_RUNNING_PROCESS", "60"),
+    (
+        "(gint) PK_ERROR_ENUM_UPDATE_FAILED_DUE_TO_RUNNING_PROCESS",
+        "60",
+    ),
     ("(gint) PK_ERROR_ENUM_UPDATE_NOT_FOUND", "49"),
     ("(gint) PK_EXIT_ENUM_CANCELLED", "3"),
     ("(gint) PK_EXIT_ENUM_CANCELLED_PRIORITY", "9"),
@@ -626,8 +1066,14 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) PK_STATUS_ENUM_WAIT", "1"),
     ("(gint) PK_STATUS_ENUM_WAITING_FOR_AUTH", "31"),
     ("(gint) PK_STATUS_ENUM_WAITING_FOR_LOCK", "30"),
-    ("PK_SYSTEM_PACKAGE_CACHE_FILENAME", "/var/lib/PackageKit/package-cache.db"),
-    ("PK_SYSTEM_PACKAGE_LIST_FILENAME", "/var/lib/PackageKit/system.package-list"),
+    (
+        "PK_SYSTEM_PACKAGE_CACHE_FILENAME",
+        "/var/lib/PackageKit/package-cache.db",
+    ),
+    (
+        "PK_SYSTEM_PACKAGE_LIST_FILENAME",
+        "/var/lib/PackageKit/system.package-list",
+    ),
     ("(gint) PK_TRANSACTION_FLAG_ENUM_ALLOW_DOWNGRADE", "6"),
     ("(gint) PK_TRANSACTION_FLAG_ENUM_ALLOW_REINSTALL", "4"),
     ("(gint) PK_TRANSACTION_FLAG_ENUM_JUST_REINSTALL", "5"),
@@ -647,5 +1093,3 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) PK_UPGRADE_KIND_ENUM_MINIMAL", "1"),
     ("(gint) PK_UPGRADE_KIND_ENUM_UNKNOWN", "0"),
 ];
-
-
