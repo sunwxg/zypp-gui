@@ -6,6 +6,8 @@ use gtk::gio::File;
 use gtk::glib;
 use gtk::prelude::*;
 use log::debug;
+use std::collections::HashMap;
+use std::collections::HashSet;
 use std::thread;
 
 use crate::additional::AdditionalRepo;
@@ -17,6 +19,7 @@ use crate::zypper::{RepoInfo, Settings, Zypper};
 pub struct PageSettings {
     pub widget: adw::NavigationSplitView,
     pub button_deck_back: gtk::Button,
+    list: HashMap<String, RepoRow>,
     list_box: gtk::Box,
     main_window: adw::ApplicationWindow,
 }
@@ -31,9 +34,10 @@ impl PageSettings {
         MirrorSettings::new(main_builder, &builder);
         AdditionalRepo::new(main_builder, &builder);
 
-        let page_settings = Self {
+        let mut page_settings = Self {
             widget,
             button_deck_back,
+            list: HashMap::new(),
             list_box,
             main_window,
         };
@@ -44,7 +48,53 @@ impl PageSettings {
         page_settings
     }
 
-    fn build_repo_list(&self) {
+    fn update_repo_list(&mut self) {
+        let repo_list = match Zypper::get_repos() {
+            Some(list) => list,
+            None => vec![],
+        };
+
+        //Add/Update repo row
+        for info in repo_list.clone() {
+            match self.find_in_list_box(info.clone()) {
+                Some(_c) => {}
+                None => {
+                    let list_box = self.list_box.clone();
+                    let row = RepoRow::new(info.clone());
+                    list_box.prepend(&row.row().to_owned());
+                    self.list.insert(info.name.clone(), row.clone());
+                    self.row_button_connect(&row, info.clone());
+                }
+            };
+        }
+
+        //Remove missing repo row
+        let repo_names: HashSet<String> = repo_list.iter().map(|repo| repo.name.clone()).collect();
+        let missing_repos: Vec<String> = self
+            .list
+            .keys()
+            .filter(|&name| !repo_names.contains(name))
+            .cloned()
+            .collect();
+
+        for name in missing_repos {
+            let list_box = self.list_box.clone();
+            list_box.remove(self.list.get(&name).expect("repo row").row());
+            self.list.remove(&name);
+        }
+    }
+
+    fn find_in_list_box(&self, info: RepoInfo) -> Option<&RepoRow> {
+        match self.list.get(&info.name) {
+            Some(row) => {
+                row.update(info);
+                return Some(row);
+            }
+            None => return None,
+        }
+    }
+
+    fn build_repo_list(&mut self) {
         let repo_list = match Zypper::get_repos() {
             Some(list) => list,
             None => vec![],
@@ -53,25 +103,8 @@ impl PageSettings {
         for info in repo_list {
             let row = RepoRow::new(info.clone());
             list_box.prepend(&row.row().to_owned());
+            self.list.insert(info.name.clone(), row.clone());
             self.row_button_connect(&row, info.clone());
-        }
-    }
-
-    fn clear_repo_list(&self) {
-        let mut child = match self.list_box.first_child() {
-            Some(child) => child,
-            None => return,
-        };
-
-        loop {
-            let next_child = child.next_sibling();
-            self.list_box.remove(&child);
-            match next_child {
-                Some(c) => {
-                    child = c;
-                }
-                None => break,
-            };
         }
     }
 
@@ -205,11 +238,10 @@ impl PageSettings {
             mainloop.run();
         });
 
-        let this = self.clone();
+        let mut this = self.clone();
         glib::spawn_future_local(async move {
             while let Ok(_) = rx.recv().await {
-                this.clear_repo_list();
-                this.build_repo_list();
+                this.update_repo_list();
             }
         });
     }

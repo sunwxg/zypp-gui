@@ -1,12 +1,14 @@
 use crate::zypper::RepoInfo;
 use adw::prelude::*;
 
+#[derive(Clone)]
 pub struct RepoRow {
     row: adw::PreferencesGroup,
     enable: adw::SwitchRow,
     refresh: adw::SwitchRow,
     priority: adw::SpinRow,
     delete: gtk::Button,
+    url: adw::ActionRow,
 }
 
 impl RepoRow {
@@ -32,6 +34,7 @@ impl RepoRow {
             refresh: refresh,
             priority: priority,
             delete: delete,
+            url: url,
         }
     }
 
@@ -53,5 +56,13 @@ impl RepoRow {
 
     pub fn delete(&self) -> &gtk::Button {
         &self.delete
+    }
+
+    pub fn update(&self, info: RepoInfo) {
+        self.row.set_title(info.name.as_str());
+        self.enable.set_active(info.enable);
+        self.refresh.set_active(info.refresh);
+        self.priority.set_value(info.priority as f64);
+        self.url.set_title(info.url.as_str());
     }
 }
