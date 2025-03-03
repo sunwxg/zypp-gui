@@ -53,11 +53,11 @@ else
 endif
 
 
-meson.add_dist_script(
-  'build-aux/dist-vendor.sh',
-  meson.build_root() / 'meson-dist' / meson.project_name() + '-' + version,
-  meson.source_root()
-)
+#meson.add_dist_script(
+  #'build-aux/dist-vendor.sh',
+  #meson.build_root() / 'meson-dist' / meson.project_name() + '-' + version,
+  #meson.source_root()
+#)
 
 if get_option('profile') == 'development'
   # Setup pre-commit hook for ensuring coding style is always consistent
