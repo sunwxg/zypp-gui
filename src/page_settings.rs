@@ -1,5 +1,3 @@
-//use gtk::gdk;
-use glib::clone;
 use gtk::gio;
 use gtk::gio::prelude::*;
 use gtk::gio::File;
@@ -230,9 +228,13 @@ impl PageSettings {
                     || event == gio::FileMonitorEvent::Deleted
                     || event == gio::FileMonitorEvent::ChangesDoneHint
                 {
-                    glib::spawn_future_local(clone!(@strong tx => async move {
-                        tx.send("repo changed").await.expect("Couldn't send data to channel");
-                    }));
+                    let value = tx.clone();
+                    glib::spawn_future_local(async move {
+                        value
+                            .send("repo changed")
+                            .await
+                            .expect("Couldn't send data to channel");
+                    });
                 }
             });
             mainloop.run();
