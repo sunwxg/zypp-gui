@@ -6,13 +6,11 @@ members = [
 
 default-members = [
   "zypp-gui",
-  "mod_repo",
 ]
 
 resolver = "2"
 
 [workspace.package]
-name = "zypp_gui"
 version = "0.4.0"
 authors = ["Xiaoguang Wang <sun.wxg@gmail.com>"]
 edition = "2018"

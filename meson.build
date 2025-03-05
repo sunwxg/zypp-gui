@@ -73,7 +73,7 @@ endif
 
 subdir('data')
 subdir('po')
-subdir('mod_repo')
 subdir('zypp-gui')
+subdir('mod_repo')
 
 meson.add_install_script('build-aux/meson_post_install.py')

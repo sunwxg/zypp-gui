@@ -13,10 +13,11 @@ custom_target(
   install_dir: bindir,
   command: [
     cargo_script,
-    meson.build_root() / 'mod_repo',
-    meson.source_root() / 'mod_repo',
+    meson.build_root(),
+    meson.source_root(),
     '@OUTPUT@',
     profile,
     'mod-repo',
+    'mod_repo',
   ]
 )

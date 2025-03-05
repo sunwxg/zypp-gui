@@ -13,7 +13,7 @@ config = configure_file(
 # Copy the config.rs output to the source directory.
 run_command(
   'cp',
-  meson.build_root() / 'src' / 'config.rs',
+  meson.build_root() / 'zypp-gui' / 'src' / 'config.rs',
   meson.source_root() / 'zypp-gui' / 'src' / 'config.rs',
   check: true
 )
@@ -54,6 +54,7 @@ custom_target(
     meson.source_root(),
     '@OUTPUT@',
     profile,
-	'zypp_gui',
+  'zypp_gui',
+  'zypp-gui',
   ]
 )
