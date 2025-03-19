@@ -242,7 +242,7 @@ impl<O: IsA<ClientPk>> ClientPkExt for O {
         unsafe extern "C" fn get_updates_async_trampoline<
             Q: FnOnce(Result<ResultsPk, glib::Error>) + Send + 'static,
         >(
-            _source_object: *mut glib::object::GObject,
+            _source_object: *mut gobject_sys::GObject,
             res: *mut gio_sys::GAsyncResult,
             user_data: glib_sys::gpointer,
         ) {
