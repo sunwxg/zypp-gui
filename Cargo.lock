@@ -1680,7 +1680,7 @@ dependencies = [
 
 [[package]]
 name = "zypp_gui"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "async-channel",
  "env_logger",
