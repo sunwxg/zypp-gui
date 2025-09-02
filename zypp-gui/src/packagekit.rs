@@ -148,7 +148,7 @@ pub fn download_updates(sender: async_channel::Sender<PKmessage>) {
             sender1
                 .send_blocking(PKmessage::Progress((
                     progress.percentage(),
-                    Some(progress.get_item_package()),
+                    Some("".to_string()),
                 )))
                 .expect("Couldn't send data to channel");
         }
